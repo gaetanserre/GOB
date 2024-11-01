@@ -3,5 +3,6 @@
 #
 
 from .PRS import PRS
+from .gradient_descent import GD
 
-__all__ = ["PRS"]
+__all__ = ["PRS", "GD"]

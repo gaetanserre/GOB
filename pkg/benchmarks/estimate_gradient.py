@@ -23,10 +23,10 @@ def estimate_gradient(f, x, eps=1e-5):
     array_like
         The estimated gradient of `f` at `x`.
     """
-    n = len(x)
-    grad = np.zeros(n)
-    for i in range(n):
-        x_plus = x.copy()
-        x_plus[i] += eps
-        grad[i] = (f(x_plus) - f(x)) / eps
+    f_x = f(x)
+    grad = np.zeros(x.shape)
+    for i in range(x.shape[0]):
+        x_p = x.copy()
+        x_p[i] += eps
+        grad[i] = (f(x_p) - f_x) / eps
     return grad

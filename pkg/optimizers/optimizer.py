@@ -33,3 +33,6 @@ class Optimizer:
         **kwargs : dict of keyword arguments
         """
         pass
+
+    def __str__(self):
+        return self.name

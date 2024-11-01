@@ -5,7 +5,7 @@
 from .estimate_gradient import estimate_gradient
 
 
-class Function:
+class Benchmark:
     """
     Interface for a benchmark function.
 
@@ -42,3 +42,6 @@ class Function:
             The point at which to evaluate the gradient of the function.
         """
         return estimate_gradient(self, x)
+
+    def __str__(self):
+        return self.name

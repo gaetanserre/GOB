@@ -2,10 +2,10 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .function import Function
+from .benchmark import Benchmark
 
 
-class Square(Function):
+class Square(Benchmark):
     """
     The d-square function.
     """

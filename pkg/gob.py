@@ -2,10 +2,18 @@
 # Created in 2024 by Gaëtan Serré
 #
 import numpy as np
-from .benchmarks import Square
-from .optimizers import PRS
-from .metrics import Proportion
 from .create_bounds import create_bounds
+
+from .benchmarks import Square
+from .benchmarks import Ackley
+
+from .optimizers import PRS
+from .optimizers import GD
+
+from .metrics import Proportion
+
+from .utils import print_table_per_benchmark
+from .utils import print_blue
 
 
 class GOB:
@@ -13,55 +21,46 @@ class GOB:
     Global Optimization Benchmarks.
     """
 
-    def __init__(
-        self, optimizer, benchmark, metric, bounds=create_bounds(-1, 1, 2), options={}
-    ):
+    def __init__(self, optimizers, benchmarks, metrics, bounds=None, options={}):
         """
         Initialize the benchmarking tool.
 
         Parameters
         ----------
-        optimizer : str | Class
-            The optimizer to use.
+        optimizers : List str | Class
+            The optimizers to use.
 
-        benchmark : str | Class
-            The benchmark to use.
+        benchmarks : List str | Class
+            The benchmarks to use.
 
-        metric : str | Class
-            The metric to use.
+        metrics : List str | Class
+            The metrics to use.
 
-        bounds : array_like of shape (n_variables, 2)
+        bounds : array_like of shape (n_benchmark, n_variables, 2)
             The bounds of the search space.
 
         **kwargs : dict of keyword arguments
             {name_optimizer: dict of keyword arguments}
         """
-
+        if bounds is None:
+            bounds = create_bounds(len(benchmarks), -1, 1, 2)
         self.bounds = bounds
 
-        if isinstance(optimizer, str):
-            self.optimizer = self.parse_optimizer(optimizer, options.get(optimizer, {}))
-        else:
-            self.optimizer = optimizer
+        self.options = options
+        self.optimizers = optimizers
+        self.benchmarks = benchmarks
+        self.metrics = metrics
 
-        if isinstance(benchmark, str):
-            self.benchmark = self.parse_benchmark(benchmark)
-        else:
-            self.benchmark = benchmark
-
-        if isinstance(metric, str):
-            self.metric = self.parse_metric(metric)
-        else:
-            self.metric = metric
-
-    def parse_optimizer(self, optimizer, options={}):
+    def parse_optimizer(self, optimizer, bounds, options={}):
         """
         Parse the optimizer.
 
         Parameters
         ----------
-        optimizer : str
+        optimizer : str | Class
             The optimizer to use.
+        bounds : array_like of shape (n_variables, 2)
+            The bounds of the search space.
 
         **kwargs : dict of keyword arguments
             {name_optimizer: dict of keyword arguments}
@@ -69,13 +68,18 @@ class GOB:
         Returns
         -------
         Optimizer
-            An instance of the optimizer.
+            Instance of the optimizer.
         """
-        match optimizer:
-            case "PRS":
-                return PRS(bounds=self.bounds, **options)
-            case _:
-                raise ValueError(f"Unknown optimizer: {optimizer}")
+        if isinstance(optimizer, str):
+            match optimizer:
+                case "PRS":
+                    return PRS(bounds=bounds, **options)
+                case "GD":
+                    return GD(bounds=bounds, **options)
+                case _:
+                    raise ValueError(f"Unknown optimizer: {optimizer}")
+        else:
+            return optimizer
 
     @staticmethod
     def parse_benchmark(benchmark):
@@ -89,34 +93,66 @@ class GOB:
 
         Returns
         -------
-        Function
-            An instance of the benchmark.
+        Benchmark
+            Instance of the benchmark.
         """
-        match benchmark:
-            case "Square":
-                return Square()
-            case _:
-                raise ValueError(f"Unknown benchmark: {benchmark}")
+        if isinstance(benchmark, str):
+            match benchmark:
+                case "Square":
+                    return Square()
+                case "Ackley":
+                    return Ackley()
+                case _:
+                    raise ValueError(f"Unknown benchmark: {benchmark}")
+        else:
+            return benchmark
 
-    def parse_metric(self, metric):
+    def parse_metric(self, metric, benchmark, bounds):
         """
         Parse the metric.
 
         Parameters
         ----------
-        metric : str
+        metric : str | Class
             The metric to use.
+        benchmark : Benchmark
+            The benchmark function.
+        bounds : array_like of shape (n_variables, 2)
+            The bounds of the search space.
 
         Returns
         -------
-        Metric
-            An instance of the metric.
+        List Metric
+            Instance of the metric.
         """
-        match metric:
-            case "Proportion":
-                return Proportion(self.benchmark, self.bounds, 0.99)
-            case _:
-                raise ValueError(f"Unknown metric: {metric}")
+        if isinstance(metric, str):
+            match metric:
+                case "Proportion":
+                    return Proportion(benchmark, bounds, 0.99)
+                case _:
+                    raise ValueError(f"Unknown metric: {metric}")
+        else:
+            return metric
+
+    @staticmethod
+    def print_approx(sols, f, n_runs):
+        """
+        Print the approximate minimum.
+
+        Parameters
+        ----------
+        sols : List float
+            The list of approximations of the minimum.
+        f : float
+            The true minimum.
+        n_runs : int
+            The number of runs.
+        """
+        mean, std = np.mean(sols), np.std(sols)
+        if n_runs == 1:
+            print(f"Minimum: {sols[0]:.6f}, True minimum: {f}")
+        else:
+            print(f"Minimum: {mean:.4f} ± {std:.4f}, True minimum: {f}")
 
     def run(self, n_runs=1, verbose=False):
         """
@@ -129,19 +165,26 @@ class GOB:
         verbose : bool
             Whether to print the results.
         """
-        sols = []
-        for _ in range(n_runs):
-            sol = self.optimizer.minimize(self.benchmark)
-            sols.append(sol)
-
-        mean, std = np.mean(sols), np.std(sols)
-        if verbose:
-            if n_runs == 1:
-                print(f"Minimum: {sols[0]:.6f}, True minimum: {self.benchmark.min}")
-            else:
-                print(
-                    f"Minimum: {mean:.4f} ± {std:.4f}, True minimum: {self.benchmark.min}"
+        res_dict = {}
+        for i, benchmark in enumerate(self.benchmarks):
+            bench_dict = {}
+            benchmark = self.parse_benchmark(benchmark)
+            for optimizer in self.optimizers:
+                opt_dict = {}
+                optimizer = self.parse_optimizer(
+                    optimizer, self.bounds[i], self.options.get(optimizer, {})
                 )
-        metric = self.metric(sols)
-        print(metric)
-        return sols
+                sols = []
+                for _ in range(n_runs):
+                    sol = optimizer.minimize(benchmark)
+                    sols.append(sol)
+                opt_dict["Approx"] = f"{np.mean(sols):.2f} ± {np.std(sols):.2f}"
+                for metric in self.metrics:
+                    metric = self.parse_metric(metric, benchmark, self.bounds[i])
+                    m = metric(sols)
+                    opt_dict[str(metric)] = f"{m:.2f}"
+                bench_dict[str(optimizer)] = opt_dict
+            res_dict[str(benchmark)] = bench_dict
+            print_blue(f"Done for {benchmark}.")
+        if verbose:
+            print_table_per_benchmark(res_dict)

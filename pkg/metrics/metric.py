@@ -13,10 +13,7 @@ class Metric:
         The name of the metric.
     """
 
-    def __init__(
-        self,
-        name,
-    ):
+    def __init__(self, name):
         self.name = name
 
     def __call__(self, sols):
@@ -29,3 +26,6 @@ class Metric:
             The solutions returned by a solver during multiple runs.
         """
         pass
+
+    def __str__(self):
+        return self.name

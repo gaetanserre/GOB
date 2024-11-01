@@ -3,5 +3,6 @@
 #
 
 from .square import Square
+from .ackley import Ackley
 
-__all__ = ["Square"]
+__all__ = ["Square", "Ackley"]
