@@ -10,6 +10,7 @@ from .benchmarks import Ackley
 from .metrics import Proportion
 
 from .utils import print_table_by_metric
+from .utils import print_competitive_ratios
 from .utils import print_blue
 
 
@@ -170,6 +171,37 @@ class GOB:
         else:
             print(f"Minimum: {mean:.4f} ± {std:.4f}, True minimum: {f}")
 
+    def competitive_ratio(self, res_dict):
+        """
+        Compute the competitive ratio: 1 / |F| * sum_{f in F} (approx(f) / min(f)).
+
+        Parameters
+        ----------
+        res_dict : dict
+            The results dictionary.
+        benchmarks : List Object
+            The benchmarks.
+
+        Returns
+        -------
+        dict
+            A dict of competitive ratios.
+        """
+        optimizer_names = list(res_dict.values())[0].keys()
+        ratios = {}
+        approxs = {}
+        for optimizer_name in optimizer_names:
+            for bench_name, bench_dict in res_dict.items():
+                approxs[bench_name] = bench_dict[optimizer_name]["Approx"]["mean"]
+        for optimizer_name in optimizer_names:
+            ratio = 0
+            for bench_name, bench_dict in res_dict.items():
+                approx = bench_dict[optimizer_name]["Approx"]["mean"]
+                best = np.min(approxs[bench_name])
+                ratio += min(100, (approx + 1e-10) / (best + 1e-10))
+            ratios[optimizer_name] = ratio / len(self.benchmarks)
+        return ratios
+
     def run(self, n_runs=1, verbose=False):
         """
         Run the benchmark.
@@ -194,15 +226,16 @@ class GOB:
                 for _ in range(n_runs):
                     sol = optimizer.minimize(benchmark)
                     sols.append(sol)
-                opt_dict["Approx"] = f"{np.mean(sols):.2f} ± {np.std(sols):.2f}"
+                opt_dict["Approx"] = {"mean": np.mean(sols), "std": np.std(sols)}
                 for metric in self.metrics:
                     metric = self.parse_metric(
                         metric, benchmark, self.bounds[i], self.options.get(metric, {})
                     )
                     m = metric(sols)
-                    opt_dict[str(metric)] = f"{m:.2f}"
+                    opt_dict[str(metric)] = m
                 bench_dict[str(optimizer)] = opt_dict
             res_dict[str(benchmark)] = bench_dict
             print_blue(f"Done for {benchmark}.")
         if verbose:
             print_table_by_metric(res_dict)
+            print_competitive_ratios(self.competitive_ratio(res_dict))

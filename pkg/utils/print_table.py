@@ -48,9 +48,15 @@ def print_table_by_benchmark(res_dict):
         metric_names = list(list(optim_res.values())[0].keys())
         tab = PrettyTable(["Optimizer"] + metric_names)
         for opt_name, metric_dict in optim_res.items():
-            tab.add_row(
-                [opt_name] + [metric_dict[metric_name] for metric_name in metric_names]
-            )
+            score = []
+            for metric_name in metric_names:
+                if metric_name == "Approx":
+                    score.append(
+                        f"{metric_dict[metric_name]['mean']:.4f} ± {metric_dict[metric_name]['std']:.4f}"
+                    )
+                else:
+                    score.append(f"{metric_dict[metric_name]:.4f}")
+            tab.add_row([opt_name] + score)
         print(tab)
 
 
@@ -70,11 +76,24 @@ def print_table_by_metric(res_dict):
         tab = PrettyTable(["Optimizer"] + list(res_dict.keys()))
         names_opt = list(list(res_dict.values())[0].keys())
         for name_opt in names_opt:
-            tab.add_row(
-                [name_opt]
-                + [
-                    res_dict[benchmark_name][name_opt][metric_name]
-                    for benchmark_name in res_dict
-                ]
-            )
+            score = []
+            for benchmark_name in res_dict:
+                if metric_name == "Approx":
+                    score.append(
+                        f"{res_dict[benchmark_name][name_opt][metric_name]['mean']:.4f} ± {res_dict[benchmark_name][name_opt][metric_name]['std']:.4f}"
+                    )
+                else:
+                    score.append(
+                        f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
+                    )
+            tab.add_row([name_opt] + score)
         print(tab)
+
+
+def print_competitive_ratios(ratios):
+    print("")
+    print_purple("Competitive ratios:")
+    tab = PrettyTable(["Optimizer", "Competitive ratio"])
+    for opt_name, ratio in ratios.items():
+        tab.add_row([opt_name, f"{ratio:.4f}"])
+    print(tab)
