@@ -23,7 +23,7 @@ class Proportion(Metric):
         The proportion.
     """
 
-    def __init__(self, f, bounds, p):
+    def __init__(self, f, bounds, p=0.99):
         super().__init__("Proportion")
         self.f = f
         self.bounds = bounds

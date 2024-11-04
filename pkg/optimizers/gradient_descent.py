@@ -16,5 +16,5 @@ class GD(Optimizer):
         d = len(self.bounds)
         x = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1], size=(d))
         for _ in range(self.n_step):
-            x -= self.step_size * f.gradient(x)
+            x -= self.step_size * f.gradient(x)[0]
         return f(x)

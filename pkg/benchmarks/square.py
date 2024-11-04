@@ -17,4 +17,4 @@ class Square(Benchmark):
         return x.T @ x
 
     def gradient(self, x):
-        return 2 * x
+        return 2 * x, self(x)

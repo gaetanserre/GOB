@@ -4,5 +4,8 @@
 
 from .PRS import PRS
 from .gradient_descent import GD
+from .CMA_ES import CMA_ES
+from .AdaLIPO_P import AdaLIPO_P
+from .SBS import SBS
 
-__all__ = ["PRS", "GD"]
+__all__ = ["PRS", "GD", "CMA_ES", "AdaLIPO_P", "SBS"]

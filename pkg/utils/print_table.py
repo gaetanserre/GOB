@@ -33,7 +33,7 @@ def print_blue(*text):
     print("\033[0m", end="")
 
 
-def print_table_per_benchmark(res_dict):
+def print_table_by_benchmark(res_dict):
     """
     Print the results of the optimization for each benchmark.
 
@@ -53,8 +53,28 @@ def print_table_per_benchmark(res_dict):
             )
         print(tab)
 
-        """ tab = PrettyTable(["Optimizer", "Metric", "Value"])
-        for opt_name, metric_dict in optim_res.items():
-            for metric_name, metric_value in metric_dict.items():
-                tab.add_row([opt_name, metric_name, metric_value])
-        print(tab) """
+
+def print_table_by_metric(res_dict):
+    """
+    Print the results of the optimization for each metric.
+
+    Parameters
+    ----------
+    res_dict : dict
+        The results of the optimization of the form {"Benchmark name": {"Optimizer name": {"Metric name": ...}}}
+    """
+    metric_names = list(list(list(res_dict.values())[0].values())[0].keys())
+    print("")
+    for metric_name in metric_names:
+        print_purple(f"Results for {metric_name}:")
+        tab = PrettyTable(["Optimizer"] + list(res_dict.keys()))
+        names_opt = list(list(res_dict.values())[0].keys())
+        for name_opt in names_opt:
+            tab.add_row(
+                [name_opt]
+                + [
+                    res_dict[benchmark_name][name_opt][metric_name]
+                    for benchmark_name in res_dict
+                ]
+            )
+        print(tab)

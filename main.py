@@ -6,9 +6,13 @@ from pkg import GOB
 from pkg import create_bounds
 
 if __name__ == "__main__":
-    opt = {"PRS": {"n_eval": 1000}, "GD": {"n_step": 3000, "step_size": 1e-3}}
+    opt = {
+        "PRS": {"n_eval": 1000},
+        "GD": {"n_step": 3000, "step_size": 1e-3},
+        "Proportion": {"p": 0.995},
+    }
     gob = GOB(
-        ["PRS", "GD"],
+        ["PRS", "GD", "CMA-ES", "AdaLIPO_P", "SBS"],
         ["Square", "Ackley"],
         ["Proportion"],
         bounds=create_bounds(2, -10, 10, 3),

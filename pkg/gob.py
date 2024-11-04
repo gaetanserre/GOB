@@ -7,12 +7,9 @@ from .create_bounds import create_bounds
 from .benchmarks import Square
 from .benchmarks import Ackley
 
-from .optimizers import PRS
-from .optimizers import GD
-
 from .metrics import Proportion
 
-from .utils import print_table_per_benchmark
+from .utils import print_table_by_metric
 from .utils import print_blue
 
 
@@ -27,19 +24,19 @@ class GOB:
 
         Parameters
         ----------
-        optimizers : List str | Class
+        optimizers : List str | Object
             The optimizers to use.
 
-        benchmarks : List str | Class
+        benchmarks : List str | Object
             The benchmarks to use.
 
-        metrics : List str | Class
+        metrics : List str | Object
             The metrics to use.
 
         bounds : array_like of shape (n_benchmark, n_variables, 2)
             The bounds of the search space.
 
-        **kwargs : dict of keyword arguments
+        **kwargs : dict of keyword arguments for the optimizers or the metrics
             {name_optimizer: dict of keyword arguments}
         """
         if bounds is None:
@@ -57,7 +54,7 @@ class GOB:
 
         Parameters
         ----------
-        optimizer : str | Class
+        optimizer : str | Object
             The optimizer to use.
         bounds : array_like of shape (n_variables, 2)
             The bounds of the search space.
@@ -73,9 +70,28 @@ class GOB:
         if isinstance(optimizer, str):
             match optimizer:
                 case "PRS":
+                    from .optimizers import PRS
+
                     return PRS(bounds=bounds, **options)
                 case "GD":
+                    from .optimizers import GD
+
                     return GD(bounds=bounds, **options)
+                case "CMA-ES":
+                    from .optimizers import CMA_ES
+
+                    return CMA_ES(bounds=bounds, **options)
+
+                case "AdaLIPO_P":
+                    from .optimizers import AdaLIPO_P
+
+                    return AdaLIPO_P(bounds=bounds, **options)
+
+                case "SBS":
+                    from .optimizers import SBS
+
+                    return SBS(bounds=bounds, **options)
+
                 case _:
                     raise ValueError(f"Unknown optimizer: {optimizer}")
         else:
@@ -107,13 +123,13 @@ class GOB:
         else:
             return benchmark
 
-    def parse_metric(self, metric, benchmark, bounds):
+    def parse_metric(self, metric, benchmark, bounds, options={}):
         """
         Parse the metric.
 
         Parameters
         ----------
-        metric : str | Class
+        metric : str | Object
             The metric to use.
         benchmark : Benchmark
             The benchmark function.
@@ -128,7 +144,7 @@ class GOB:
         if isinstance(metric, str):
             match metric:
                 case "Proportion":
-                    return Proportion(benchmark, bounds, 0.99)
+                    return Proportion(benchmark, bounds, **options)
                 case _:
                     raise ValueError(f"Unknown metric: {metric}")
         else:
@@ -180,11 +196,13 @@ class GOB:
                     sols.append(sol)
                 opt_dict["Approx"] = f"{np.mean(sols):.2f} ± {np.std(sols):.2f}"
                 for metric in self.metrics:
-                    metric = self.parse_metric(metric, benchmark, self.bounds[i])
+                    metric = self.parse_metric(
+                        metric, benchmark, self.bounds[i], self.options.get(metric, {})
+                    )
                     m = metric(sols)
                     opt_dict[str(metric)] = f"{m:.2f}"
                 bench_dict[str(optimizer)] = opt_dict
             res_dict[str(benchmark)] = bench_dict
             print_blue(f"Done for {benchmark}.")
         if verbose:
-            print_table_per_benchmark(res_dict)
+            print_table_by_metric(res_dict)

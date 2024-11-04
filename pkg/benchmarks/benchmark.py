@@ -2,7 +2,7 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .estimate_gradient import estimate_gradient
+import numpy as np
 
 
 class Benchmark:
@@ -34,14 +34,30 @@ class Benchmark:
 
     def gradient(self, x):
         """
-        Evaluate the gradient of the function at a given point.
+        Estimate the gradient of a function at a given point using finite differences.
 
         Parameters
         ----------
+        f : callable
+            The function to estimate the gradient of. It should take a single argument.
         x : array_like
-            The point at which to evaluate the gradient of the function.
+            The point at which to estimate the gradient of `f`.
+        eps : float, optional
+            The perturbation used to estimate the gradient.
+
+        Returns
+        -------
+        array_like
+            The estimated gradient of `f` at `x`.
         """
-        return estimate_gradient(self, x)
+        eps = 1e-12
+        f_x = self(x)
+        grad = np.zeros(x.shape)
+        for i in range(x.shape[0]):
+            x_p = x.copy()
+            x_p[i] += eps
+            grad[i] = (self(x_p) - f_x) / eps
+        return grad, f_x
 
     def __str__(self):
         return self.name
