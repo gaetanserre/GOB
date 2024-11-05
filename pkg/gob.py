@@ -192,7 +192,9 @@ class GOB:
         approxs = {}
         for optimizer_name in optimizer_names:
             for bench_name, bench_dict in res_dict.items():
-                approxs[bench_name] = bench_dict[optimizer_name]["Approx"]["mean"]
+                if bench_name not in approxs:
+                    approxs[bench_name] = []
+                approxs[bench_name].append(bench_dict[optimizer_name]["Approx"]["mean"])
         for optimizer_name in optimizer_names:
             ratio = 0
             for bench_name, bench_dict in res_dict.items():

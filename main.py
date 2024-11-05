@@ -18,4 +18,4 @@ if __name__ == "__main__":
         bounds=create_bounds(2, -10, 10, 3),
         options=opt,
     )
-    gob.run(n_runs=1, verbose=True)
+    gob.run(n_runs=10, verbose=True)

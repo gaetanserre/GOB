@@ -91,7 +91,6 @@ def print_table_by_metric(res_dict):
 
 
 def print_competitive_ratios(ratios):
-    print("")
     print_purple("Competitive ratios:")
     tab = PrettyTable(["Optimizer", "Competitive ratio"])
     for opt_name, ratio in ratios.items():
