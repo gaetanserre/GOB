@@ -12,10 +12,10 @@ if __name__ == "__main__":
         "Proportion": {"p": 0.995},
     }
     gob = GOB(
-        ["PRS", "GD", "CMA-ES", "AdaLIPO_P", "SBS"],
+        ["AdaRankOpt"],
         ["Square", "Ackley"],
         ["Proportion"],
-        bounds=create_bounds(2, -10, 10, 3),
+        bounds=create_bounds(2, -3, 3, 2),
         options=opt,
     )
-    gob.run(n_runs=10, verbose=True)
+    gob.run(n_runs=1, verbose=True)

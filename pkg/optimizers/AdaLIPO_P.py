@@ -16,29 +16,30 @@ def Bernoulli(p: float):
     ----------
     p : float
         Probability of success.
+
+    Returns
+    -------
+    bool
+        The outcome of the Bernoulli trial.
     """
     a = np.random.uniform(0, 1)
-    if a <= p:
-        return 1
-    else:
-        return 0
+    return a <= p
 
 
 class AdaLIPO_P(Optimizer):
     def __init__(self, bounds, n_eval=1000, window_slope=5, max_slope=600):
-        super().__init__("AdaLIPO_E", bounds)
+        super().__init__("AdaLIPO+", bounds)
         self.n_eval = n_eval
         self.window_slope = window_slope
         self.max_slope = max_slope
 
-    @staticmethod
-    def slope_stop_condition(last_nb_samples, max_slope):
+    def slope_stop_condition(self, last_nb_samples):
         """
         Check if the slope of the last `size_slope` points of the the nb_samples vs nb_evaluations curve
         is greater than max_slope.
         """
         slope = (last_nb_samples[-1] - last_nb_samples[0]) / (len(last_nb_samples) - 1)
-        return slope > max_slope
+        return slope > self.max_slope
 
     def minimize(self, f):
         t = 1
@@ -90,8 +91,7 @@ class AdaLIPO_P(Optimizer):
         # Main loop
         ratios = []
         while t < self.n_eval:
-            B_tp1 = Bernoulli(p(t))
-            if B_tp1 == 1:
+            if Bernoulli(p(t)):
                 # Exploration
                 X_tp1 = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1])
                 nb_samples += 1
@@ -106,7 +106,7 @@ class AdaLIPO_P(Optimizer):
                     if condition(X_tp1, values, k_hat, points, t):
                         points[t] = X_tp1
                         break
-                    elif self.slope_stop_condition(last_nb_samples, self.max_slope):
+                    elif self.slope_stop_condition(last_nb_samples):
                         return -np.max(values)
 
             value = -f(X_tp1)

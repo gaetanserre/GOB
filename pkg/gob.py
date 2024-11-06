@@ -4,11 +4,6 @@
 import numpy as np
 from .create_bounds import create_bounds
 
-from .benchmarks import Square
-from .benchmarks import Ackley
-
-from .metrics import Proportion
-
 from .utils import print_table_by_metric
 from .utils import print_competitive_ratios
 from .utils import print_blue
@@ -93,6 +88,11 @@ class GOB:
 
                     return SBS(bounds=bounds, **options)
 
+                case "AdaRankOpt":
+                    from .optimizers import AdaRankOpt
+
+                    return AdaRankOpt(bounds=bounds, **options)
+
                 case _:
                     raise ValueError(f"Unknown optimizer: {optimizer}")
         else:
@@ -116,8 +116,12 @@ class GOB:
         if isinstance(benchmark, str):
             match benchmark:
                 case "Square":
+                    from .benchmarks import Square
+
                     return Square()
                 case "Ackley":
+                    from .benchmarks import Ackley
+
                     return Ackley()
                 case _:
                     raise ValueError(f"Unknown benchmark: {benchmark}")
@@ -145,6 +149,8 @@ class GOB:
         if isinstance(metric, str):
             match metric:
                 case "Proportion":
+                    from .metrics import Proportion
+
                     return Proportion(benchmark, bounds, **options)
                 case _:
                     raise ValueError(f"Unknown metric: {metric}")
