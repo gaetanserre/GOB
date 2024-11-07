@@ -3,11 +3,18 @@
 #
 
 import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
 import scipy.special as sp
 from scipy.optimize import linprog
 from collections import deque
-import warnings
+import pyomo.environ as pyo
 import time
+import logging
+from tqdm import tqdm
+
+
+logging.getLogger("pyomo.core").setLevel(logging.ERROR)
+
 
 from .optimizer import Optimizer
 
@@ -32,14 +39,14 @@ def Bernoulli(p: float):
 
 
 class AdaRankOpt(Optimizer):
-    def __init__(self, bounds, n_eval=100, window_slope=5, max_slope=np.inf):
+    def __init__(self, bounds, n_eval=1000, window_slope=5, max_slope=np.inf):
         super().__init__("AdaRankOpt", bounds)
         self.n_eval = n_eval
         self.window_slope = window_slope
         self.max_slope = max_slope
+        self.poly_features = PolynomialFeatures(1)
 
-    @staticmethod
-    def polynomial_map(x, k):
+    def polynomial_map(self, x):
         """
         Mapping from R^d to the polynomial feature space of degree k.
 
@@ -56,7 +63,8 @@ class AdaRankOpt(Optimizer):
             The mapped vector.
         """
         start = time.time()
-        sym = [f"{i}" for i in range(x.shape[0])]
+        res = self.poly_features.fit_transform(x.reshape(1, -1))[0][1:]
+        """ sym = [f"{i}" for i in range(x.shape[0])]
 
         def aux(k):
             if k == 1:
@@ -83,18 +91,15 @@ class AdaRankOpt(Optimizer):
         for i, op in enumerate(operations):
             splt = op.split(" ")
             for s in splt:
-                res[i] *= x[int(s)]
+                res[i] *= x[int(s)] """
         return res, time.time() - start
 
-    @staticmethod
-    def polynomial_matrix(X, k):
+    def polynomial_matrix(self, X):
         """
         Constructs the polynomial matrix of degree k from the input matrix X, using the polynomial_map function.
 
         Parameters
         ----------
-        X : np.ndarray
-            The input matrix.
         k : int
             The degree of the polynomial.
 
@@ -105,17 +110,16 @@ class AdaRankOpt(Optimizer):
         """
         d = X.shape[1]
         n = X.shape[0] - 1
-        M = np.zeros((n, int(sp.comb(d + k, d) - 1)))
+        M = np.zeros((n, int(sp.comb(d + self.poly_features.degree, d) - 1)))
         t = 0
         for i in range(n):
-            pm1, t1 = AdaRankOpt.polynomial_map(X[i], k)
-            pm2, t2 = AdaRankOpt.polynomial_map(X[i + 1], k)
+            pm1, t1 = self.polynomial_map(X[i])
+            pm2, t2 = self.polynomial_map(X[i + 1])
             M[i] = pm2 - pm1
             t += t1 + t2
-        return M, t
+        return M.T, t
 
-    @staticmethod
-    def is_polyhedral_set_empty(X, k):
+    def is_polyhedral_set_empty(self, X):
         """
         Checks if the polyhedral set constructed with the polynomial_matrix function is empty using linear programming.
 
@@ -123,28 +127,51 @@ class AdaRankOpt(Optimizer):
         ----------
         X : np.ndarray
             The input matrix.
-        k : int
-            The degree of the polynomial.
 
         Returns
         -------
         np.ndarray
             The polyhedral set.
         """
-        M, t = AdaRankOpt.polynomial_matrix(X, k)
-        n = M.T.shape[1]
-        M = np.vstack((M.T, np.ones(n)))
+        M, t = self.polynomial_matrix(X)
+        n = M.shape[1]
+        M = np.vstack((M, np.ones(n)))
         b_eq = np.zeros(M.shape[0])
         b_eq[-1] = 1
-        """ print("M", M)
-        print("M.shape", M.shape)
-        print("b_eq", b_eq) """
+        start = time.time()
+        """ model = pyo.ConcreteModel()
+        model.x = pyo.Var(range(n), domain=pyo.NonNegativeReals)
+        model.OBJ = pyo.Objective(expr=sum(model.x[i] for i in range(n)))
+        model.I = pyo.RangeSet(0, M.shape[0] - 1)
+
+        def ax_constraint_rule(model, i):
+            return sum(M[i, j] * model.x[j] for j in range(n)) == b_eq[i]
+
+        model.AxbConstraint = pyo.Constraint(model.I, rule=ax_constraint_rule)
+
+        solver = pyo.SolverFactory("cbc")
+        solver.options["maxIterations"] = 10
+        results = solver.solve(model)
+        return (
+            results.solver.termination_condition == pyo.TerminationCondition.infeasible,
+            t,
+            time.time() - start,
+        ) """
+
+        lambdas = np.random.uniform(0, 1, (n, 1000))
+        lambdas = lambdas / np.linalg.norm(lambdas, axis=0)
+        for j in range(lambdas.shape[1]):
+            if (M @ lambdas[:, j]).all() == b_eq.all():
+                return False, t, time.time() - start
+        return True, t, time.time() - start
+
         with warnings.catch_warnings(action="ignore"):
             start = time.time()
             res = linprog(
                 np.ones(n),
                 A_eq=M,
                 b_eq=b_eq,
+                bounds=(0, 1),
                 method="simplex",
                 options={"maxiter": 10},
             )
@@ -157,7 +184,7 @@ class AdaRankOpt(Optimizer):
         is greater than max_slope.
         """
         slope = (last_nb_samples[-1] - last_nb_samples[0]) / (len(last_nb_samples) - 1)
-        return slope > self.max_slope
+        return False  # slope > self.max_slope
 
     def minimize(self, f):
         def p(t):
@@ -172,13 +199,12 @@ class AdaRankOpt(Optimizer):
         start = time.time()
         t = 0
         t2 = 0
-        k = 1
         x = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1])
         samples = [(x, -f(x))]
         nb_samples = 1
         last_nb_samples = deque([1], maxlen=self.window_slope)
 
-        for i in range(1, self.n_eval + 1):
+        for i in tqdm(range(1, self.n_eval + 1)):
             if Bernoulli(p(i)):
                 x = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1])
                 samples.append((x, -f(x)))
@@ -193,14 +219,14 @@ class AdaRankOpt(Optimizer):
                     nb_samples += 1
                     last_nb_samples[-1] = nb_samples
                     X = np.array([s[0] for s in samples])
-                    b, t_, t2_ = self.is_polyhedral_set_empty(X, k)
+                    b, t_, t2_ = self.is_polyhedral_set_empty(X)
                     t += t_
                     t2 += t2_
                     if b:
                         samples[-1] = (x_t_1, -f(x_t_1))
                         samples.sort(key=lambda x: x[1])
                         break
-                    elif self.slope_stop_condition(last_nb_samples):
+                    elif False:  # self.slope_stop_condition(last_nb_samples):
                         print("Polynomials (%):", t / (time.time() - start))
                         print("Simplex (%):", t2 / (time.time() - start))
                         return -samples[-2][1]
@@ -211,16 +237,16 @@ class AdaRankOpt(Optimizer):
                 X = np.array([s[0] for s in samples])
                 nb_samples += 1
                 last_nb_samples[-1] = nb_samples
-                b, t_, t2_ = self.is_polyhedral_set_empty(X, k)
+                b, t_, t2_ = self.is_polyhedral_set_empty(X)
                 t += t_
                 t2 += t2_
                 if b:
                     break
-                elif self.slope_stop_condition(last_nb_samples):
+                elif False:  # self.slope_stop_condition(last_nb_samples):
                     print("Polynomials (%):", t / (time.time() - start))
                     print("Simplex (%):", t2 / (time.time() - start))
                     return -samples[-1][1]
-                k += 1
+                self.poly_features.degree += 1
             last_nb_samples.append(0)
         print("Polynomials (%):", t / (time.time() - start))
         print("Simplex (%):", t2 / (time.time() - start))
