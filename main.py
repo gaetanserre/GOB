@@ -9,6 +9,7 @@ if __name__ == "__main__":
     opt = {
         "PRS": {"n_eval": 1000},
         "GD": {"n_step": 3000, "step_size": 1e-3},
+        "AdaRankOpt": {"method": "lstsq"},
         "Proportion": {"p": 0.995},
     }
     gob = GOB(

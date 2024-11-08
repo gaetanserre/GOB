@@ -7,13 +7,9 @@ from sklearn.preprocessing import PolynomialFeatures
 import scipy.special as sp
 from scipy.optimize import linprog
 from collections import deque
-import pyomo.environ as pyo
+import warnings
 import time
-import logging
 from tqdm import tqdm
-
-
-logging.getLogger("pyomo.core").setLevel(logging.ERROR)
 
 
 from .optimizer import Optimizer
@@ -39,11 +35,30 @@ def Bernoulli(p: float):
 
 
 class AdaRankOpt(Optimizer):
-    def __init__(self, bounds, n_eval=1000, window_slope=5, max_slope=np.inf):
+    def __init__(
+        self, bounds, n_eval=1000, window_slope=5, max_slope=100, method="lstsq"
+    ):
+        """
+        Implementation of the AdaRankOpt algorithm.
+
+        Parameters
+        ----------
+        bounds : np.ndarray
+            The bounds of the search space.
+        n_eval : int
+            The number of evaluations.
+        window_slope : int
+            The size of the window for the slope stop condition.
+        max_slope : float
+            The maximum slope for the slope stop condition.
+        method : str
+            The method used for the linear programming problem. Can be "lstsq" or "simplex".
+        """
         super().__init__("AdaRankOpt", bounds)
         self.n_eval = n_eval
         self.window_slope = window_slope
         self.max_slope = max_slope
+        self.method = method
         self.poly_features = PolynomialFeatures(1)
 
     def polynomial_map(self, x):
@@ -54,8 +69,6 @@ class AdaRankOpt(Optimizer):
         ----------
         x : np.ndarray
             The input vector.
-        k : int
-            The degree of the polynomial.
 
         Returns
         -------
@@ -64,6 +77,9 @@ class AdaRankOpt(Optimizer):
         """
         start = time.time()
         res = self.poly_features.fit_transform(x.reshape(1, -1))[0][1:]
+        assert (
+            len(res) == sp.comb(x.shape[0] + self.poly_features.degree, x.shape[0]) - 1
+        )
         """ sym = [f"{i}" for i in range(x.shape[0])]
 
         def aux(k):
@@ -119,7 +135,11 @@ class AdaRankOpt(Optimizer):
             t += t1 + t2
         return M.T, t
 
-    def is_polyhedral_set_empty(self, X):
+    def is_polyhedral_set_empty(
+        self,
+        X,
+        tol=1e-6,
+    ):
         """
         Checks if the polyhedral set constructed with the polynomial_matrix function is empty using linear programming.
 
@@ -127,6 +147,8 @@ class AdaRankOpt(Optimizer):
         ----------
         X : np.ndarray
             The input matrix.
+        tol : float
+            The tolerance for the lstsq algorithm.
 
         Returns
         -------
@@ -138,45 +160,26 @@ class AdaRankOpt(Optimizer):
         M = np.vstack((M, np.ones(n)))
         b_eq = np.zeros(M.shape[0])
         b_eq[-1] = 1
-        start = time.time()
-        """ model = pyo.ConcreteModel()
-        model.x = pyo.Var(range(n), domain=pyo.NonNegativeReals)
-        model.OBJ = pyo.Objective(expr=sum(model.x[i] for i in range(n)))
-        model.I = pyo.RangeSet(0, M.shape[0] - 1)
 
-        def ax_constraint_rule(model, i):
-            return sum(M[i, j] * model.x[j] for j in range(n)) == b_eq[i]
-
-        model.AxbConstraint = pyo.Constraint(model.I, rule=ax_constraint_rule)
-
-        solver = pyo.SolverFactory("cbc")
-        solver.options["maxIterations"] = 10
-        results = solver.solve(model)
-        return (
-            results.solver.termination_condition == pyo.TerminationCondition.infeasible,
-            t,
-            time.time() - start,
-        ) """
-
-        lambdas = np.random.uniform(0, 1, (n, 1000))
-        lambdas = lambdas / np.linalg.norm(lambdas, axis=0)
-        for j in range(lambdas.shape[1]):
-            if (M @ lambdas[:, j]).all() == b_eq.all():
-                return False, t, time.time() - start
-        return True, t, time.time() - start
-
-        with warnings.catch_warnings(action="ignore"):
+        if self.method == "lstsq":
             start = time.time()
-            res = linprog(
-                np.ones(n),
-                A_eq=M,
-                b_eq=b_eq,
-                bounds=(0, 1),
-                method="simplex",
-                options={"maxiter": 10},
-            )
-            t2 = time.time() - start
-        return res.status == 2, t, t2
+            lambdas = np.linalg.lstsq(M, b_eq)[0]
+            if np.all(0 <= lambdas) and np.abs(b_eq - M @ lambdas).sum() < tol:
+                return False, t, time.time() - start
+            else:
+                return True, t, time.time() - start
+        elif self.method == "simplex":
+            with warnings.catch_warnings(action="ignore"):
+                start = time.time()
+                res = linprog(
+                    np.ones(n),
+                    A_eq=M,
+                    b_eq=b_eq,
+                    bounds=(0, 1),
+                    method="simplex",
+                    options={"maxiter": 10},
+                )
+            return res.status == 2, t, time.time() - start
 
     def slope_stop_condition(self, last_nb_samples):
         """
@@ -184,7 +187,7 @@ class AdaRankOpt(Optimizer):
         is greater than max_slope.
         """
         slope = (last_nb_samples[-1] - last_nb_samples[0]) / (len(last_nb_samples) - 1)
-        return False  # slope > self.max_slope
+        return slope > self.max_slope
 
     def minimize(self, f):
         def p(t):
@@ -226,7 +229,7 @@ class AdaRankOpt(Optimizer):
                         samples[-1] = (x_t_1, -f(x_t_1))
                         samples.sort(key=lambda x: x[1])
                         break
-                    elif False:  # self.slope_stop_condition(last_nb_samples):
+                    elif self.slope_stop_condition(last_nb_samples):
                         print("Polynomials (%):", t / (time.time() - start))
                         print("Simplex (%):", t2 / (time.time() - start))
                         return -samples[-2][1]
@@ -242,7 +245,7 @@ class AdaRankOpt(Optimizer):
                 t2 += t2_
                 if b:
                     break
-                elif False:  # self.slope_stop_condition(last_nb_samples):
+                elif self.slope_stop_condition(last_nb_samples):
                     print("Polynomials (%):", t / (time.time() - start))
                     print("Simplex (%):", t2 / (time.time() - start))
                     return -samples[-1][1]
