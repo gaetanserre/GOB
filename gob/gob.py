@@ -78,7 +78,7 @@ class GOB:
 
                     return CMA_ES(bounds=bounds, **options)
 
-                case "AdaLIPO_P":
+                case "AdaLIPO+":
                     from .optimizers import AdaLIPO_P
 
                     return AdaLIPO_P(bounds=bounds, **options)
@@ -92,6 +92,21 @@ class GOB:
                     from .optimizers import AdaRankOpt
 
                     return AdaRankOpt(bounds=bounds, **options)
+
+                case "Direct":
+                    from .optimizers import Direct
+
+                    return Direct(bounds=bounds, **options)
+
+                case "CRS":
+                    from .optimizers import CRS
+
+                    return CRS(bounds=bounds, **options)
+
+                case "MLSL":
+                    from .optimizers import MLSL
+
+                    return MLSL(bounds=bounds, **options)
 
                 case _:
                     raise ValueError(f"Unknown optimizer: {optimizer}")
@@ -243,7 +258,9 @@ class GOB:
                     opt_dict[str(metric)] = m
                 bench_dict[str(optimizer)] = opt_dict
             res_dict[str(benchmark)] = bench_dict
-            print_blue(f"Done for {benchmark}.")
+            if verbose:
+                print_blue(f"Done for {benchmark}.")
         if verbose:
             print_table_by_metric(res_dict)
             print_competitive_ratios(self.competitive_ratio(res_dict))
+        return res_dict

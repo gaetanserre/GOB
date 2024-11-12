@@ -10,6 +10,7 @@ from collections import deque
 import warnings
 import time
 from tqdm import tqdm
+import pyomo.environ as pyo
 
 
 from .optimizer import Optimizer
@@ -157,19 +158,45 @@ class AdaRankOpt(Optimizer):
         """
         M, t = self.polynomial_matrix(X)
         n = M.shape[1]
-        M = np.vstack((M, np.ones(n)))
-        b_eq = np.zeros(M.shape[0])
-        b_eq[-1] = 1
 
         if self.method == "lstsq":
             start = time.time()
+            M = np.vstack((M, np.ones(n)))
+            b_eq = np.zeros(M.shape[0])
+            b_eq[-1] = 1
             lambdas = np.linalg.lstsq(M, b_eq)[0]
             if np.all(0 <= lambdas) and np.abs(b_eq - M @ lambdas).sum() < tol:
                 return False, t, time.time() - start
             else:
                 return True, t, time.time() - start
         elif self.method == "simplex":
-            with warnings.catch_warnings(action="ignore"):
+            start = time.time()
+            m = M.shape[0]
+            model = pyo.ConcreteModel()
+            model.x = pyo.Var(range(n + m), domain=pyo.NonNegativeReals)
+            model.obj = pyo.Objective(expr=sum(model.x[i] for i in range(n, n + m)))
+            model.constraint = pyo.Constraint(
+                expr=sum(model.x[i] for i in range(n)) == 1
+            )
+            model.I = pyo.RangeSet(0, n - 1)
+            model.J = pyo.RangeSet(n, n + m - 1)
+
+            def ax_constraint_rule(m, j):
+                return sum(M[j - n, i] * m.x[i] for i in m.I) <= m.x[j]
+
+            model.AxbConstraint = pyo.Constraint(model.J, rule=ax_constraint_rule)
+            solver = pyo.SolverFactory("glpk")
+
+            solver.options["tmlim"] = 1
+            try:
+                res = solver.solve(model, tee=True)
+                x = [pyo.value(model.x[i]) for i in model.x]
+                # print(x)
+                return np.sum(x[n:]) >= tol, t, time.time() - start
+            except:
+                return True, t, time.time() - start
+
+            """ with warnings.catch_warnings(action="ignore"):
                 start = time.time()
                 res = linprog(
                     np.ones(n),
@@ -179,7 +206,7 @@ class AdaRankOpt(Optimizer):
                     method="simplex",
                     options={"maxiter": 10},
                 )
-            return res.status == 2, t, time.time() - start
+            return res.status == 2, t, time.time() - start """
 
     def slope_stop_condition(self, last_nb_samples):
         """
