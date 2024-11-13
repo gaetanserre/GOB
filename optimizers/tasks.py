@@ -1,5 +1,6 @@
 import invoke
 import os
+import eigency
 
 # Get the include path for the python3 interpreter
 python_include = os.popen("python -m pybind11 --includes").read().strip()
@@ -28,9 +29,14 @@ def build_optimizers_lib(c):
 
 
 def compile_python_module(cpp_name, extension_name):
+
+    eigency_include = eigency.get_includes()
+    eigency_include.reverse()
+    eigency_include = " -I".join(eigency_include)
     invoke.run(
-        "g++ -O3 -Wall -Werror -shared -std=c++20 -fPIC "
-        f"{python_include} "
+        "g++ -O3 -Wall -shared -std=c++20 "
+        f"-I{eigency_include} "
+        f"-fPIC {python_include} "
         f"{cpp_name} "
         f"-o {extension_name}`python3-config --extension-suffix` "
         f"{linker_flag} "

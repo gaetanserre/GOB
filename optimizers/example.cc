@@ -27,11 +27,14 @@ int main()
 } */
 
 #include "AdaLIPO_P.hh"
+#include <boost/python.hpp>
+#include <Python.h>
 
 int main()
 {
   vec_bounds bounds = create_rect_bounds(-1, 1, 2);
   AdaLIPO_P prs(bounds);
+  PyObject *pFunc = NULL;
 
   auto f = [](dyn_vector x) -> double
   {
