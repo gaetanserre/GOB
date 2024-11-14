@@ -1,6 +1,6 @@
 import invoke
 import os
-import eigency
+import numpy as np
 
 # Get the include path for the python3 interpreter
 python_include = os.popen("python -m pybind11 --includes").read().strip()
@@ -24,18 +24,19 @@ def print_banner(msg):
 @invoke.task()
 def build_optimizers_lib(c):
     print_banner("Building C++ Library")
-    os.system(f"mkdir -p build && cd build && cmake .. && make -j && cp {lib_name} ..")
+    os.system(
+        f"mkdir -p build "
+        "&& cd build "
+        f"&& cmake -DNUMPY_INCLUDE_DIRS={np.get_include()} .. "
+        f"&& make -j && cp {lib_name} .."
+    )
     print("* Complete")
 
 
 def compile_python_module(cpp_name, extension_name):
 
-    eigency_include = eigency.get_includes()
-    eigency_include.reverse()
-    eigency_include = " -I".join(eigency_include)
     invoke.run(
         "g++ -O3 -Wall -shared -std=c++20 "
-        f"-I{eigency_include} "
         f"-fPIC {python_include} "
         f"{cpp_name} "
         f"-o {extension_name}`python3-config --extension-suffix` "

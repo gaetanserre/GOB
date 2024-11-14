@@ -25,23 +25,16 @@ int main()
 
     return 0;
 } */
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
-#include "AdaLIPO_P.hh"
-#include <boost/python.hpp>
-#include <Python.h>
+#include "numpy/ndarrayobject.h"
 
 int main()
 {
-  vec_bounds bounds = create_rect_bounds(-1, 1, 2);
-  AdaLIPO_P prs(bounds);
-  PyObject *pFunc = NULL;
-
-  auto f = [](dyn_vector x) -> double
-  {
-    return x.transpose() * x;
-  };
-
-  std::cout << prs.optimize(f) << std::endl;
-
+  Py_Initialize();
+  _import_array();
+  npy_intp dims[3] = {2, 2, 2};
+  PyObject *r_obj_array = PyArray_ZEROS(3, dims, NPY_DOUBLE, 0);
+  // Py_Finalize();
   return 0;
 }

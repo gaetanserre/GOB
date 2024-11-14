@@ -2,6 +2,9 @@
  * Created in 2024 by Gaëtan Serré
  */
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
+#include "numpy/ndarrayobject.h"
 #include <iostream>
 #include <random>
 #include <chrono>
@@ -21,3 +24,9 @@ extern double unif_random_double(std::default_random_engine &re, double lb, doub
 extern dyn_vector unif_random_vector(std::default_random_engine &re, vec_bounds &bounds);
 
 extern void print_vector(dyn_vector &x);
+
+extern PyArrayObject *vector_to_nparray(const dyn_vector &vec);
+
+extern void py_init();
+
+extern void py_finalize();

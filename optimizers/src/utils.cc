@@ -53,3 +53,59 @@ void print_vector(dyn_vector &x)
   }
   std::cout << x(x.size() - 1) << ']' << std::endl;
 }
+
+/* PyArrayObject *vector_to_nparray(dyn_vector &vec)
+{
+
+  // rows not empty
+  if (vec.size() > 0)
+  {
+
+    npy_intp dims[1] = {vec.size()};
+
+    PyArrayObject *vec_array = (PyArrayObject *)PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    double *vec_array_pointer = (double *)PyArray_DATA(vec_array);
+
+    std::copy(vec.begin(), vec.end(), vec_array_pointer);
+    return vec_array;
+
+    // no data at all
+  }
+  else
+  {
+    npy_intp dims[1] = {0};
+    return (PyArrayObject *)PyArray_ZEROS(1, dims, NPY_DOUBLE, 0);
+  }
+} */
+
+PyArrayObject *vector_to_nparray(const dyn_vector &vec)
+{
+
+  if (vec.size() == 0)
+  {
+    npy_intp dims[1] = {0};
+    return (PyArrayObject *)PyArray_EMPTY(1, dims, NPY_DOUBLE, 0);
+  }
+  else
+  {
+    npy_intp dims[1] = {vec.size()};
+
+    PyArrayObject *vec_array = (PyArrayObject *)PyArray_SimpleNew(1, dims, NPY_DOUBLE);
+    double *vec_array_pointer = (double *)PyArray_DATA(vec_array);
+
+    std::copy(vec.data(), vec.data() + vec.size(), vec_array_pointer);
+    return vec_array;
+  }
+}
+
+void py_init()
+{
+  Py_Initialize();
+  _import_array();
+  return;
+}
+
+void py_finalize()
+{
+  Py_Finalize();
+}

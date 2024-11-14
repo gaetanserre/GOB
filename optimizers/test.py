@@ -1,11 +1,10 @@
 import optimizers
-import numpy as np
 
 
 bounds = optimizers.create_rect_bounds(-1, 1, 2)
 
-prs = optimizers.PRSWrapper(bounds, 100)
+prs = optimizers.PRS(bounds, 200_000)
 
-f = lambda x: np.sum(x)
+f = lambda x: x.T @ x
 
-print(prs.optimize)
+print(prs.optimize(f))

@@ -13,7 +13,7 @@ bool AdaLIPO_P::Bernoulli(double p)
 bool AdaLIPO_P::slope_stop_condition(std::deque<float> last_nb_samples)
 {
   float slope = (last_nb_samples.back() - last_nb_samples.front()) / last_nb_samples.size();
-  return slope > this->window_slope;
+  return slope > this->window_size;
 }
 
 bool lipo_condition(
@@ -52,7 +52,7 @@ double AdaLIPO_P::optimize(function<double(dyn_vector x)> f)
   values.push_back(-f(samples.back()));
 
   float nb_samples = 1;
-  std::deque<float> last_nb_samples(this->window_slope);
+  std::deque<float> last_nb_samples(this->window_size);
   last_nb_samples.push_back(nb_samples);
 
   for (int t = 1; t < this->n_eval; t++)

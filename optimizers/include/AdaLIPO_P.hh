@@ -8,17 +8,17 @@
 class AdaLIPO_P : public Optimizer
 {
 public:
-  AdaLIPO_P(vec_bounds bounds, int n_eval = 1000, int window_slope = 5, double max_float = 600) : Optimizer(bounds, "AdaLIPO+")
+  AdaLIPO_P(vec_bounds bounds, int n_eval = 1000, int window_size = 5, double max_float = 600) : Optimizer(bounds, "AdaLIPO+")
   {
     this->n_eval = n_eval;
-    this->window_slope = window_slope;
+    this->window_size = window_size;
     this->max_float = max_float;
   };
 
   virtual double optimize(function<double(dyn_vector x)> f);
 
   int n_eval;
-  int window_slope;
+  int window_size;
   double max_float;
 
 private:
