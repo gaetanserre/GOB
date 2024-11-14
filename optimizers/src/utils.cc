@@ -4,6 +4,11 @@
 
 #include "utils.hh"
 
+std::vector<double> empty_vector()
+{
+  return std::vector<double>(0);
+}
+
 double max_vec(std::vector<double> &v)
 {
   return *std::max_element(v.begin(), v.end());

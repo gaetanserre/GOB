@@ -2,3 +2,5 @@ __pycache__
 build
 *.so
 .vscode
+*.0
+optimizers/libcmaes

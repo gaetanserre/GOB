@@ -4,14 +4,16 @@
 
 #define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
-#include "numpy/ndarrayobject.h"
 #include <iostream>
 #include <random>
 #include <chrono>
 #include <eigen3/Eigen/Core>
+#include "numpy/ndarrayobject.h"
 
 typedef Eigen::VectorXd dyn_vector;
 typedef std::vector<std::vector<double>> vec_bounds;
+
+extern std::vector<double> empty_vector();
 
 extern double max_vec(std::vector<double> &v);
 

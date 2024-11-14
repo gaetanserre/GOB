@@ -41,7 +41,7 @@ def compile_python_module(cpp_name, extension_name):
         f"{cpp_name} "
         f"-o {extension_name}`python3-config --extension-suffix` "
         f"{linker_flag} "
-        "-L. -loptimizers -Wl,-rpath,."
+        "-L. -loptimizers -lcmaes -Wl,-rpath,."
     )
 
 

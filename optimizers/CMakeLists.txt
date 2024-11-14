@@ -15,5 +15,5 @@ include_directories(${Python_INCLUDE_DIRS})
 
 add_library(optimizers SHARED ${SRC_FILES})
 
-link_libraries(optimizers ${Eigen_LIBRARIES} ${Python_LIBRARIES})
+link_libraries(optimizers ${Eigen_LIBRARIES} ${Python_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR}/libcmaes.so)
 add_executable(example example.cc)
