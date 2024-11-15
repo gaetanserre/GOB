@@ -7,8 +7,9 @@
 #include <iostream>
 #include <random>
 #include <chrono>
-#include <eigen3/Eigen/Core>
+#include <Eigen/Core>
 #include "numpy/ndarrayobject.h"
+#include "Python.h"
 
 typedef Eigen::VectorXd dyn_vector;
 typedef std::vector<std::vector<double>> vec_bounds;

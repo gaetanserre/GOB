@@ -4,3 +4,5 @@ build
 .vscode
 *.0
 optimizers/libcmaes
+optimizers/include/libcmaes
+optimizers/lib
