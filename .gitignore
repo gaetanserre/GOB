@@ -6,3 +6,6 @@ build
 optimizers/libcmaes
 optimizers/include/libcmaes
 optimizers/lib
+optimizers/optimizers.egg-info
+optimizers/optimizers.cc
+dist
