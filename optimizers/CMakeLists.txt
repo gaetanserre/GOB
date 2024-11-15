@@ -8,10 +8,10 @@ file(GLOB_RECURSE SRC_FILES src/*.cc)
 find_package(Eigen3 REQUIRED)
 find_package(Python REQUIRED COMPONENTS Development)
 
-# Include python headers
 include_directories(include ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
 
-add_library(optimizers SHARED ${SRC_FILES})
+add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
 
-link_libraries(optimizers ${Eigen_LIBRARIES} ${Python_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR}/lib/libcmaes.so)
+link_libraries(${Eigen_LIBRARIES} ${Python_LIBRARIES} ${EXT_NAME} ${CMAKE_CURRENT_SOURCE_DIR}/lib/libcmaes.so)
+
 add_executable(example example.cc)
