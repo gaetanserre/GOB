@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include "utils.hh"
-#include "python3.12/Python.h"
 using namespace std;
 
 class Optimizer
