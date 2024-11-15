@@ -8,7 +8,7 @@ file(GLOB_RECURSE SRC_FILES src/*.cc)
 find_package(Eigen3 REQUIRED)
 find_package(Python REQUIRED COMPONENTS Development)
 
-include_directories(include ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
+include_directories(include ${EIGEN3_INCLUDE_DIRS} ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
 
 add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
 
