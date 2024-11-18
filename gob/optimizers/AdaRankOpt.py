@@ -5,10 +5,6 @@
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 import scipy.special as sp
-from scipy.optimize import linprog
-from collections import deque
-import warnings
-import time
 from tqdm import tqdm
 import pyomo.environ as pyo
 

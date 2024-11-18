@@ -4,7 +4,7 @@
 
 #include "optimizer.hh"
 
-double Optimizer::py_optimize(PyObject *f)
+double Optimizer::py_minimize(PyObject *f)
 {
   auto f_cpp = [f](dyn_vector x) -> double
   {
@@ -14,5 +14,5 @@ double Optimizer::py_optimize(PyObject *f)
     PyObject *result = PyObject_CallObject(f, args);
     return PyFloat_AsDouble(result);
   };
-  return this->optimize(f_cpp);
+  return this->minimize(f_cpp);
 }

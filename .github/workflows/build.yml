@@ -26,19 +26,17 @@ jobs:
           python -m pip install build
       
       # Runs a single command using the runners shell
-      - name: Install optimizers
+      - name: Install gob
         run: |
-          cd optimizers
           python -m build --sdist --wheel
           pip install . -vvv
-          python test.py
       
       - name: Upload artifact
         uses: actions/upload-artifact@master
         with:
           name: linux-artifact
           path: |
-           optimizers/dist/*.whl
+           dist/*.whl
       
       - name: Release
         uses: softprops/action-gh-release@v2
@@ -46,4 +44,4 @@ jobs:
         with:
           body: "Release ${{ github.ref }}"
           files: |
-            optimizers/dist/*.whl
+            dist/*.whl

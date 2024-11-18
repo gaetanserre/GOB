@@ -22,7 +22,7 @@ class Optimizer:
         self.name = name
         self.bounds = bounds
 
-    def minimize(self, f, **kwargs):
+    def minimize(self, f):
         """
         Minimize a function using the optimizer.
 
@@ -30,7 +30,6 @@ class Optimizer:
         ----------
         f : Function
             The objective function.
-        **kwargs : dict of keyword arguments
         """
         pass
 

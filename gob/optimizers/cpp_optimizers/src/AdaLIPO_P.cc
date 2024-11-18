@@ -10,10 +10,10 @@ bool AdaLIPO_P::Bernoulli(double p)
   return d(this->re);
 }
 
-bool AdaLIPO_P::slope_stop_condition(std::deque<float> last_nb_samples)
+bool AdaLIPO_P::slope_stop_condition(std::deque<int> last_nb_samples)
 {
-  float slope = (last_nb_samples.back() - last_nb_samples.front()) / last_nb_samples.size();
-  return slope > this->window_size;
+  float slope = (last_nb_samples.back() - last_nb_samples.front()) / (this->window_size - 1);
+  return slope > this->max_slope;
 }
 
 bool lipo_condition(
@@ -31,16 +31,16 @@ bool lipo_condition(
   return max_values <= min_vec(norms);
 }
 
-double AdaLIPO_P::optimize(function<double(dyn_vector x)> f)
+double AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
 {
-  double alpha = 10e-2;
+  double alpha = 1e-2;
   double k_hat = 0;
 
   auto p = [](int t) -> double
   {
     if (t == 1)
       return 1;
-    return 1 / (t * log(t));
+    return 1 / log(t);
   };
 
   std::vector<double> ratios;
@@ -51,9 +51,9 @@ double AdaLIPO_P::optimize(function<double(dyn_vector x)> f)
   samples.push_back(unif_random_vector(this->re, this->bounds));
   values.push_back(-f(samples.back()));
 
-  float nb_samples = 1;
-  std::deque<float> last_nb_samples(this->window_size);
-  last_nb_samples.push_back(nb_samples);
+  int nb_samples = 1;
+  std::deque<int> last_nb_samples(this->window_size, 0);
+  last_nb_samples[0] = 1;
 
   for (int t = 1; t < this->n_eval; t++)
   {
@@ -61,7 +61,7 @@ double AdaLIPO_P::optimize(function<double(dyn_vector x)> f)
     {
       dyn_vector x = unif_random_vector(this->re, this->bounds);
       nb_samples++;
-      last_nb_samples.push_back(nb_samples);
+      last_nb_samples[last_nb_samples.size() - 1] = nb_samples;
       samples.push_back(x);
       values.push_back(-f(x));
     }
@@ -71,12 +71,17 @@ double AdaLIPO_P::optimize(function<double(dyn_vector x)> f)
       {
         dyn_vector x = unif_random_vector(this->re, this->bounds);
         nb_samples++;
-        last_nb_samples.push_back(nb_samples);
+        last_nb_samples[last_nb_samples.size() - 1] = nb_samples;
         if (lipo_condition(x, samples, values, k_hat))
         {
           samples.push_back(x);
           values.push_back(-f(x));
           break;
+        }
+
+        if (this->slope_stop_condition(last_nb_samples))
+        {
+          return -max_vec(values);
         }
       }
     }
@@ -89,6 +94,9 @@ double AdaLIPO_P::optimize(function<double(dyn_vector x)> f)
     }
     int i = ceil(log(max_vec(ratios)) / log(1 + alpha));
     k_hat = pow(1 + alpha, i);
+
+    last_nb_samples.pop_front();
+    last_nb_samples.push_back(0);
   }
   return -max_vec(values);
 }

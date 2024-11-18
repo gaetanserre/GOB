@@ -3,9 +3,8 @@ build
 *.so
 .vscode
 *.0
-optimizers/libcmaes
-optimizers/include/libcmaes
-optimizers/lib
-optimizers/**/optimizers.egg-info
-optimizers/optimizers.cc
+libcmaes
+lib
+gob.egg-info
+cpp_optimizers.cc
 dist

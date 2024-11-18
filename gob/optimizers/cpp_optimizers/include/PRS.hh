@@ -12,7 +12,7 @@ public:
     this->n_eval = n_eval;
   };
 
-  virtual double optimize(function<double(dyn_vector x)> f);
+  virtual double minimize(function<double(dyn_vector x)> f);
 
   int n_eval;
 };

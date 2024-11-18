@@ -8,7 +8,7 @@ from .benchmark import Benchmark
 
 class Ackley(Benchmark):
     """
-    The Rosenbrock function.
+    The Ackley function.
     """
 
     def __init__(self):

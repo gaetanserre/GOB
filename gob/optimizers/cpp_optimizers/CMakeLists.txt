@@ -14,4 +14,4 @@ link_libraries(${Eigen_LIBRARIES} ${Python_LIBRARIES} ${CMAKE_CURRENT_SOURCE_DIR
 
 add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
 
-add_executable(example example.cc)
+# add_executable(example example.cc)
