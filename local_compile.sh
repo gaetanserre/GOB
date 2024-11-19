@@ -21,6 +21,17 @@ if ! [ -f "lib/libcmaes.so" ]; then
   rm -rf libcmaes
 fi
 
+if ! [ -f "lib/libglpk.so" ]; then
+  rm -rf glpk-5.0 glpk-5.0.tar.gz
+  curl http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
+  tar -xzf glpk-5.0.tar.gz
+  cd glpk-5.0
+  ./configure --prefix=$(pwd)/..
+  make -j install
+  cd ..
+  rm -rf glpk-5.0 glpk-5.0.tar.gz bin
+fi
+
 numpy_include=$(python3 -c "import numpy; print(numpy.get_include())")
 
 mkdir -p build

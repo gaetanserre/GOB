@@ -5,6 +5,7 @@ from pathlib import Path
 from subprocess import check_call
 import numpy as np
 import sys
+import urllib.request
 
 sys.dont_write_bytecode = True
 
@@ -57,7 +58,23 @@ class OptBuild(build_ext):
             "&& cd libcmaes "
             "&& mkdir -p build "
             "&& cd build "
-            "&& cmake -DCMAKE_INSTALL_PREFIX=../.. .. "
+            f"&& cmake -DCMAKE_INSTALL_PREFIX={cython_src_dir.absolute()} .. "
+            "&& make -j install"
+        )
+
+        # Build GLPK
+        # Download http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz
+
+        urllib.request.urlretrieve(
+            "http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
+            Path(cython_src_dir, "glpk-5.0.tar.gz"),
+        )
+
+        os.system(
+            f"cd {cython_src_dir} "
+            "&& tar -xvf glpk-5.0.tar.gz "
+            "&& cd glpk-5.0 "
+            f"&& ./configure --prefix={cython_src_dir.absolute()} "
             "&& make -j install"
         )
 
@@ -85,9 +102,20 @@ class OptBuild(build_ext):
             f"&& cd {ext.source_dir.as_posix()}"
         )
 
+        # Remove all directories and files that do not contain .so
+        for file in os.listdir(Path(f"{cython_src_dir}/lib").absolute()):
+            if ".so" in file:
+                continue
+            if os.path.isdir(Path(f"{cython_src_dir}/lib/{file}").absolute()):
+                shutil.rmtree(Path(f"{cython_src_dir}/lib/{file}").absolute())
+            else:
+                os.remove(Path(f"{cython_src_dir}/lib/{file}").absolute())
+
         # Clean up
         os.system(
-            f"cd {cython_src_dir} " "&& rm -rf build libcmaes " f"&& rm {pkg_name}.cc"
+            f"cd {cython_src_dir} "
+            "&& rm -rf build libcmaes glpk-5.0 bin "
+            f"&& rm glpk-5.0.tar.gz {pkg_name}.cc"
         )
 
         # Copy files to the build directory
