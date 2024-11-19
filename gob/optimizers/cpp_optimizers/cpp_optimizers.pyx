@@ -25,6 +25,18 @@ cdef extern from "include/CMA_ES.hh":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
     double py_minimize(PyObject* f)
 
+cdef extern from "include/SBS.hh":
+  cdef cppclass CSBS "SBS":
+    CSBS(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int svgd_iter,
+      vector[int] k_iter,
+      double sigma,
+      double lr
+    )
+    double py_minimize(PyObject* f)
+
 # Python interface
 
 cdef class PRS:
@@ -49,6 +61,24 @@ cdef class CMA_ES:
   cdef CCMA_ES *thisptr
   def __cinit__(self, bounds, int n_eval=1000, vector[double] m0=[], double sigma=0.1):
     self.thisptr = new CCMA_ES(bounds, n_eval, m0, sigma)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    return self.thisptr.py_minimize(pyob_ptr)
+
+cdef class SBS:
+  cdef CSBS *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles=200,
+    int svgd_iter=100,
+    vector[int] k_iter=[10_000],
+    double sigma=0.01,
+    double lr=0.5
+  ):
+    self.thisptr = new CSBS(bounds, n_particles, svgd_iter, k_iter, sigma, lr)
 
   def minimize(self, f):
     py_init()

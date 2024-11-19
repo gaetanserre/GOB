@@ -11,7 +11,7 @@ double CMA_ES::minimize(function<double(dyn_vector x)> f)
   if (this->m0.size() == 0)
   {
     int n = this->bounds.size();
-    this->m0 = std::vector<double>(n);
+    this->m0 = vector<double>(n);
     for (int i = 0; i < n; i++)
     {
       this->m0[i] = unif_random_double(re, bounds[i][0], bounds[i][1]);

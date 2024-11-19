@@ -23,5 +23,5 @@ public:
 
 private:
   bool Bernoulli(double p);
-  bool slope_stop_condition(std::deque<int> last_nb_samples);
+  bool slope_stop_condition(deque<int> last_nb_samples);
 };

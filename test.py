@@ -7,13 +7,13 @@ from gob import create_bounds
 
 if __name__ == "__main__":
     opt = {
-        "AdaLIPO+": {"n_eval": 1000},
+        "SBS": {"n_particles": 200, "svgd_iter": 100},
         "GD": {"n_step": 3000, "step_size": 1e-3},
         "AdaRankOpt": {"method": "simplex", "n_eval": 100},
         "Proportion": {"p": 0.995},
     }
     gob = GOB(
-        ["CMA-ES"],
+        ["SBS"],
         ["Square", "Ackley"],
         ["Proportion"],
         bounds=create_bounds(2, -1, 1, 2),

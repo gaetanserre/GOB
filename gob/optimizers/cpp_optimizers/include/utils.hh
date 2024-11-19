@@ -10,21 +10,22 @@
 #include <Eigen/Core>
 #include "numpy/ndarrayobject.h"
 #include "Python.h"
+using namespace std;
 
 typedef Eigen::VectorXd dyn_vector;
-typedef std::vector<std::vector<double>> vec_bounds;
+typedef vector<vector<double>> vec_bounds;
 
-extern std::vector<double> empty_vector();
+extern vector<double> empty_vector();
 
-extern double max_vec(std::vector<double> &v);
+extern double max_vec(vector<double> &v);
 
-extern double min_vec(std::vector<double> &v);
+extern double min_vec(vector<double> &v);
 
 extern vec_bounds create_rect_bounds(double lb, double ub, int n);
 
-extern double unif_random_double(std::default_random_engine &re, double lb, double ub);
+extern double unif_random_double(default_random_engine &re, double lb, double ub);
 
-extern dyn_vector unif_random_vector(std::default_random_engine &re, vec_bounds &bounds);
+extern dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds);
 
 extern void print_vector(dyn_vector &x);
 

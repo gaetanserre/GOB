@@ -6,11 +6,11 @@
 
 bool AdaLIPO_P::Bernoulli(double p)
 {
-  std::bernoulli_distribution d(p);
+  bernoulli_distribution d(p);
   return d(this->re);
 }
 
-bool AdaLIPO_P::slope_stop_condition(std::deque<int> last_nb_samples)
+bool AdaLIPO_P::slope_stop_condition(deque<int> last_nb_samples)
 {
   float slope = (last_nb_samples.back() - last_nb_samples.front()) / (this->window_size - 1);
   return slope > this->max_slope;
@@ -18,12 +18,12 @@ bool AdaLIPO_P::slope_stop_condition(std::deque<int> last_nb_samples)
 
 bool lipo_condition(
     dyn_vector x,
-    std::vector<dyn_vector> samples,
-    std::vector<double> values,
+    vector<dyn_vector> samples,
+    vector<double> values,
     double k_hat)
 {
   double max_values = max_vec(values);
-  std::vector<double> norms(samples.size());
+  vector<double> norms(samples.size());
   for (int i = 0; i < samples.size(); i++)
   {
     norms[i] = values[i] + k_hat * (x - samples[i]).norm();
@@ -43,16 +43,16 @@ double AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
     return 1 / log(t);
   };
 
-  std::vector<double> ratios;
+  vector<double> ratios;
 
-  std::vector<dyn_vector> samples;
-  std::vector<double> values;
+  vector<dyn_vector> samples;
+  vector<double> values;
 
   samples.push_back(unif_random_vector(this->re, this->bounds));
   values.push_back(-f(samples.back()));
 
   int nb_samples = 1;
-  std::deque<int> last_nb_samples(this->window_size, 0);
+  deque<int> last_nb_samples(this->window_size, 0);
   last_nb_samples[0] = 1;
 
   for (int t = 1; t < this->n_eval; t++)

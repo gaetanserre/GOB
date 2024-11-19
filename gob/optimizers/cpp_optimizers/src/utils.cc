@@ -4,24 +4,24 @@
 
 #include "utils.hh"
 
-std::vector<double> empty_vector()
+vector<double> empty_vector()
 {
-  return std::vector<double>(0);
+  return vector<double>(0);
 }
 
-double max_vec(std::vector<double> &v)
+double max_vec(vector<double> &v)
 {
-  return *std::max_element(v.begin(), v.end());
+  return *max_element(v.begin(), v.end());
 }
 
-double min_vec(std::vector<double> &v)
+double min_vec(vector<double> &v)
 {
-  return *std::min_element(v.begin(), v.end());
+  return *min_element(v.begin(), v.end());
 }
 
 vec_bounds create_rect_bounds(double lb, double ub, int n)
 {
-  vec_bounds bounds(n, std::vector<double>(2));
+  vec_bounds bounds(n, vector<double>(2));
   for (int i = 0; i < n; i++)
   {
     bounds[i][0] = lb;
@@ -30,15 +30,15 @@ vec_bounds create_rect_bounds(double lb, double ub, int n)
   return bounds;
 }
 
-double unif_random_double(std::default_random_engine &re, double lb, double ub)
+double unif_random_double(default_random_engine &re, double lb, double ub)
 {
-  std::uniform_real_distribution<double> unif(lb, ub);
+  uniform_real_distribution<double> unif(lb, ub);
   double res = unif(re);
-  re.seed(std::chrono::system_clock::now().time_since_epoch().count());
+  re.seed(chrono::system_clock::now().time_since_epoch().count());
   return res;
 }
 
-dyn_vector unif_random_vector(std::default_random_engine &re, vec_bounds &bounds)
+dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds)
 {
   int n = bounds.size();
   dyn_vector x(n);
@@ -51,12 +51,12 @@ dyn_vector unif_random_vector(std::default_random_engine &re, vec_bounds &bounds
 
 void print_vector(dyn_vector &x)
 {
-  std::cout << '[';
+  cout << '[';
   for (int i = 0; i < x.size() - 1; i++)
   {
-    std::cout << x(i) << ", ";
+    cout << x(i) << ", ";
   }
-  std::cout << x(x.size() - 1) << ']' << std::endl;
+  cout << x(x.size() - 1) << ']' << endl;
 }
 
 PyArrayObject *vector_to_nparray(const dyn_vector &vec)
@@ -74,7 +74,7 @@ PyArrayObject *vector_to_nparray(const dyn_vector &vec)
     PyArrayObject *vec_array = (PyArrayObject *)PyArray_SimpleNew(1, dims, NPY_DOUBLE);
     double *vec_array_pointer = (double *)PyArray_DATA(vec_array);
 
-    std::copy(vec.data(), vec.data() + vec.size(), vec_array_pointer);
+    copy(vec.data(), vec.data() + vec.size(), vec_array_pointer);
     return vec_array;
   }
 }
