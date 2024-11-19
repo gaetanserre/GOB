@@ -5,7 +5,6 @@
 import numpy as np
 from sklearn.preprocessing import PolynomialFeatures
 import scipy.special as sp
-from tqdm import tqdm
 import pyomo.environ as pyo
 
 
@@ -149,7 +148,7 @@ class AdaRankOpt(Optimizer):
         x = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1])
         samples = [(x, -f(x))]
 
-        for i in tqdm(range(1, self.n_eval + 1)):
+        for i in range(1, self.n_eval + 1):
             if Bernoulli(1 / 10):
                 x = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1])
                 samples.append((x, -f(x)))
