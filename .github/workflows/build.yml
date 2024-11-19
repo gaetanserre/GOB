@@ -30,6 +30,7 @@ jobs:
         run: |
           python -m build --sdist --wheel
           pip install . -vvv
+          python test.py
       
       - name: Upload artifact
         uses: actions/upload-artifact@master

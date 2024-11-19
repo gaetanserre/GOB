@@ -87,9 +87,7 @@ class OptBuild(build_ext):
 
         # Clean up
         os.system(
-            f"cd {cython_src_dir} "
-            "&& rm -rf build lib libcmaes "
-            f"&& rm {pkg_name}.cc"
+            f"cd {cython_src_dir} " "&& rm -rf build libcmaes " f"&& rm {pkg_name}.cc"
         )
 
         # Copy files to the build directory
