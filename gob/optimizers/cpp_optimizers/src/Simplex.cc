@@ -1,54 +1,117 @@
-/*
- * Created in 2024 by Gaëtan Serré
- */
+#include <glpk.h>
+#include <iostream>
+#include "utils.hh"
 
-#include "Simplex.hh"
-
-void test_simplex()
+void simplex(Eigen::MatrixXd M, glp_smcp *param)
 {
-  /* sample.c */
-  glp_prob *lp;
-  int ia[1 + 1000], ja[1 + 1000];
-  double ar[1 + 1000], z, x1, x2, x3;
-  lp = glp_create_prob();
-  glp_set_prob_name(lp, "sample");
-  glp_set_obj_dir(lp, GLP_MAX);
-  glp_add_rows(lp, 3);
-  glp_set_row_name(lp, 1, "p");
-  glp_set_row_bnds(lp, 1, GLP_UP, 0.0, 100.0);
-  glp_set_row_name(lp, 2, "q");
-  glp_set_row_bnds(lp, 2, GLP_UP, 0.0, 600.0);
-  glp_set_row_name(lp, 3, "r");
-  glp_set_row_bnds(lp, 3, GLP_UP, 0.0, 300.0);
-  glp_add_cols(lp, 3);
-  glp_set_col_name(lp, 1, "x1");
-  glp_set_col_bnds(lp, 1, GLP_LO, 0.0, 0.0);
-  glp_set_obj_coef(lp, 1, 10.0);
-  glp_set_col_name(lp, 2, "x2");
-  glp_set_col_bnds(lp, 2, GLP_LO, 0.0, 0.0);
-  glp_set_obj_coef(lp, 2, 6.0);
-  glp_set_col_name(lp, 3, "x3");
-  glp_set_col_bnds(lp, 3, GLP_LO, 0.0, 0.0);
-  glp_set_obj_coef(lp, 3, 4.0);
-  ia[1] = 1, ja[1] = 1, ar[1] = 1.0;  /* a[1,1] =  1 */
-  ia[2] = 1, ja[2] = 2, ar[2] = 1.0;  /* a[1,2] =  1 */
-  ia[3] = 1, ja[3] = 3, ar[3] = 1.0;  /* a[1,3] =  1 */
-  ia[4] = 2, ja[4] = 1, ar[4] = 10.0; /* a[2,1] = 10 */
-  ia[5] = 3, ja[5] = 1, ar[5] = 2.0;  /* a[3,1] =  2 */
-  ia[6] = 2, ja[6] = 2, ar[6] = 4.0;  /* a[2,2] =  4 */
-  ia[7] = 3, ja[7] = 2, ar[7] = 2.0;  /* a[3,2] =  2 */
-  ia[8] = 2, ja[8] = 3, ar[8] = 5.0;  /* a[2,3] =  5 */
-  ia[9] = 3, ja[9] = 3, ar[9] = 6.0;  /* a[3,3] =  6 */
-  glp_load_matrix(lp, 9, ia, ja, ar);
-  glp_smcp parm;
-  glp_init_smcp(&parm);
-  parm.msg_lev = GLP_MSG_OFF;
-  glp_simplex(lp, &parm);
-  z = glp_get_obj_val(lp);
-  x1 = glp_get_col_prim(lp, 1);
-  x2 = glp_get_col_prim(lp, 2);
-  x3 = glp_get_col_prim(lp, 3);
-  printf("z = %g; x1 = %g; x2 = %g; x3 = %g\n",
-         z, x1, x2, x3);
-  glp_delete_prob(lp);
+  glp_prob *lp = glp_create_prob();
+  glp_set_obj_dir(lp, GLP_MIN);
+  int n_lambdas = M.cols();
+  int n_relax = M.rows();
+  int n_variables = n_lambdas + n_relax;
+
+  // Create n_lambdas + n_relax variables
+  glp_add_cols(lp, n_variables);
+
+  for (int i = 1; i <= n_lambdas; i++)
+  {
+    glp_set_col_bnds(lp, i, GLP_LO, 0.0, 0.0);
+  }
+
+  for (int i = n_lambdas + 1; i <= n_variables; i++)
+  {
+    glp_set_col_bnds(lp, i, GLP_LO, 0.0, 0.0);
+    glp_set_obj_coef(lp, i, 1.0);
+  }
+
+  int n_constraints = M.rows();
+  glp_add_rows(lp, n_constraints + 1);
+  glp_set_row_bnds(lp, 1, GLP_FX, 1.0, 1.0);
+
+  for (int i = 2; i <= n_constraints + 1; i++)
+  {
+    glp_set_row_bnds(lp, i, GLP_UP, 0.0, 0.0);
+  }
+
+  int size_constraints_matrices = 1 + n_lambdas + (n_constraints * (n_lambdas + 1));
+
+  int ia[size_constraints_matrices];
+  int ja[size_constraints_matrices];
+  double ar[size_constraints_matrices] = {0};
+
+  for (int i = 1; i <= n_lambdas; i++)
+  {
+    ia[i] = 1;
+    ja[i] = i;
+    ar[i] = 1.0;
+  }
+
+  for (int i = 2; i <= n_constraints + 1; i++)
+  {
+    for (int j = 1; j <= n_lambdas; j++)
+    {
+      int idx = n_lambdas + (i - 2) * (n_lambdas + 1) + j;
+      ia[idx] = i;
+      ja[idx] = j;
+      ar[idx] = M(i - 2, j - 1);
+    }
+    int idx = n_lambdas + (i - 2) * (n_lambdas + 1) + n_lambdas + 1;
+    printf("idx: %d\n", idx);
+    ia[idx] = i;
+    ja[idx] = n_lambdas + i - 1;
+    ar[idx] = -1.0;
+  }
+  // print ia
+  std::cout << "ia: ";
+  for (int i = 1; i < size_constraints_matrices; i++)
+  {
+    std::cout << ia[i] << " ";
+  }
+  std::cout << std::endl;
+
+  std::cout << "ja: ";
+  for (int i = 1; i < size_constraints_matrices; i++)
+  {
+    std::cout << ja[i] << " ";
+  }
+  std::cout << std::endl;
+
+  std::cout << "ar: ";
+  for (int i = 1; i < size_constraints_matrices; i++)
+  {
+    std::cout << ar[i] << " ";
+  }
+  std::cout << std::endl;
+
+  printf("size: %d\n", size_constraints_matrices);
+  glp_load_matrix(lp, size_constraints_matrices - 1, ia, ja, ar);
+
+  glp_simplex(lp, param);
+
+  double sum_relaxed = 0.0;
+  for (int i = n_lambdas + 1; i <= n_variables; i++)
+  {
+    sum_relaxed += glp_get_col_prim(lp, i);
+  }
+
+  // print columns
+  for (int i = 1; i <= n_variables; i++)
+  {
+    printf("x%d = %g\n", i, glp_get_col_prim(lp, i));
+  }
+
+  printf("sum_relaxed = %g\n", sum_relaxed);
+}
+
+int main()
+{
+  // Full ones matrix
+  Eigen::MatrixXd M = Eigen::MatrixXd::Ones(2, 2);
+  M(0, 1) = -2.0;
+  M(1, 1) = -2.0;
+  glp_smcp param;
+  glp_init_smcp(&param);
+  param.msg_lev = GLP_MSG_OFF;
+  simplex(M, &param);
+  return 0;
 }

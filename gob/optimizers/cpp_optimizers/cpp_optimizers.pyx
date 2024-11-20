@@ -10,9 +10,6 @@ cdef extern from "include/utils.hh":
 cdef extern from "include/utils.hh":
   void py_finalize()
 
-cdef extern from "include/Simplex.hh":
-  void test_simplex_ "test_simplex"()
-
 cdef extern from "include/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
@@ -90,6 +87,3 @@ cdef class SBS:
 
 def create_rect_bounds(lb, ub, n):
     return create_rect_bounds_(lb, ub, n)
-
-def test_simplex():
-    test_simplex_()
