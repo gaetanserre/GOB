@@ -47,7 +47,7 @@ class AdaRankOpt(Optimizer):
         super().__init__("AdaRankOpt", bounds)
         self.n_eval = n_eval
         self.method = method
-        self.poly_features = PolynomialFeatures(1)
+        self.poly_features = PolynomialFeatures(1, include_bias=False)
 
     def polynomial_map(self, x):
         """
@@ -63,7 +63,7 @@ class AdaRankOpt(Optimizer):
         np.ndarray
             The mapped vector.
         """
-        res = self.poly_features.fit_transform(x.reshape(1, -1))[0][1:]
+        res = self.poly_features.fit_transform(x.reshape(1, -1))[0]
         assert (
             len(res) == sp.comb(x.shape[0] + self.poly_features.degree, x.shape[0]) - 1
         )

@@ -90,3 +90,8 @@ void py_finalize()
 {
   Py_Finalize();
 }
+
+dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsigned int &end)
+{
+  return v.segment(start, end - start);
+}
