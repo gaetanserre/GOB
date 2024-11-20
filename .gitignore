@@ -1,6 +1,8 @@
 __pycache__
 build
 *.so
+*.dylib
+*.dll
 .vscode
 *.0
 libcmaes

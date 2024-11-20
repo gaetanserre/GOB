@@ -102,9 +102,15 @@ class OptBuild(build_ext):
             f"&& cd {ext.source_dir.as_posix()}"
         )
 
-        # Remove all directories and files that do not contain .so
+        shared_lib_ext = (
+            ".dylib"
+            if platform.system() == "Darwin"
+            else ".so" if platform.system() == "Linux" else ".dll"
+        )
+
+        # Remove all directories and files that are not shared libraries
         for file in os.listdir(Path(f"{cython_src_dir}/lib").absolute()):
-            if ".so" in file:
+            if shared_lib_ext in file:
                 continue
             if os.path.isdir(Path(f"{cython_src_dir}/lib/{file}").absolute()):
                 shutil.rmtree(Path(f"{cython_src_dir}/lib/{file}").absolute())
