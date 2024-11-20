@@ -14,7 +14,7 @@ class SBS(Optimizer):
         svgd_iter=100,
         k_iter=[10_000],
         sigma=0.1,
-        lr=0.1,
+        lr=0.5,
     ):
         super().__init__("SBS", bounds)
         self.c_opt = C_SBS(bounds, n_particles, svgd_iter, k_iter, sigma, lr)

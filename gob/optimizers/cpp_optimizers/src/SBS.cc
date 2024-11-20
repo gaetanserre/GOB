@@ -3,6 +3,7 @@
  */
 
 #include "SBS.hh"
+#include "Adam.hh"
 
 dyn_vector gradient(dyn_vector x, function<double(dyn_vector x)> &f, double *f_x, double tol = 1e-9)
 {
@@ -49,6 +50,7 @@ Eigen::MatrixXd SBS::rbf_grad(Eigen::MatrixXd &X, Eigen::MatrixXd *rbf)
 
 double SBS::minimize(function<double(dyn_vector x)> f)
 {
+  Adam optimizer(this->n_particles, this->bounds.size(), this->lr);
   vector<double> all_evals;
   Eigen::MatrixXd particles(this->n_particles, this->bounds.size());
   for (int i = 0; i < this->n_particles; i++)
@@ -68,7 +70,7 @@ double SBS::minimize(function<double(dyn_vector x)> f)
       }
       Eigen::MatrixXd kernel;
       Eigen::MatrixXd kernel_grad = this->rbf_grad(particles, &kernel);
-      particles += this->lr * (kernel * grads + kernel_grad) / this->n_particles;
+      particles = optimizer.step(-((kernel * grads + kernel_grad) / this->n_particles), particles);
     }
   }
   return min_vec(all_evals);
