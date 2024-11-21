@@ -4,5 +4,10 @@
 
 from .square import Square
 from .ackley import Ackley
+from .levy import Levy
+from .michalewicz import Michalewicz
+from .rastrigin import Rastrigin
+from .rosenbrock import Rosenbrock
+from .deb import Deb
 
-__all__ = ["Square", "Ackley"]
+__all__ = ["Square", "Ackley", "Levy", "Michalewicz", "Rastrigin", "Rosenbrock", "Deb"]
