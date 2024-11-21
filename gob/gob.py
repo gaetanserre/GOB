@@ -108,6 +108,11 @@ class GOB:
 
                     return MLSL(bounds=bounds, **options)
 
+                case "BayesOpt":
+                    from .optimizers import BayesOpt
+
+                    return BayesOpt(bounds=bounds, **options)
+
                 case _:
                     raise ValueError(f"Unknown optimizer: {optimizer}")
         else:
@@ -138,6 +143,32 @@ class GOB:
                     from .benchmarks import Ackley
 
                     return Ackley()
+
+                case "Levy":
+                    from .benchmarks import Levy
+
+                    return Levy()
+
+                case "Michalewicz":
+                    from .benchmarks import Michalewicz
+
+                    return Michalewicz()
+
+                case "Rastrigin":
+                    from .benchmarks import Rastrigin
+
+                    return Rastrigin()
+
+                case "Rosenbrock":
+                    from .benchmarks import Rosenbrock
+
+                    return Rosenbrock()
+
+                case "Deb":
+                    from .benchmarks import Deb
+
+                    return Deb()
+
                 case _:
                     raise ValueError(f"Unknown benchmark: {benchmark}")
         else:

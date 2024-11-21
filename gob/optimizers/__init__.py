@@ -11,6 +11,7 @@ from .SBS import SBS
 from .Direct import Direct
 from .CRS import CRS
 from .MLSL import MLSL
+from .BayesOpt import BayesOpt
 
 __all__ = [
     "PRS",
@@ -22,4 +23,5 @@ __all__ = [
     "Direct",
     "CRS",
     "MLSL",
+    "BayesOpt",
 ]
