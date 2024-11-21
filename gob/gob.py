@@ -223,7 +223,7 @@ class GOB:
         else:
             print(f"Minimum: {mean:.4f} ± {std:.4f}, True minimum: {f}")
 
-    def competitive_ratio(self, res_dict):
+    def competitive_ratio(self, res_dict, min_dict):
         """
         Compute the competitive ratio: 1 / |F| * sum_{f in F} (approx(f) / min(f)).
 
@@ -231,6 +231,8 @@ class GOB:
         ----------
         res_dict : dict
             The results dictionary.
+        min_dict : dict
+            The minimum values of the benchmarks.
         benchmarks : List Object
             The benchmarks.
 
@@ -246,11 +248,18 @@ class GOB:
             for bench_name, bench_dict in res_dict.items():
                 if bench_name not in approxs:
                     approxs[bench_name] = []
-                approxs[bench_name].append(bench_dict[optimizer_name]["Approx"]["mean"])
+                approxs[bench_name].append(
+                    np.abs(
+                        bench_dict[optimizer_name]["Approx"]["mean"]
+                        - min_dict[bench_name]
+                    )
+                )
         for optimizer_name in optimizer_names:
             ratio = 0
             for bench_name, bench_dict in res_dict.items():
-                approx = bench_dict[optimizer_name]["Approx"]["mean"]
+                approx = np.abs(
+                    bench_dict[optimizer_name]["Approx"]["mean"] - min_dict[bench_name]
+                )
                 best = np.min(approxs[bench_name])
                 ratio += min(100, (approx + 1e-10) / (best + 1e-10))
             ratios[optimizer_name] = ratio / len(self.benchmarks)
@@ -268,6 +277,7 @@ class GOB:
             Whether to print the results.
         """
         res_dict = {}
+        min_dict = {}
         for i, benchmark in enumerate(self.benchmarks):
             bench_dict = {}
             benchmark = self.parse_benchmark(benchmark)
@@ -289,9 +299,10 @@ class GOB:
                     opt_dict[str(metric)] = m
                 bench_dict[str(optimizer)] = opt_dict
             res_dict[str(benchmark)] = bench_dict
+            min_dict[str(benchmark)] = benchmark.min
             if verbose:
                 print_blue(f"Done for {benchmark}.")
         if verbose:
             print_table_by_metric(res_dict)
-            print_competitive_ratios(self.competitive_ratio(res_dict))
+            print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
         return res_dict

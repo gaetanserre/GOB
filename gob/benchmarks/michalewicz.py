@@ -12,7 +12,7 @@ class Michalewicz(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Michalewicz", -9.66015)
+        super().__init__("Michalewicz", None)
 
     def __call__(self, x):
         dim = x.shape[0]
