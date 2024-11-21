@@ -36,3 +36,7 @@ extern void py_init();
 extern void py_finalize();
 
 extern dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsigned int &end);
+
+extern bool Bernoulli(default_random_engine &re, double p);
+
+extern dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds);

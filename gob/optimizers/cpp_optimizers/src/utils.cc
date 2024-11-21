@@ -95,3 +95,19 @@ dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsigned in
 {
   return v.segment(start, end - start);
 }
+
+bool Bernoulli(default_random_engine &re, double p)
+{
+  bernoulli_distribution d(p);
+  return d(re);
+}
+
+dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds)
+{
+  dyn_vector res = x;
+  for (int i = 0; i < x.size(); i++)
+  {
+    res(i) = max(bounds[i][0], min(bounds[i][1], x(i)));
+  }
+  return res;
+}

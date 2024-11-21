@@ -22,6 +22,5 @@ public:
   double max_slope;
 
 private:
-  bool Bernoulli(double p);
   bool slope_stop_condition(deque<int> last_nb_samples);
 };

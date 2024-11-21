@@ -71,6 +71,9 @@ double SBS::minimize(function<double(dyn_vector x)> f)
       Eigen::MatrixXd kernel;
       Eigen::MatrixXd kernel_grad = this->rbf_grad(particles, &kernel);
       particles = optimizer.step(-((kernel * grads + kernel_grad) / this->n_particles), particles);
+
+      for (int j = 0; j < this->n_particles; j++)
+        particles.row(j) = clip_vector(particles.row(j), this->bounds);
     }
   }
   return min_vec(all_evals);

@@ -4,12 +4,6 @@
 
 #include "AdaLIPO_P.hh"
 
-bool AdaLIPO_P::Bernoulli(double p)
-{
-  bernoulli_distribution d(p);
-  return d(this->re);
-}
-
 bool AdaLIPO_P::slope_stop_condition(deque<int> last_nb_samples)
 {
   float slope = (last_nb_samples.back() - last_nb_samples.front()) / (this->window_size - 1);
@@ -57,7 +51,7 @@ double AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
 
   for (int t = 1; t < this->n_eval; t++)
   {
-    if (this->Bernoulli(p(t)))
+    if (Bernoulli(this->re, p(t)))
     {
       dyn_vector x = unif_random_vector(this->re, this->bounds);
       nb_samples++;

@@ -37,6 +37,15 @@ cdef extern from "include/SBS.hh":
     )
     double py_minimize(PyObject* f)
 
+cdef extern from "include/AdaRankOpt.hh":
+  cdef cppclass CAdaRankOpt "AdaRankOpt":
+    CAdaRankOpt(
+      vector[vector[double]] bounds,
+      int n_eval,
+      double simplex_tol
+    )
+    double py_minimize(PyObject* f)
+
 # Python interface
 
 cdef class PRS:
@@ -80,6 +89,16 @@ cdef class SBS:
   ):
     self.thisptr = new CSBS(bounds, n_particles, svgd_iter, k_iter, sigma, lr)
 
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    return self.thisptr.py_minimize(pyob_ptr)
+
+cdef class AdaRankOpt:
+  cdef CAdaRankOpt *thisptr
+  def __cinit__(self, bounds, int n_eval=1000, double simplex_tol=1e-6):
+    self.thisptr = new CAdaRankOpt(bounds, n_eval, simplex_tol)
+  
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f

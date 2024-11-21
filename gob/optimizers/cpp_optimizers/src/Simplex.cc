@@ -1,8 +1,6 @@
-#include <glpk.h>
-#include <iostream>
-#include "utils.hh"
+#include "Simplex.hh"
 
-void simplex(Eigen::MatrixXd M, glp_smcp *param)
+bool simplex(Eigen::MatrixXd M, glp_smcp *param, double tol)
 {
   glp_prob *lp = glp_create_prob();
   glp_set_obj_dir(lp, GLP_MIN);
@@ -37,7 +35,7 @@ void simplex(Eigen::MatrixXd M, glp_smcp *param)
 
   int ia[size_constraints_matrices];
   int ja[size_constraints_matrices];
-  double ar[size_constraints_matrices] = {0};
+  double ar[size_constraints_matrices];
 
   for (int i = 1; i <= n_lambdas; i++)
   {
@@ -56,34 +54,11 @@ void simplex(Eigen::MatrixXd M, glp_smcp *param)
       ar[idx] = M(i - 2, j - 1);
     }
     int idx = n_lambdas + (i - 2) * (n_lambdas + 1) + n_lambdas + 1;
-    printf("idx: %d\n", idx);
     ia[idx] = i;
     ja[idx] = n_lambdas + i - 1;
     ar[idx] = -1.0;
   }
-  // print ia
-  std::cout << "ia: ";
-  for (int i = 1; i < size_constraints_matrices; i++)
-  {
-    std::cout << ia[i] << " ";
-  }
-  std::cout << std::endl;
 
-  std::cout << "ja: ";
-  for (int i = 1; i < size_constraints_matrices; i++)
-  {
-    std::cout << ja[i] << " ";
-  }
-  std::cout << std::endl;
-
-  std::cout << "ar: ";
-  for (int i = 1; i < size_constraints_matrices; i++)
-  {
-    std::cout << ar[i] << " ";
-  }
-  std::cout << std::endl;
-
-  printf("size: %d\n", size_constraints_matrices);
   glp_load_matrix(lp, size_constraints_matrices - 1, ia, ja, ar);
 
   glp_simplex(lp, param);
@@ -93,17 +68,10 @@ void simplex(Eigen::MatrixXd M, glp_smcp *param)
   {
     sum_relaxed += glp_get_col_prim(lp, i);
   }
-
-  // print columns
-  for (int i = 1; i <= n_variables; i++)
-  {
-    printf("x%d = %g\n", i, glp_get_col_prim(lp, i));
-  }
-
-  printf("sum_relaxed = %g\n", sum_relaxed);
+  return sum_relaxed <= tol;
 }
 
-int main()
+/* int main()
 {
   // Full ones matrix
   Eigen::MatrixXd M = Eigen::MatrixXd::Ones(2, 2);
@@ -112,6 +80,6 @@ int main()
   glp_smcp param;
   glp_init_smcp(&param);
   param.msg_lev = GLP_MSG_OFF;
-  simplex(M, &param);
+  cout << simplex(M, &param, 1e-6) << endl;
   return 0;
-}
+} */

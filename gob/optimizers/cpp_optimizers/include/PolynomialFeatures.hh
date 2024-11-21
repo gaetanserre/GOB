@@ -4,4 +4,6 @@
 
 #include "utils.hh"
 
+extern int comp(const int &n, const int &k);
+
 extern dyn_vector polynomial_features(dyn_vector &x, int degree);
