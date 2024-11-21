@@ -9,6 +9,7 @@ dependencies = [
   "pyomo==6.8.0",
   "prettytable==3.10.2",
   "bayesian-optimization==1.5.1",
+  "git+https://github.com/gaetanserre/pyGKLS/",
 ]
 
 [build-system]
