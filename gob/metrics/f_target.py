@@ -26,6 +26,5 @@ def f_target(f, bounds, p):
         f.min = -mx
     else:
         mx = -f.min
-    print(mx)
     mean_val = np.mean(fx)
     return -(mx - (mx - mean_val) * (1 - p))
