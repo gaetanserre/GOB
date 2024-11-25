@@ -14,9 +14,19 @@ double max_vec(vector<double> &v)
   return *max_element(v.begin(), v.end());
 }
 
+int argmax_vec(vector<double> &v)
+{
+  return distance(v.begin(), max_element(v.begin(), v.end()));
+}
+
 double min_vec(vector<double> &v)
 {
   return *min_element(v.begin(), v.end());
+}
+
+int argmin_vec(vector<double> &v)
+{
+  return distance(v.begin(), min_element(v.begin(), v.end()));
 }
 
 vec_bounds create_rect_bounds(double lb, double ub, int n)

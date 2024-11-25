@@ -9,11 +9,21 @@ if __name__ == "__main__":
     opt = {
         "AdaRankOpt": {"n_eval": 1000},
         "SBS": {"n_particles": 200, "svgd_iter": 100},
-        "GD": {"n_step": 3000, "step_size": 1e-3},
         "Proportion": {"p": 0.995},
     }
     gob = GOB(
-        ["AdaRankOpt"],
+        [
+            "AdaLIPO+",
+            "AdaRankOpt",
+            "BayesOpt",
+            "CMA-ES",
+            "CRS",
+            "Direct",
+            "GD",
+            "MLSL",
+            "PRS",
+            "SBS",
+        ],
         ["Square"],
         ["Proportion"],
         bounds=create_bounds(2, -1, 1, 2),

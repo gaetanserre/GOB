@@ -29,7 +29,7 @@ bool AdaRankOpt::is_polyhedral_set_empty(vector<dyn_vector> &X, int degree)
   return simplex(M, this->param, this->simplex_tol);
 }
 
-double AdaRankOpt::minimize(function<double(dyn_vector x)> f)
+result AdaRankOpt::minimize(function<double(dyn_vector x)> f)
 {
   int degree = 1;
 
@@ -92,6 +92,7 @@ double AdaRankOpt::minimize(function<double(dyn_vector x)> f)
       degree++;
     }
   }
+  vector<double> x(samples.back().first.data(), samples.back().first.data() + samples.back().first.size());
 
-  return -samples.back().second;
+  return make_pair(x, -samples.back().second);
 }

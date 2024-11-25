@@ -28,4 +28,5 @@ class Direct(Optimizer):
         opt.set_maxeval(self.n_eval)
 
         x = np.random.uniform(lb, ub)
-        return f(opt.optimize(x))
+        best = opt.optimize(x)
+        return (best, f(best))

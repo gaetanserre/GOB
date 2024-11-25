@@ -17,9 +17,9 @@ public:
     this->name = name;
     this->re.seed(time(NULL));
   };
-  virtual double minimize(function<double(dyn_vector x)> f) = 0;
+  virtual result minimize(function<double(dyn_vector x)> f) = 0;
 
-  double py_minimize(PyObject *f);
+  result py_minimize(PyObject *f);
 
   vec_bounds bounds;
   string name;

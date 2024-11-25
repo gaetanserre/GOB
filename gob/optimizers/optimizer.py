@@ -30,6 +30,11 @@ class Optimizer:
         ----------
         f : Function
             The objective function.
+
+        Returns
+        -------
+        pair
+            The minimum point and the minimum value.
         """
         pass
 

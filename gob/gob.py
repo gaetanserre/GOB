@@ -288,7 +288,7 @@ class GOB:
                 )
                 sols = []
                 for _ in range(n_runs):
-                    sol = optimizer.minimize(benchmark)
+                    sol = optimizer.minimize(benchmark)[1]
                     sols.append(sol)
                 opt_dict["Approx"] = {"mean": np.mean(sols), "std": np.std(sols)}
                 for metric in self.metrics:
@@ -298,10 +298,10 @@ class GOB:
                     m = metric(sols)
                     opt_dict[str(metric)] = m
                 bench_dict[str(optimizer)] = opt_dict
+                if verbose:
+                    print_blue(f"Done for {optimizer} on {benchmark}.")
             res_dict[str(benchmark)] = bench_dict
             min_dict[str(benchmark)] = benchmark.min
-            if verbose:
-                print_blue(f"Done for {benchmark}.")
         if verbose:
             print_table_by_metric(res_dict)
             print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))

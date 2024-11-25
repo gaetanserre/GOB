@@ -4,10 +4,11 @@
 
 #include "PRS.hh"
 
-double PRS::minimize(function<double(dyn_vector x)> f)
+result PRS::minimize(function<double(dyn_vector x)> f)
 {
   int n = this->bounds.size();
   double min;
+  dyn_vector best_sample;
   bool first = true;
   for (int i = 0; i < this->n_eval; i++)
   {
@@ -16,8 +17,10 @@ double PRS::minimize(function<double(dyn_vector x)> f)
     if (first || val < min)
     {
       min = val;
+      best_sample = x;
       first = false;
     }
   }
-  return min;
+  vector<double> x(best_sample.data(), best_sample.data() + best_sample.size());
+  return make_pair(x, min);
 }

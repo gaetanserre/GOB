@@ -5,24 +5,26 @@
 import numpy as np
 
 
-def create_bounds(n, mi, ma, d):
+def create_bounds(d, mi, ma, n=1):
     """
     Create bounds for the search space.
 
     Parameters
     ----------
-    n : int
-        The number of benchmarks.
+    d : int
+        The number of variables.
     mi : float
         The minimum value of the bounds.
     ma : float
         The maximum value of the bounds.
-    d : int
-        The number of variables.
-
+    n : int
+        The number of benchmarks.
     Returns
     -------
     array_like of shape (d, 2)
         The bounds of the search space.
     """
-    return np.array([[[mi, ma]] * d] * n)
+    if n == 1:
+        return np.array([[mi, ma]] * d)
+    else:
+        return np.array([[[mi, ma]] * d] * n)

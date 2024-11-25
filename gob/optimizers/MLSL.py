@@ -29,4 +29,5 @@ class MLSL(Optimizer):
         opt.set_local_optimizer(nlopt.opt(nlopt.LN_COBYLA, len(self.bounds)))
 
         x = np.random.uniform(lb, ub)
-        return f(opt.optimize(x))
+        best = opt.optimize(x)
+        return (best, f(best))

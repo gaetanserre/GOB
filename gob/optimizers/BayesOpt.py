@@ -36,4 +36,7 @@ class BayesOpt(Optimizer):
     def minimize(self, f):
         optimizer = self.create_optimizer(f)
         optimizer.maximize(n_iter=self.n_eval)
-        return -optimizer.max["target"]
+        x = []
+        for v in optimizer.max["params"].values():
+            x.append(v)
+        return (np.array(x), -optimizer.max["target"])

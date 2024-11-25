@@ -4,7 +4,7 @@
 
 #include "optimizer.hh"
 
-double Optimizer::py_minimize(PyObject *f)
+result Optimizer::py_minimize(PyObject *f)
 {
   auto f_cpp = [f](dyn_vector x) -> double
   {

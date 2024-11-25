@@ -25,7 +25,14 @@ bool lipo_condition(
   return max_values <= min_vec(norms);
 }
 
-double AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
+result return_procedure(vector<dyn_vector> samples, vector<double> values)
+{
+  int argmax = argmax_vec(values);
+  vector<double> x(samples[argmax].data(), samples[argmax].data() + samples[argmax].size());
+  return make_pair(x, -values[argmax]);
+}
+
+result AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
 {
   double alpha = 1e-2;
   double k_hat = 0;
@@ -75,7 +82,7 @@ double AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
 
         if (this->slope_stop_condition(last_nb_samples))
         {
-          return -max_vec(values);
+          return return_procedure(samples, values);
         }
       }
     }
@@ -92,5 +99,5 @@ double AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
     last_nb_samples.pop_front();
     last_nb_samples.push_back(0);
   }
-  return -max_vec(values);
+  return return_procedure(samples, values);
 }

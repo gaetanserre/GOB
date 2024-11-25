@@ -14,12 +14,17 @@ using namespace std;
 
 typedef Eigen::VectorXd dyn_vector;
 typedef vector<vector<double>> vec_bounds;
+typedef pair<vector<double>, double> result;
 
 extern vector<double> empty_vector();
 
 extern double max_vec(vector<double> &v);
 
 extern double min_vec(vector<double> &v);
+
+extern int argmax_vec(vector<double> &v);
+
+extern int argmin_vec(vector<double> &v);
 
 extern vec_bounds create_rect_bounds(double lb, double ub, int n);
 

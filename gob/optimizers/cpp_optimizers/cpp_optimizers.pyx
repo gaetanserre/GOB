@@ -1,5 +1,6 @@
 from cpython.ref cimport PyObject
 from libcpp.vector cimport vector
+from libcpp.pair cimport pair
 
 cdef extern from "include/utils.hh":
   vector[vector[double]] create_rect_bounds_ "create_rect_bounds"(double lb, double ub, int n)
@@ -13,17 +14,17 @@ cdef extern from "include/utils.hh":
 cdef extern from "include/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
-    double py_minimize(PyObject* f)
+    pair[vector[double], double] py_minimize(PyObject* f)
 
 cdef extern from "include/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
     CAdaLIPO_P(vector[vector[double]] bounds, int n_eval, int window_size, double max_slope)
-    double py_minimize(PyObject* f)
+    pair[vector[double], double] py_minimize(PyObject* f)
 
 cdef extern from "include/CMA_ES.hh":
   cdef cppclass CCMA_ES "CMA_ES":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
-    double py_minimize(PyObject* f)
+    pair[vector[double], double] py_minimize(PyObject* f)
 
 cdef extern from "include/SBS.hh":
   cdef cppclass CSBS "SBS":
@@ -35,7 +36,7 @@ cdef extern from "include/SBS.hh":
       double sigma,
       double lr
     )
-    double py_minimize(PyObject* f)
+    pair[vector[double], double] py_minimize(PyObject* f)
 
 cdef extern from "include/AdaRankOpt.hh":
   cdef cppclass CAdaRankOpt "AdaRankOpt":
@@ -44,7 +45,7 @@ cdef extern from "include/AdaRankOpt.hh":
       int n_eval,
       double simplex_tol
     )
-    double py_minimize(PyObject* f)
+    pair[vector[double], double] py_minimize(PyObject* f)
 
 # Python interface
 
