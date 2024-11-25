@@ -1,0 +1,50 @@
+#
+# Created in 2024 by Gaëtan Serré
+#
+
+from .benchmark import Benchmark
+
+from gkls import GKLS
+import numpy as np
+
+
+class PyGKLS(Benchmark):
+    def __init__(
+        self,
+        dim,
+        num_minima,
+        domain,
+        global_min,
+        global_dist=None,
+        global_radius=None,
+        deterministic=False,
+        smoothness="D",
+    ):
+        self.gkls_function = GKLS(
+            dim,
+            num_minima,
+            domain,
+            global_min,
+            global_dist,
+            global_radius,
+            deterministic,
+        )
+        super().__init__("PyGKLS", global_min)
+        match smoothness:
+            case "D":
+                self.f = self.gkls_function.get_d_f
+                self.gradient = lambda x: (
+                    np.array(self.gkls_function.get_d_grad(x)),
+                    self.f(x),
+                )
+            case "D2":
+                self.f = self.gkls_function.get_d2_f
+                self.gradient = lambda x: (
+                    np.array(self.gkls_function.get_d2_grad(x)),
+                    self.f(x),
+                )
+            case "ND":
+                self.f = self.gkls_function.get_nd_f
+
+    def __call__(self, x):
+        return self.f(x)

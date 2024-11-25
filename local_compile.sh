@@ -21,7 +21,7 @@ git clone https://github.com/CMA-ES/libcmaes.git
 cd libcmaes
 mkdir build
 cd build
-cmake ..
+cmake -DLIBCMAES_BUILD_EXAMPLES=OFF ..
 make -j
 cd ../..
 cp -r libcmaes/include/libcmaes include

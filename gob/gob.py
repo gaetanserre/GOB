@@ -8,6 +8,8 @@ from .utils import print_table_by_metric
 from .utils import print_competitive_ratios
 from .utils import print_blue
 
+from .benchmarks import PyGKLS
+
 
 class GOB:
     """
@@ -43,6 +45,8 @@ class GOB:
         self.optimizers = optimizers
         self.benchmarks = benchmarks
         self.metrics = metrics
+
+        self.count_gkls = 1
 
     def parse_optimizer(self, optimizer, bounds, options={}):
         """
@@ -118,8 +122,7 @@ class GOB:
         else:
             return optimizer
 
-    @staticmethod
-    def parse_benchmark(benchmark):
+    def parse_benchmark(self, benchmark):
         """
         Parse the benchmark.
 
@@ -171,6 +174,10 @@ class GOB:
 
                 case _:
                     raise ValueError(f"Unknown benchmark: {benchmark}")
+        elif isinstance(benchmark, PyGKLS):
+            benchmark.name = f"{benchmark} n°{self.count_gkls}"
+            self.count_gkls += 1
+            return benchmark
         else:
             return benchmark
 

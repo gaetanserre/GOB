@@ -9,5 +9,15 @@ from .michalewicz import Michalewicz
 from .rastrigin import Rastrigin
 from .rosenbrock import Rosenbrock
 from .deb import Deb
+from .pygkls import PyGKLS
 
-__all__ = ["Square", "Ackley", "Levy", "Michalewicz", "Rastrigin", "Rosenbrock", "Deb"]
+__all__ = [
+    "Square",
+    "Ackley",
+    "Levy",
+    "Michalewicz",
+    "Rastrigin",
+    "Rosenbrock",
+    "Deb",
+    "PyGKLS",
+]

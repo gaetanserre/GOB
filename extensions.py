@@ -66,7 +66,7 @@ class OptBuild(build_ext):
             "&& cd libcmaes "
             "&& mkdir -p build "
             "&& cd build "
-            "&& cmake .. "
+            "&& cmake -DLIBCMAES_BUILD_EXAMPLES=OFF .. "
             "&& make -j "
             "&& cd ../.. "
             "&& cp -r libcmaes/include/libcmaes include "
@@ -77,7 +77,6 @@ class OptBuild(build_ext):
         )
 
         # Copy GLPK files
-
         urllib.request.urlretrieve(
             "http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
             Path(cython_src_dir, "glpk-5.0.tar.gz"),

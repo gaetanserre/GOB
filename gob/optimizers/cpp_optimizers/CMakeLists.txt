@@ -12,14 +12,6 @@ else()
   set(WINDOWS TRUE)
 endif()
 
-if(DARWIN)
-  set(LIB_EXT "dylib")
-elseif(LINUX)
-  set(LIB_EXT "so")
-else()
-  set(LIB_EXT "dll")
-endif()
-
 file(GLOB_RECURSE SRC_FILES src/*.cc src/*.cpp src/*.c)
 
 find_package(Eigen3 REQUIRED)
