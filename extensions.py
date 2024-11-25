@@ -13,6 +13,15 @@ from setuptools import Extension
 from setuptools.command.build_ext import build_ext
 
 
+def get_shared_lib_ext():
+    if sys.platform.startswith("linux"):
+        return ".so"
+    elif sys.platform.startswith("darwin"):
+        return ".dylib"
+    else:
+        return ".dll"
+
+
 def create_directory(path: Path):
     if path.exists():
         shutil.rmtree(path)
@@ -83,8 +92,7 @@ class OptBuild(build_ext):
 
         pkg_name = "cpp_optimizers"
         ext_suffix = os.popen("python3-config --extension-suffix").read().strip()
-        lib_name = pkg_name + ext_suffix
-        ext_name = ".".join((lib_name).split(".")[:-1])
+        lib_name = ".".join((pkg_name + ext_suffix).split(".")[:-1])
 
         # Compile the Cython file
         os.system(
@@ -96,21 +104,15 @@ class OptBuild(build_ext):
             f"cd {cython_src_dir} "
             "&& mkdir -p build "
             "&& cd build "
-            f"&& cmake -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={ext_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. "
+            f"&& cmake -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={lib_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. "
             "&& make -j "
-            f"&& mv lib{lib_name} ../../{lib_name} "
+            f"&& mv lib{lib_name}{get_shared_lib_ext()} ../../{lib_name}.so "
             f"&& cd {ext.source_dir.as_posix()}"
-        )
-
-        shared_lib_ext = (
-            ".dylib"
-            if platform.system() == "Darwin"
-            else ".so" if platform.system() == "Linux" else ".dll"
         )
 
         # Remove all directories and files that are not shared libraries
         for file in os.listdir(Path(f"{cython_src_dir}/lib").absolute()):
-            if shared_lib_ext in file:
+            if get_shared_lib_ext() in file:
                 continue
             if os.path.isdir(Path(f"{cython_src_dir}/lib/{file}").absolute()):
                 shutil.rmtree(Path(f"{cython_src_dir}/lib/{file}").absolute())

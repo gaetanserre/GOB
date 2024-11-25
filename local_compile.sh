@@ -3,13 +3,21 @@
 pkg_name=cpp_optimizers
 ext_suffix=$(python3-config --extension-suffix)
 
+if [[ "$OSTYPE" == "linux-gnu"* ]]; then
+  shared_library_ext=.so
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  shared_library_ext=.dylib
+else
+  shared_library_ext=.dll
+fi
+
 lib_name=${pkg_name}${ext_suffix}
 
 cd gob/optimizers/cpp_optimizers
 
 cython --cplus -3 $pkg_name.pyx -o $pkg_name.cc
 
-if ! [ -f "lib/libcmaes.so" ]; then
+if ! [ -f "lib/libcmaes"${shared_library_ext} ]; then
   rm -rf libcmaes
   git clone https://github.com/CMA-ES/libcmaes.git
   cd libcmaes
@@ -21,7 +29,7 @@ if ! [ -f "lib/libcmaes.so" ]; then
   rm -rf libcmaes
 fi
 
-if ! [ -f "lib/libglpk.so" ]; then
+if ! [ -f "lib/libglpk"${shared_library_ext} ]; then
   rm -rf glpk-5.0 glpk-5.0.tar.gz
   curl http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
   tar -xzf glpk-5.0.tar.gz
@@ -38,4 +46,4 @@ mkdir -p build
 cd build
 cmake -DNUMPY_INCLUDE_DIRS=$numpy_include -DEXT_NAME=$lib_name -DCYTHON_CPP_FILE=$pkg_name.cc ..
 make -j
-mv lib$lib_name.so ../../$lib_name
+mv lib$lib_name$shared_library_ext ../../$lib_name
