@@ -23,7 +23,7 @@ dyn_vector polynomial_features(dyn_vector &X, int degree)
   int n_out = comp(n_features + degree, n_features) - 1;
   dyn_vector XP(n_out);
 
-  copy(X.begin(), X.end(), XP.begin());
+  copy(X.data(), X.data() + X.size(), XP.data());
 
   if (degree == 1)
     return XP;
