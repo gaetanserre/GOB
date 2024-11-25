@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.30)
 project(optimizers)
 set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_FLAGS "-fPIC -O3")
+set(CMAKE_CXX_FLAGS "-O3 -fPIC")
 
 # Detect platform
 if(UNIX AND NOT APPLE)
@@ -20,14 +20,12 @@ else()
   set(LIB_EXT "dll")
 endif()
 
-file(GLOB_RECURSE SRC_FILES src/*.cc)
+file(GLOB_RECURSE SRC_FILES src/*.cc src/*.cpp src/*.c)
 
 find_package(Eigen3 REQUIRED)
 find_package(Python COMPONENTS Development.Module REQUIRED)
 
-include_directories(include ${EIGEN3_INCLUDE_DIR} ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
-
-link_libraries(${CMAKE_CURRENT_SOURCE_DIR}/lib/libcmaes.${LIB_EXT} ${CMAKE_CURRENT_SOURCE_DIR}/lib/libglpk.${LIB_EXT})
+include_directories(include include/glpk ${EIGEN3_INCLUDE_DIR} ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
 
 add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
 

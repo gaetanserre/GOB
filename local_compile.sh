@@ -17,28 +17,27 @@ cd gob/optimizers/cpp_optimizers
 
 cython --cplus -3 $pkg_name.pyx -o $pkg_name.cc
 
-if ! [ -f "lib/libcmaes"${shared_library_ext} ]; then
-  rm -rf libcmaes
-  git clone https://github.com/CMA-ES/libcmaes.git
-  cd libcmaes
-  mkdir build
-  cd build
-  cmake -DCMAKE_INSTALL_PREFIX=../.. ..
-  make -j install
-  cd ../..
-  rm -rf libcmaes
-fi
+git clone https://github.com/CMA-ES/libcmaes.git
+cd libcmaes
+mkdir build
+cd build
+cmake ..
+make -j
+cd ../..
+cp -r libcmaes/include/libcmaes include
+cp -r libcmaes/build/include/libcmaes/* include/libcmaes
+mkdir -p src/libcmaes
+cp -r libcmaes/src/*.cc src/libcmaes
+rm -rf libcmaes
 
-if ! [ -f "lib/libglpk"${shared_library_ext} ]; then
-  rm -rf glpk-5.0 glpk-5.0.tar.gz
-  curl http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
-  tar -xzf glpk-5.0.tar.gz
-  cd glpk-5.0
-  ./configure --prefix=$(pwd)/..
-  make -j install
-  cd ..
-  rm -rf glpk-5.0 glpk-5.0.tar.gz bin
-fi
+curl http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
+tar -xzf glpk-5.0.tar.gz
+mkdir -p src/glpk
+mkdir -p include/glpk
+cp -r glpk-5.0/src/**/*.c src/glpk
+cp -r glpk-5.0/src/**/*.h include/glpk
+cp -r glpk-5.0/src/*.h include/glpk
+rm -rf glpk-5.0 glpk-5.0.tar.gz
 
 numpy_include=$(python3 -c "import numpy; print(numpy.get_include())")
 

@@ -13,8 +13,8 @@ if __name__ == "__main__":
         "Proportion": {"p": 0.995},
     }
     gob = GOB(
-        ["BayesOpt", "SBS"],
-        ["Rosenbrock"],
+        ["AdaRankOpt"],
+        ["Square"],
         ["Proportion"],
         bounds=create_bounds(2, -1, 1, 2),
         options=opt,

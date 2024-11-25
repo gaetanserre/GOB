@@ -6,7 +6,7 @@ build
 .vscode
 *.0
 libcmaes
-lib
+glpk
 gob.egg-info
 cpp_optimizers.cc
 dist

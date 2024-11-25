@@ -58,21 +58,25 @@ class OptBuild(build_ext):
     def build_extension(self, ext: Extension):
         cython_src_dir = Path("gob/optimizers/cpp_optimizers")
 
-        # Build libcmaes
+        # Copy libcmaes files
         os.system(
-            f"cd {ext.source_dir.as_posix()} "
-            f"&& cd {cython_src_dir} "
+            f"cd {cython_src_dir} "
             "&& rm -rf libcmaes "
             "&& git clone https://github.com/CMA-ES/libcmaes.git "
             "&& cd libcmaes "
             "&& mkdir -p build "
             "&& cd build "
-            f"&& cmake -DCMAKE_INSTALL_PREFIX={cython_src_dir.absolute()} .. "
-            "&& make -j install"
+            "&& cmake .. "
+            "&& make -j "
+            "&& cd ../.. "
+            "&& cp -r libcmaes/include/libcmaes include "
+            "&& cp -r libcmaes/build/include/libcmaes/* include/libcmaes "
+            "&& mkdir -p src/libcmaes "
+            "&& cp libcmaes/src/**.cc src/libcmaes "
+            "&& rm -rf libcmaes"
         )
 
-        # Build GLPK
-        # Download http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz
+        # Copy GLPK files
 
         urllib.request.urlretrieve(
             "http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
@@ -82,9 +86,12 @@ class OptBuild(build_ext):
         os.system(
             f"cd {cython_src_dir} "
             "&& tar -xvf glpk-5.0.tar.gz "
-            "&& cd glpk-5.0 "
-            f"&& ./configure --prefix={cython_src_dir.absolute()} "
-            "&& make -j install"
+            "&& mkdir -p src/glpk "
+            "&& mkdir -p include/glpk "
+            "&& cp -r glpk-5.0/src/**/*.c src/glpk "
+            "&& cp -r glpk-5.0/src/**/*.h include/glpk "
+            "&& cp -r glpk-5.0/src/*.h include/glpk "
+            "&& rm -rf glpk-5.0 glpk-5.0.tar.gz"
         )
 
         ext_dir = Path(self.get_ext_fullpath(ext.name)).parent.absolute()
@@ -110,21 +117,8 @@ class OptBuild(build_ext):
             f"&& cd {ext.source_dir.as_posix()}"
         )
 
-        # Remove all directories and files that are not shared libraries
-        for file in os.listdir(Path(f"{cython_src_dir}/lib").absolute()):
-            if get_shared_lib_ext() in file:
-                continue
-            if os.path.isdir(Path(f"{cython_src_dir}/lib/{file}").absolute()):
-                shutil.rmtree(Path(f"{cython_src_dir}/lib/{file}").absolute())
-            else:
-                os.remove(Path(f"{cython_src_dir}/lib/{file}").absolute())
-
         # Clean up
-        os.system(
-            f"cd {cython_src_dir} "
-            "&& rm -rf build libcmaes glpk-5.0 bin "
-            f"&& rm glpk-5.0.tar.gz {pkg_name}.cc"
-        )
+        os.system(f"rm -rf {cython_src_dir / 'build'}")
 
         # Copy files to the build directory
         os.system(f"cp -r gob {ext_dir}")
