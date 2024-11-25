@@ -6,7 +6,6 @@ dependencies = [
   "Cython==3.0.11",
   "nlopt==2.8.0",
   "scikit-learn==1.5.1",
-  "pyomo==6.8.0",
   "prettytable==3.10.2",
   "bayesian-optimization==1.5.1",
   "gkls",
