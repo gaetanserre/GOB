@@ -17,7 +17,7 @@ public:
     param->msg_lev = GLP_MSG_OFF;
   };
 
-  virtual result minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_eval;
   double simplex_tol;

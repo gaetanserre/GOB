@@ -4,7 +4,7 @@
 
 #include "PRS.hh"
 
-result PRS::minimize(function<double(dyn_vector x)> f)
+result_eigen PRS::minimize(function<double(dyn_vector x)> f)
 {
   int n = this->bounds.size();
   double min;
@@ -21,6 +21,5 @@ result PRS::minimize(function<double(dyn_vector x)> f)
       first = false;
     }
   }
-  vector<double> x(best_sample.data(), best_sample.data() + best_sample.size());
-  return make_pair(x, min);
+  return make_pair(best_sample, min);
 }

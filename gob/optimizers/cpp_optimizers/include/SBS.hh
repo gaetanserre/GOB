@@ -22,7 +22,7 @@ public:
     this->lr = lr;
   };
 
-  virtual result minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_particles;
   int svgd_iter;

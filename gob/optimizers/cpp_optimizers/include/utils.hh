@@ -15,6 +15,7 @@ using namespace std;
 typedef Eigen::VectorXd dyn_vector;
 typedef vector<vector<double>> vec_bounds;
 typedef pair<vector<double>, double> result;
+typedef pair<dyn_vector, double> result_eigen;
 
 extern vector<double> empty_vector();
 

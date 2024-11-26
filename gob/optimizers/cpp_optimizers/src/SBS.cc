@@ -48,7 +48,7 @@ Eigen::MatrixXd SBS::rbf_grad(Eigen::MatrixXd &X, Eigen::MatrixXd *rbf)
   return dxkxy;
 }
 
-result SBS::minimize(function<double(dyn_vector x)> f)
+result_eigen SBS::minimize(function<double(dyn_vector x)> f)
 {
   Adam optimizer(this->n_particles, this->bounds.size(), this->lr);
   vector<double> all_evals;
@@ -79,6 +79,5 @@ result SBS::minimize(function<double(dyn_vector x)> f)
     }
   }
   int argmin = argmin_vec(all_evals);
-  vector<double> x(samples[argmin].data(), samples[argmin].data() + samples[argmin].size());
-  return make_pair(x, all_evals[argmin]);
+  return make_pair(samples[argmin], all_evals[argmin]);
 }

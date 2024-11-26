@@ -15,7 +15,7 @@ public:
     this->max_slope = max_slope;
   };
 
-  virtual result minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_eval;
   int window_size;

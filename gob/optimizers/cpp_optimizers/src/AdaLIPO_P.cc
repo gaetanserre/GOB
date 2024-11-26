@@ -25,14 +25,13 @@ bool lipo_condition(
   return max_values <= min_vec(norms);
 }
 
-result return_procedure(vector<dyn_vector> samples, vector<double> values)
+result_eigen return_procedure(vector<dyn_vector> samples, vector<double> values)
 {
   int argmax = argmax_vec(values);
-  vector<double> x(samples[argmax].data(), samples[argmax].data() + samples[argmax].size());
-  return make_pair(x, -values[argmax]);
+  return make_pair(samples[argmax], -values[argmax]);
 }
 
-result AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
+result_eigen AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
 {
   double alpha = 1e-2;
   double k_hat = 0;

@@ -6,7 +6,7 @@
 #include "libcmaes/cmaes.h"
 using namespace libcmaes;
 
-result CMA_ES::minimize(function<double(dyn_vector x)> f)
+result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
 {
   if (this->m0.size() == 0)
   {
@@ -28,5 +28,5 @@ result CMA_ES::minimize(function<double(dyn_vector x)> f)
   };
 
   Candidate candidate = cmaes<>(f_, cmaparams).best_candidate();
-  return make_pair(candidate.get_x(), candidate.get_fvalue());
+  return make_pair(candidate.get_x_dvec(), candidate.get_fvalue());
 }
