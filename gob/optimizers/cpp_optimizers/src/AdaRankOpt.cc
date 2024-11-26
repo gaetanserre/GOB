@@ -34,12 +34,8 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
   int degree = 1;
 
   vector<pair<dyn_vector, double>> samples;
-
-  for (int i = 0; i < 3; i++)
-  {
-    dyn_vector x = unif_random_vector(this->re, this->bounds);
-    samples.push_back(make_pair(x, -f(x)));
-  }
+  dyn_vector x = unif_random_vector(this->re, this->bounds);
+  samples.push_back(make_pair(x, -f(x)));
 
   auto compare_pair = [](pair<dyn_vector, double> a, pair<dyn_vector, double> b) -> bool
   {
