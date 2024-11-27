@@ -7,9 +7,11 @@ from .cpp_optimizers import AdaRankOpt as C_AdaRankOpt
 
 
 class AdaRankOpt(Optimizer):
-    def __init__(self, bounds, n_eval=1000, simplex_tol=1e-6):
+    def __init__(
+        self, bounds, n_eval=1000, max_degree=40, max_tries=10_000, verbose=False
+    ):
         super().__init__("AdaRankOpt", bounds)
-        self.c_opt = C_AdaRankOpt(bounds, n_eval, simplex_tol)
+        self.c_opt = C_AdaRankOpt(bounds, n_eval, max_degree, max_tries, verbose)
 
     def minimize(self, f):
         return self.c_opt.minimize(f)

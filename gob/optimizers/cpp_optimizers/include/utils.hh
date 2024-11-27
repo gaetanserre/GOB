@@ -35,6 +35,8 @@ extern dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &boun
 
 extern void print_vector(dyn_vector &x);
 
+extern void print_matrix(Eigen::MatrixXd &M);
+
 extern PyArrayObject *vector_to_nparray(const dyn_vector &vec);
 
 extern void py_init();

@@ -69,6 +69,17 @@ void print_vector(dyn_vector &x)
   cout << x(x.size() - 1) << ']' << endl;
 }
 
+void print_matrix(Eigen::MatrixXd &M)
+{
+  cout << '[' << endl;
+  for (int i = 0; i < M.rows(); i++)
+  {
+    dyn_vector row = M.row(i);
+    print_vector(row);
+  }
+  cout << ']' << endl;
+}
+
 PyArrayObject *vector_to_nparray(const dyn_vector &vec)
 {
 

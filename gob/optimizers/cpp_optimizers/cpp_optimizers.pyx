@@ -1,6 +1,7 @@
 from cpython.ref cimport PyObject
 from libcpp.vector cimport vector
 from libcpp.pair cimport pair
+from libcpp cimport bool
 
 cdef extern from "include/utils.hh":
   vector[vector[double]] create_rect_bounds_ "create_rect_bounds"(double lb, double ub, int n)
@@ -43,7 +44,9 @@ cdef extern from "include/AdaRankOpt.hh":
     CAdaRankOpt(
       vector[vector[double]] bounds,
       int n_eval,
-      double simplex_tol
+      int max_degree,
+      int max_tries,
+      bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
 
@@ -97,8 +100,8 @@ cdef class SBS:
 
 cdef class AdaRankOpt:
   cdef CAdaRankOpt *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, double simplex_tol=1e-6):
-    self.thisptr = new CAdaRankOpt(bounds, n_eval, simplex_tol)
+  def __cinit__(self, bounds, int n_eval=1000, int max_degree=40, int max_tries=10000, bool verbose=False):
+    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_tries, verbose)
   
   def minimize(self, f):
     py_init()
