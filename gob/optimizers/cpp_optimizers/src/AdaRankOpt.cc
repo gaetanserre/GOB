@@ -6,15 +6,15 @@
 #include "PolynomialFeatures.hh"
 #include "Simplex.hh"
 
-Eigen::MatrixXd AdaRankOpt::polynomial_matrix(vector<dyn_vector> &X, int degree)
+Eigen::MatrixXd AdaRankOpt::polynomial_matrix(vector<pair<dyn_vector, double>> &samples, int degree)
 {
-  int n = X.size() - 1;
-  int d = X[0].size();
+  int n = samples.size() - 1;
+  int d = samples[0].first.size();
   int n_out = comp(d + degree, d) - 1;
   Eigen::MatrixXd M = Eigen::MatrixXd::Zero(n_out, n);
   for (int i = 0; i < n; i++)
   {
-    dyn_vector poly = polynomial_features(X[i + 1], degree) - polynomial_features(X[i], degree);
+    dyn_vector poly = polynomial_features(samples[i + 1].first, degree) - polynomial_features(samples[i].first, degree);
     for (int j = 0; j < n_out; j++)
     {
       M(j, i) = poly(j);
@@ -23,9 +23,9 @@ Eigen::MatrixXd AdaRankOpt::polynomial_matrix(vector<dyn_vector> &X, int degree)
   return M;
 }
 
-bool AdaRankOpt::is_polyhedral_set_empty(vector<dyn_vector> &X, int degree)
+bool AdaRankOpt::is_polyhedral_set_empty(vector<pair<dyn_vector, double>> &samples, int degree)
 {
-  Eigen::MatrixXd M = this->polynomial_matrix(X, degree);
+  Eigen::MatrixXd M = this->polynomial_matrix(samples, degree);
   return simplex(M, this->param) == GLP_NOFEAS;
 }
 
@@ -54,18 +54,13 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
     }
     else
     {
-      int nb_tries = 0;
+      int nb_samples = 0;
       while (true)
       {
         dyn_vector x = unif_random_vector(this->re, this->bounds);
         double f_x_tmp = samples.back().second + 1;
         samples.push_back(make_pair(x, f_x_tmp));
-        vector<dyn_vector> X(samples.size());
-        for (int i = 0; i < samples.size(); i++)
-        {
-          X[i] = samples[i].first;
-        }
-        if (this->is_polyhedral_set_empty(X, degree))
+        if (this->is_polyhedral_set_empty(samples, degree))
         {
           samples[samples.size() - 1].second = -f(x);
           sort(samples.begin(), samples.end(), compare_pair);
@@ -74,31 +69,20 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
         else
           samples.pop_back();
 
-        if (nb_tries > this->max_tries)
+        nb_samples++;
+
+        if (nb_samples > this->max_samples)
         {
           if (this->verbose)
             printf("Warning: AdaRankOpt could not converge. Early stopping at iteration %d with degree %d.\n", t, degree);
-
-          vector<dyn_vector> X(samples.size());
-          for (int i = 0; i < samples.size(); i++)
-          {
-            X[i] = samples[i].first;
-          }
-
           return make_pair(samples.back().first, -samples.back().second);
         }
-        nb_tries++;
       }
     }
 
     while (degree < this->max_degree)
     {
-      vector<dyn_vector> X(samples.size());
-      for (int i = 0; i < samples.size(); i++)
-      {
-        X[i] = samples[i].first;
-      }
-      if (this->is_polyhedral_set_empty(X, degree))
+      if (this->is_polyhedral_set_empty(samples, degree))
         break;
 
       degree++;

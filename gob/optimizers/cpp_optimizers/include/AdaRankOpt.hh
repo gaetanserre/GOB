@@ -8,11 +8,11 @@
 class AdaRankOpt : public Optimizer
 {
 public:
-  AdaRankOpt(vec_bounds bounds, int n_eval = 1000, int max_degree = 40, int max_tries = 10000, bool verbose = false) : Optimizer(bounds, "AdaRankOpt")
+  AdaRankOpt(vec_bounds bounds, int n_eval = 1000, int max_degree = 40, int max_samples = 10000, bool verbose = false) : Optimizer(bounds, "AdaRankOpt")
   {
     this->n_eval = n_eval;
     this->max_degree = max_degree;
-    this->max_tries = max_tries;
+    this->max_samples = max_samples;
     this->verbose = verbose;
 
     this->param = new glp_smcp();
@@ -25,11 +25,11 @@ public:
 
   int n_eval;
   int max_degree;
-  int max_tries;
+  int max_samples;
   bool verbose;
   glp_smcp *param;
 
 private:
-  static Eigen::MatrixXd polynomial_matrix(vector<dyn_vector> &X, int degree);
-  bool is_polyhedral_set_empty(vector<dyn_vector> &X, int degree);
+  static Eigen::MatrixXd polynomial_matrix(vector<pair<dyn_vector, double>> &samples, int degree);
+  bool is_polyhedral_set_empty(vector<pair<dyn_vector, double>> &samples, int degree);
 };

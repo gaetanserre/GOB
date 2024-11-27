@@ -38,5 +38,23 @@ class Optimizer:
         """
         pass
 
+    def maximize(self, f):
+        """
+        Maximize a function using the optimizer.
+
+        Parameters
+        ----------
+        f : Function
+            The objective function.
+
+        Returns
+        -------
+        pair
+            The maximum point and the maximum value.
+        """
+        f_ = lambda x: -f(x)
+        res = self.minimize(f_)
+        return res[0], -res[1]
+
     def __str__(self):
         return self.name
