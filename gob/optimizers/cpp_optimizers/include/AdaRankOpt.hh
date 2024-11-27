@@ -18,7 +18,7 @@ public:
     this->param = new glp_smcp();
     glp_init_smcp(param);
     param->msg_lev = GLP_MSG_OFF;
-    param->it_lim = 10000;
+    param->it_lim = 100;
   };
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
