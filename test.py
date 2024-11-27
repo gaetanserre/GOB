@@ -8,13 +8,13 @@ from gob.benchmarks import PyGKLS
 
 if __name__ == "__main__":
     opt = {
-        "AdaRankOpt": {"n_eval": 1000},
+        "AdaRankOpt": {"n_eval": 1000, "max_tries": 100000},
         "SBS": {"n_particles": 200, "svgd_iter": 100},
         "Proportion": {"p": 0.995},
     }
     pygkls = PyGKLS(2, 10, [-5, 5], -20, smoothness="D", deterministic=True)
     gob = GOB(
-        ["AdaRankOpt", "AdaLIPO+", "SBS", "CMA-ES"],
+        ["AdaRankOpt"],
         [pygkls],
         ["Proportion"],
         bounds=create_bounds(2, -4, 4, 2),

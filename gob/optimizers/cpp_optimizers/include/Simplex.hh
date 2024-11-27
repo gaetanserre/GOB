@@ -5,4 +5,4 @@
 #include "glpk.h"
 #include "utils.hh"
 
-extern bool simplex(Eigen::MatrixXd M, glp_smcp *param, double tol);
+extern double simplex(Eigen::MatrixXd M, glp_smcp *param);
