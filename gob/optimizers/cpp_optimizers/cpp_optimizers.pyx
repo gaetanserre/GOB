@@ -45,7 +45,7 @@ cdef extern from "include/AdaRankOpt.hh":
       vector[vector[double]] bounds,
       int n_eval,
       int max_degree,
-      int max_tries,
+      int max_samples,
       bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -100,8 +100,8 @@ cdef class SBS:
 
 cdef class AdaRankOpt:
   cdef CAdaRankOpt *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, int max_degree=40, int max_tries=10000, bool verbose=False):
-    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_tries, verbose)
+  def __cinit__(self, bounds, int n_eval=1000, int max_degree=40, int max_samples=10000, bool verbose=False):
+    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_samples, verbose)
   
   def minimize(self, f):
     py_init()
