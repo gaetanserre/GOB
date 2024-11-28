@@ -10,19 +10,19 @@ if __name__ == "__main__":
     opt = {
         "AdaRankOpt": {
             "n_eval": 1000,
-            "max_samples": 100_000,
-            "max_degree": 8,
+            "max_samples": 800,
+            "max_degree": 80,
             "verbose": True,
         },
         "SBS": {"n_particles": 200, "svgd_iter": 100},
-        "Proportion": {"p": 0.995},
+        "Proportion": {"p": 0.9},
     }
     pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", deterministic=True)
     gob = GOB(
-        ["AdaRankOpt", "AdaLIPO+", "MLSL"],
-        ["Square"],
+        ["AdaRankOpt", "AdaLIPO+"],
+        ["Levy"],
         ["Proportion"],
-        bounds=create_bounds(2, -4, 4, 2),
+        bounds=create_bounds(2, -10, 10, 2),
         options=opt,
     )
-    gob.run(n_runs=1, verbose=True)
+    gob.run(n_runs=5, verbose=True)

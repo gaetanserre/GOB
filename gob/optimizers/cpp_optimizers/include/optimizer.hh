@@ -17,6 +17,10 @@ public:
     this->name = name;
     this->re.seed(time(NULL));
   };
+  ~Optimizer()
+  {
+    Py_Finalize();
+  };
   virtual result_eigen minimize(function<double(dyn_vector x)> f) = 0;
 
   result py_minimize(PyObject *f);
