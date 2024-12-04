@@ -23,12 +23,14 @@ class Proportion(Metric):
         The proportion.
     """
 
-    def __init__(self, f, bounds, p=0.99):
+    def __init__(self, f, bounds, p=0.99, f_target=None):
         super().__init__("Proportion")
         self.f = f
         self.bounds = bounds
         self.p = p
+        self.f_target = f_target
 
     def __call__(self, sols):
-        target = f_target(self.f, self.bounds, self.p)
-        return np.mean([sol <= target for sol in sols])
+        if self.f_target is None:
+            self.f_target = f_target(self.f, self.bounds, self.p)
+        return np.mean([sol <= self.f_target for sol in sols])
