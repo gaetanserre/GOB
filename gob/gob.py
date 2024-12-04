@@ -167,7 +167,7 @@ class GOB:
 
                     return Rosenbrock()
 
-                case "Deb":
+                case "Deb N.1":
                     from .benchmarks import Deb
 
                     return Deb()
