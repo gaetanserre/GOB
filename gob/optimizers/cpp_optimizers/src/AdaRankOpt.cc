@@ -57,7 +57,6 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
       int nb_samples = 0;
       while (true)
       {
-        printf("Iteration %d nb_samples %d degree %d\n", t, nb_samples, degree);
         dyn_vector x = unif_random_vector(this->re, this->bounds);
         double f_x_tmp = samples.back().second + 1;
         samples.push_back(make_pair(x, f_x_tmp));
