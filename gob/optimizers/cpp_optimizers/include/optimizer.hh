@@ -25,7 +25,10 @@ public:
 
   result py_minimize(PyObject *f);
 
+  vector<double> get_best_per_iter() { return this->best_per_iter; };
+
   vec_bounds bounds;
   string name;
   std::default_random_engine re;
+  vector<double> best_per_iter;
 };

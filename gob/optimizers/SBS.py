@@ -21,3 +21,6 @@ class SBS(Optimizer):
 
     def minimize(self, f):
         return self.c_opt.minimize(f)
+
+    def get_best_per_iter(self):
+        return self.c_opt.get_best_per_iter()

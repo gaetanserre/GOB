@@ -86,6 +86,8 @@ result_eigen AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
       }
     }
 
+    this->best_per_iter.push_back(-max_vec(values));
+
     double value = values.back();
     dyn_vector x = samples.back();
     for (int i = 0; i < t; i++)

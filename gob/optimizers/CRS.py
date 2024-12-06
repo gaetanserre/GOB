@@ -29,4 +29,5 @@ class CRS(Optimizer):
 
         x = np.random.uniform(lb, ub)
         best = opt.optimize(x)
+        print(opt.get_param())
         return (best, f(best))

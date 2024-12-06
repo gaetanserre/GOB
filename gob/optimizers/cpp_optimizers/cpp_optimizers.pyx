@@ -16,16 +16,19 @@ cdef extern from "include/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
     pair[vector[double], double] py_minimize(PyObject* f)
+    vector[double] get_best_per_iter()
 
 cdef extern from "include/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
     CAdaLIPO_P(vector[vector[double]] bounds, int n_eval, int window_size, double max_slope)
     pair[vector[double], double] py_minimize(PyObject* f)
+    vector[double] get_best_per_iter()
 
 cdef extern from "include/CMA_ES.hh":
   cdef cppclass CCMA_ES "CMA_ES":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
     pair[vector[double], double] py_minimize(PyObject* f)
+    vector[double] get_best_per_iter()
 
 cdef extern from "include/SBS.hh":
   cdef cppclass CSBS "SBS":
@@ -38,6 +41,7 @@ cdef extern from "include/SBS.hh":
       double lr
     )
     pair[vector[double], double] py_minimize(PyObject* f)
+    vector[double] get_best_per_iter()
 
 cdef extern from "include/AdaRankOpt.hh":
   cdef cppclass CAdaRankOpt "AdaRankOpt":
@@ -49,6 +53,7 @@ cdef extern from "include/AdaRankOpt.hh":
       bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
+    vector[double] get_best_per_iter()
 
 # Python interface
 
@@ -56,19 +61,27 @@ cdef class PRS:
   cdef CPRS *thisptr
   def __cinit__(self, bounds, int n_eval=1000):
     self.thisptr = new CPRS(bounds, n_eval)
+  
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
 
+  def get_best_per_iter(self):
+    return self.thisptr.get_best_per_iter()
+
 cdef class AdaLIPO_P:
   cdef CAdaLIPO_P *thisptr
   def __cinit__(self, bounds, int n_eval=1000, int window_size=5, double max_slope=600):
     self.thisptr = new CAdaLIPO_P(bounds, n_eval, window_size, max_slope)
+  
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
+
+  def get_best_per_iter(self):
+    return self.thisptr.get_best_per_iter()
 
 cdef class CMA_ES:
   cdef CCMA_ES *thisptr
@@ -79,6 +92,9 @@ cdef class CMA_ES:
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
+
+  def get_best_per_iter(self):
+    return self.thisptr.get_best_per_iter()
 
 cdef class SBS:
   cdef CSBS *thisptr
@@ -98,6 +114,9 @@ cdef class SBS:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
 
+  def get_best_per_iter(self):
+    return self.thisptr.get_best_per_iter()
+
 cdef class AdaRankOpt:
   cdef CAdaRankOpt *thisptr
   def __cinit__(self, bounds, int n_eval=1000, int max_degree=40, int max_samples=10000, bool verbose=False):
@@ -107,6 +126,9 @@ cdef class AdaRankOpt:
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
+  
+  def get_best_per_iter(self):
+    return self.thisptr.get_best_per_iter()
 
 def create_rect_bounds(lb, ub, n):
     return create_rect_bounds_(lb, ub, n)

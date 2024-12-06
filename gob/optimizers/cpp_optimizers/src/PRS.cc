@@ -20,6 +20,7 @@ result_eigen PRS::minimize(function<double(dyn_vector x)> f)
       best_sample = x;
       first = false;
     }
+    this->best_per_iter.push_back(min);
   }
   return make_pair(best_sample, min);
 }

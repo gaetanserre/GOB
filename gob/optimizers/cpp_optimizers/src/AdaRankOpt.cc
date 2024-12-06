@@ -80,6 +80,8 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
       }
     }
 
+    this->best_per_iter.push_back(-samples.back().second);
+
     while (degree < this->max_degree)
     {
       if (this->is_polyhedral_set_empty(samples, degree))

@@ -76,6 +76,8 @@ result_eigen SBS::minimize(function<double(dyn_vector x)> f)
 
       for (int j = 0; j < this->n_particles; j++)
         particles.row(j) = clip_vector(particles.row(j), this->bounds);
+
+      this->best_per_iter.push_back(min_vec(all_evals));
     }
   }
   int argmin = argmin_vec(all_evals);
