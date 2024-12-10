@@ -12,6 +12,7 @@ class MLSL(Optimizer):
     def __init__(self, bounds, n_eval=1000):
         super().__init__("MLSL", bounds)
         self.n_eval = n_eval
+        self.opt = nlopt.opt(nlopt.GN_MLSL, len(self.bounds))
 
     def minimize(self, f):
         def f_(x, grad):
@@ -21,13 +22,15 @@ class MLSL(Optimizer):
 
         lb = self.bounds[:, 0]
         ub = self.bounds[:, 1]
-        opt = nlopt.opt(nlopt.GN_MLSL, len(self.bounds))
-        opt.set_min_objective(f_)
-        opt.set_lower_bounds(lb)
-        opt.set_upper_bounds(ub)
-        opt.set_maxeval(self.n_eval)
-        opt.set_local_optimizer(nlopt.opt(nlopt.LN_COBYLA, len(self.bounds)))
+        self.opt.set_min_objective(f_)
+        self.opt.set_lower_bounds(lb)
+        self.opt.set_upper_bounds(ub)
+        self.opt.set_maxeval(self.n_eval)
+        self.opt.set_local_optimizer(nlopt.opt(nlopt.LN_COBYLA, len(self.bounds)))
 
         x = np.random.uniform(lb, ub)
-        best = opt.optimize(x)
+        best = self.opt.optimize(x)
         return (best, f(best))
+
+    def set_stop_criteria(self, stop_criteria):
+        self.opt.set_stopval(stop_criteria)

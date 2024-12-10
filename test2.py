@@ -2,10 +2,14 @@ from gob.benchmarks import *
 from gob.optimizers import *
 import numpy as np
 
-opt = CRS(np.array([[-10, 10], [-10, 10]]), 10)
+opt = MLSL(np.array([[-1, 1], [-1, 1]]), 1000)
 
-res = opt.minimize(Square())
+# opt.set_stop_criteria(0.01)
 
-print(res)
+f = Square()
+
+res = opt.minimize(f)
+
+print(res, f.n)
 
 # print(opt.get_best_per_iter())

@@ -80,7 +80,8 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
       }
     }
 
-    this->best_per_iter.push_back(-samples.back().second);
+    if (this->has_stop_criteria && -samples.back().second <= this->stop_criteria)
+      break;
 
     while (degree < this->max_degree)
     {

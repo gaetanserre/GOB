@@ -14,5 +14,5 @@ class AdaLIPO_P(Optimizer):
     def minimize(self, f):
         return self.c_opt.minimize(f)
 
-    def get_best_per_iter(self):
-        return self.c_opt.get_best_per_iter()
+    def set_stop_criteria(self, stop_criteria):
+        self.c_opt.set_stop_criteria(stop_criteria)

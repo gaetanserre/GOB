@@ -21,6 +21,11 @@ result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
   CMAParameters<> cmaparams(m0, this->sigma);
   cmaparams.set_max_iter(this->n_eval);
 
+  if (this->has_stop_criteria)
+  {
+    cmaparams.set_ftarget(this->stop_criteria);
+  }
+
   FitFunc f_ = [&f](const double *x, const int N)
   {
     dyn_vector xvec = dyn_vector::Map(x, N);
@@ -30,11 +35,6 @@ result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
 
   vector<Candidate> candidates = opt.candidates();
   Candidate best_candidate = candidates[0];
-
-  for (int i = candidates.size() - 1; i >= 0; i--)
-  {
-    this->best_per_iter.push_back(candidates[i].get_fvalue());
-  }
 
   return make_pair(best_candidate.get_x_dvec(), best_candidate.get_fvalue());
 }
