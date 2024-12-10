@@ -46,5 +46,5 @@ class PyGKLS(Benchmark):
             case "ND":
                 self.f = self.gkls_function.get_nd_f
 
-    def __call__(self, x):
+    def expr(self, x):
         return self.f(x)

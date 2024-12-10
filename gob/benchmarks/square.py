@@ -13,7 +13,7 @@ class Square(Benchmark):
     def __init__(self):
         super().__init__("Square", 0)
 
-    def __call__(self, x):
+    def expr(self, x):
         return x.T @ x
 
     def gradient(self, x):

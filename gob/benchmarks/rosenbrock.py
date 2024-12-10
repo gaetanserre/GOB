@@ -14,5 +14,5 @@ class Rosenbrock(Benchmark):
     def __init__(self):
         super().__init__("Rosenbrock", 0)
 
-    def __call__(self, x):
+    def expr(self, x):
         return np.sum(100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2)

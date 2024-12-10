@@ -20,6 +20,23 @@ class Benchmark:
     def __init__(self, name, min):
         self.name = name
         self.min = min
+        self.n = 0
+
+    def expr(self, x):
+        """
+        The expression of the function.
+
+        Parameters
+        ----------
+        x : array_like
+            The point at which to evaluate the function.
+
+        Returns
+        -------
+        float
+            The value of the function at `x`.
+        """
+        pass
 
     def __call__(self, x):
         """
@@ -29,8 +46,14 @@ class Benchmark:
         ----------
         x : array_like
             The point at which to evaluate the function.
+
+        Returns
+        -------
+        float
+            The value of the function at `x`.
         """
-        pass
+        self.n += 1
+        return self.expr(x)
 
     def gradient(self, x):
         """

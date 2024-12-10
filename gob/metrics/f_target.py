@@ -20,7 +20,9 @@ def f_target(f, bounds, p):
     """
     d = bounds.shape[0]
     x = np.random.uniform(bounds[:, 0], bounds[:, 1], (1_000_000, d))
+    n = f.n
     fx = [f(xi) for xi in x]
+    f.n = n
     if not hasattr(f, "min") or f.min is None:
         mn = np.min(fx)
         f.min = mn

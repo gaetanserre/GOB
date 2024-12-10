@@ -14,5 +14,5 @@ class Rastrigin(Benchmark):
     def __init__(self):
         super().__init__("Rastrigin", 0)
 
-    def __call__(self, x):
+    def expr(self, x):
         return 10 * x.shape[0] + np.sum(x**2 - 10 * np.cos(2 * np.pi * x))
