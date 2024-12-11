@@ -44,52 +44,67 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
 
   sort(samples.begin(), samples.end(), compare_pair);
 
+  dyn_vector last_sample = samples.back().first;
+
   for (int t = 1; t < this->n_eval; t++)
   {
-    if (Bernoulli(this->re, 0.1))
+    if (t % 2 == 1 && this->bobyqa)
     {
-      dyn_vector x = unif_random_vector(this->re, this->bounds);
-      samples.push_back(make_pair(x, -f(x)));
+      result_eigen bobyqa_res = run_bobyqa(this->bounds, last_sample, this->bobyqa_maxfun, &f);
+      samples.push_back(make_pair(bobyqa_res.first, -bobyqa_res.second));
       sort(samples.begin(), samples.end(), compare_pair);
     }
     else
     {
-      int nb_samples = 0;
-      while (true)
+      if (Bernoulli(this->re, 0.1))
       {
         dyn_vector x = unif_random_vector(this->re, this->bounds);
-        double f_x_tmp = samples.back().second + 1;
-        samples.push_back(make_pair(x, f_x_tmp));
-        if (this->is_polyhedral_set_empty(samples, degree))
+        samples.push_back(make_pair(x, -f(x)));
+        last_sample = x;
+        sort(samples.begin(), samples.end(), compare_pair);
+      }
+      else
+      {
+        int nb_samples = 0;
+        while (true)
         {
-          samples[samples.size() - 1].second = -f(x);
-          sort(samples.begin(), samples.end(), compare_pair);
-          break;
-        }
-        else
-          samples.pop_back();
+          dyn_vector x = unif_random_vector(this->re, this->bounds);
+          double f_x_tmp = samples.back().second + 1;
+          samples.push_back(make_pair(x, f_x_tmp));
+          if (this->is_polyhedral_set_empty(samples, degree))
+          {
+            samples[samples.size() - 1].second = -f(x);
+            last_sample = x;
+            sort(samples.begin(), samples.end(), compare_pair);
+            break;
+          }
+          else
+            samples.pop_back();
 
-        nb_samples++;
+          nb_samples++;
 
-        if (nb_samples > this->max_samples)
-        {
-          if (this->verbose)
-            printf("Warning: AdaRankOpt could not converge. Early stopping at iteration %d with degree %d.\n", t, degree);
-          return make_pair(samples.back().first, -samples.back().second);
+          if (nb_samples > this->max_samples)
+          {
+            if (this->verbose)
+              printf("Warning: AdaRankOpt could not converge. Early stopping at iteration %d with degree %d.\n", t, degree);
+            return make_pair(samples.back().first, -samples.back().second);
+          }
         }
       }
-    }
 
-    if (this->has_stop_criteria && -samples.back().second <= this->stop_criteria)
-      break;
-
-    while (degree < this->max_degree)
-    {
-      if (this->is_polyhedral_set_empty(samples, degree))
+      if (this->has_stop_criteria && -samples.back().second <= this->stop_criteria)
         break;
 
-      degree++;
+      while (degree < this->max_degree)
+      {
+        if (this->is_polyhedral_set_empty(samples, degree))
+          break;
+
+        degree++;
+      }
     }
+    if (this->has_stop_criteria && -samples.back().second <= this->stop_criteria)
+      break;
   }
   return make_pair(samples.back().first, -samples.back().second);
 }

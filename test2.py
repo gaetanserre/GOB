@@ -1,15 +1,21 @@
 from gob.benchmarks import *
 from gob.optimizers import *
-import numpy as np
+from gob import create_bounds
 
-opt = MLSL(np.array([[-1, 1], [-1, 1]]), 1000)
+opt = AdaRankOpt(
+    create_bounds(2, -5, 5),
+    1000,
+    bobyqa=True,
+    bobyqa_maxfun=50,
+    verbose=True,
+)
 
-# opt.set_stop_criteria(0.01)
+# opt.set_stop_criteria(10)
+
+pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", deterministic=True)
 
 f = Square()
 
-res = opt.minimize(f)
+res = opt.minimize(pygkls)
 
-print(res, f.n)
-
-# print(opt.get_best_per_iter())
+print(res, pygkls.n)

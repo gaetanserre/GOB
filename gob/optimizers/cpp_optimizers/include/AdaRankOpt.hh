@@ -3,16 +3,19 @@
  */
 
 #include "optimizer.hh"
+#include "bobyqa.hh"
 #include "Simplex.hh"
 
 class AdaRankOpt : public Optimizer
 {
 public:
-  AdaRankOpt(vec_bounds bounds, int n_eval = 1000, int max_degree = 40, int max_samples = 10000, bool verbose = false) : Optimizer(bounds, "AdaRankOpt")
+  AdaRankOpt(vec_bounds bounds, int n_eval = 1000, int max_degree = 40, int max_samples = 10000, bool bobyqa = true, int bobyqa_maxfun = 100, bool verbose = false) : Optimizer(bounds, "AdaRankOpt")
   {
     this->n_eval = n_eval;
     this->max_degree = max_degree;
     this->max_samples = max_samples;
+    this->bobyqa = bobyqa;
+    this->bobyqa_maxfun = bobyqa_maxfun;
     this->verbose = verbose;
 
     this->param = new glp_smcp();
@@ -26,6 +29,8 @@ public:
   int n_eval;
   int max_degree;
   int max_samples;
+  bool bobyqa;
+  int bobyqa_maxfun;
   bool verbose;
   glp_smcp *param;
 

@@ -20,7 +20,14 @@ cdef extern from "include/PRS.hh":
 
 cdef extern from "include/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
-    CAdaLIPO_P(vector[vector[double]] bounds, int n_eval, int window_size, double max_slope)
+    CAdaLIPO_P(
+      vector[vector[double]] bounds,
+      int n_eval,
+      int window_size,
+      double max_slope,
+      bool bobyqa,
+      int bobyqa_maxfun
+    )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criteria(double stop_criteria)
 
@@ -50,7 +57,9 @@ cdef extern from "include/AdaRankOpt.hh":
       int n_eval,
       int max_degree,
       int max_samples,
-      bool verbose
+      bool verbose,
+      bool bobyqa,
+      int bobyqa_maxfun
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criteria(double stop_criteria)
@@ -72,8 +81,16 @@ cdef class PRS:
 
 cdef class AdaLIPO_P:
   cdef CAdaLIPO_P *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, int window_size=5, double max_slope=600):
-    self.thisptr = new CAdaLIPO_P(bounds, n_eval, window_size, max_slope)
+  def __cinit__(
+      self,
+      bounds,
+      int n_eval=1000,
+      int window_size=5,
+      double max_slope=600,
+      bool bobyqa=True,
+      int bobyqa_maxfun=100
+    ):
+    self.thisptr = new CAdaLIPO_P(bounds, n_eval, window_size, max_slope, bobyqa, bobyqa_maxfun)
   
   def minimize(self, f):
     py_init()
@@ -119,8 +136,17 @@ cdef class SBS:
 
 cdef class AdaRankOpt:
   cdef CAdaRankOpt *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, int max_degree=40, int max_samples=10000, bool verbose=False):
-    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_samples, verbose)
+  def __cinit__(
+      self,
+      bounds,
+      int n_eval=1000,
+      int max_degree=40,
+      int max_samples=10000,
+      bool bobyqa=True,
+      int bobyqa_maxfun=100,
+      bool verbose=False
+    ):
+    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_samples, bobyqa, bobyqa_maxfun, verbose)
   
   def minimize(self, f):
     py_init()

@@ -20,6 +20,8 @@ class PyGKLS(Benchmark):
         deterministic=False,
         smoothness="D",
     ):
+        super().__init__("PyGKLS", global_min)
+
         self.gkls_function = GKLS(
             dim,
             num_minima,
@@ -29,7 +31,6 @@ class PyGKLS(Benchmark):
             global_radius,
             deterministic,
         )
-        super().__init__("PyGKLS", global_min)
         match smoothness:
             case "D":
                 self.f = self.gkls_function.get_d_f

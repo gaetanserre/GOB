@@ -3,6 +3,7 @@
  */
 
 #include "AdaLIPO_P.hh"
+#include "bobyqa.hh"
 
 bool AdaLIPO_P::slope_stop_condition(deque<int> last_nb_samples)
 {
@@ -57,49 +58,57 @@ result_eigen AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
 
   for (int t = 1; t < this->n_eval; t++)
   {
-    if (Bernoulli(this->re, p(t)))
+    if (t % 2 == 1 && this->bobyqa)
     {
-      dyn_vector x = unif_random_vector(this->re, this->bounds);
-      nb_samples++;
-      last_nb_samples[last_nb_samples.size() - 1] = nb_samples;
-      samples.push_back(x);
-      values.push_back(-f(x));
+      result_eigen bobyqa_res = run_bobyqa(this->bounds, samples.back(), this->bobyqa_maxfun, &f);
+      values.push_back(-bobyqa_res.second);
+      samples.push_back(bobyqa_res.first);
     }
     else
     {
-      while (true)
+      if (Bernoulli(this->re, p(t)))
       {
         dyn_vector x = unif_random_vector(this->re, this->bounds);
         nb_samples++;
         last_nb_samples[last_nb_samples.size() - 1] = nb_samples;
-        if (lipo_condition(x, samples, values, k_hat))
+        samples.push_back(x);
+        values.push_back(-f(x));
+      }
+      else
+      {
+        while (true)
         {
-          samples.push_back(x);
-          values.push_back(-f(x));
-          break;
-        }
+          dyn_vector x = unif_random_vector(this->re, this->bounds);
+          nb_samples++;
+          last_nb_samples[last_nb_samples.size() - 1] = nb_samples;
+          if (lipo_condition(x, samples, values, k_hat))
+          {
+            samples.push_back(x);
+            values.push_back(-f(x));
+            break;
+          }
 
-        if (this->slope_stop_condition(last_nb_samples))
-        {
-          return return_procedure(samples, values);
+          if (this->slope_stop_condition(last_nb_samples))
+          {
+            return return_procedure(samples, values);
+          }
         }
       }
-    }
 
+      double value = values.back();
+      dyn_vector x = samples.back();
+      for (int i = 0; i < t; i++)
+      {
+        ratios.push_back(abs(value - values[i]) / (x - samples[i]).norm());
+      }
+      int i = ceil(log(max_vec(ratios)) / log(1 + alpha));
+      k_hat = pow(1 + alpha, i);
+
+      last_nb_samples.pop_front();
+      last_nb_samples.push_back(0);
+    }
     if (this->has_stop_criteria && -max_vec(values) <= this->stop_criteria)
       break;
-
-    double value = values.back();
-    dyn_vector x = samples.back();
-    for (int i = 0; i < t; i++)
-    {
-      ratios.push_back(abs(value - values[i]) / (x - samples[i]).norm());
-    }
-    int i = ceil(log(max_vec(ratios)) / log(1 + alpha));
-    k_hat = pow(1 + alpha, i);
-
-    last_nb_samples.pop_front();
-    last_nb_samples.push_back(0);
   }
   return return_procedure(samples, values);
 }

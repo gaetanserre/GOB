@@ -8,10 +8,19 @@ from .cpp_optimizers import AdaRankOpt as C_AdaRankOpt
 
 class AdaRankOpt(Optimizer):
     def __init__(
-        self, bounds, n_eval=1000, max_degree=8, max_samples=800, verbose=False
+        self,
+        bounds,
+        n_eval=1000,
+        max_degree=8,
+        max_samples=800,
+        bobyqa=True,
+        bobyqa_maxfun=50,
+        verbose=False,
     ):
         super().__init__("AdaRankOpt", bounds)
-        self.c_opt = C_AdaRankOpt(bounds, n_eval, max_degree, max_samples, verbose)
+        self.c_opt = C_AdaRankOpt(
+            bounds, n_eval, max_degree, max_samples, bobyqa, bobyqa_maxfun, verbose
+        )
 
     def minimize(self, f):
         return self.c_opt.minimize(f)
