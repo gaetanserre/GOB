@@ -24,6 +24,11 @@ public:
     param->it_lim = 100;
   };
 
+  ~AdaRankOpt()
+  {
+    delete param;
+  };
+
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_eval;

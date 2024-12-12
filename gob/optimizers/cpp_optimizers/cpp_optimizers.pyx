@@ -78,6 +78,9 @@ cdef class PRS:
 
   def set_stop_criteria(self, stop_criteria):
     self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
 
 cdef class AdaLIPO_P:
   cdef CAdaLIPO_P *thisptr
@@ -99,6 +102,9 @@ cdef class AdaLIPO_P:
   
   def set_stop_criteria(self, stop_criteria):
     self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
 
 cdef class CMA_ES:
   cdef CCMA_ES *thisptr
@@ -112,6 +118,9 @@ cdef class CMA_ES:
   
   def set_stop_criteria(self, stop_criteria):
     self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
 
 cdef class SBS:
   cdef CSBS *thisptr
@@ -133,6 +142,9 @@ cdef class SBS:
 
   def set_stop_criteria(self, stop_criteria):
     self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
 
 cdef class AdaRankOpt:
   cdef CAdaRankOpt *thisptr
@@ -155,6 +167,9 @@ cdef class AdaRankOpt:
   
   def set_stop_criteria(self, stop_criteria):
     self.thisptr.set_stop_criteria(stop_criteria)
+
+  def __del__(self):
+    del self.thisptr
 
 def create_rect_bounds(lb, ub, n):
     return create_rect_bounds_(lb, ub, n)

@@ -16,3 +16,6 @@ class CMA_ES(Optimizer):
 
     def set_stop_criteria(self, stop_criteria):
         self.c_opt.set_stop_criteria(stop_criteria)
+
+    def __del__(self):
+        del self.c_opt
