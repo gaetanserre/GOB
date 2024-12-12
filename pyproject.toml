@@ -4,8 +4,7 @@ version = "0.0.1"
 dependencies = [
   "numpy==2.1.3",
   "Cython==3.0.11",
-  "nlopt==2.8.0",
-  "scikit-learn==1.5.1",
+  "nlopt==2.9.0",
   "prettytable==3.10.2",
   "bayesian-optimization==1.5.1",
   "gkls",
