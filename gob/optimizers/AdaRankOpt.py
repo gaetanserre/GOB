@@ -18,8 +18,17 @@ class AdaRankOpt(Optimizer):
         verbose=False,
     ):
         super().__init__("AdaRankOpt", bounds)
+        if n_eval <= bobyqa_maxfun:
+            bobyqa = False
+
         self.c_opt = C_AdaRankOpt(
-            bounds, n_eval, max_degree, max_samples, bobyqa, bobyqa_maxfun, verbose
+            bounds,
+            n_eval if not bobyqa else (2 * n_eval) // (bobyqa_maxfun + 1),
+            max_degree,
+            max_samples,
+            bobyqa,
+            bobyqa_maxfun,
+            verbose,
         )
 
     def minimize(self, f):

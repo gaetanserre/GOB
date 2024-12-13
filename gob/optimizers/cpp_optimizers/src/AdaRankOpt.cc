@@ -50,7 +50,7 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
   {
     if (t % 2 == 1 && this->bobyqa)
     {
-      result_eigen bobyqa_res = run_bobyqa(this->bounds, last_sample, this->bobyqa_maxfun, &f);
+      result_eigen bobyqa_res = run_bobyqa(this->bounds, last_sample, this->bobyqa_maxfun, f);
       samples.push_back(make_pair(bobyqa_res.first, -bobyqa_res.second));
       sort(samples.begin(), samples.end(), compare_pair);
     }

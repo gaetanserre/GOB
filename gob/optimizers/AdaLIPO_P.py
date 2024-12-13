@@ -17,6 +17,9 @@ class AdaLIPO_P(Optimizer):
         bobyqa_maxfun=50,
     ):
         super().__init__("AdaLIPO+", bounds)
+        if n_eval <= bobyqa_maxfun:
+            bobyqa = False
+
         self.c_opt = C_AdaLIPO_P(
             bounds,
             n_eval if not bobyqa else (2 * n_eval) // (bobyqa_maxfun + 1),

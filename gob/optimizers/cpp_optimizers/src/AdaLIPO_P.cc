@@ -60,7 +60,7 @@ result_eigen AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
   {
     if (t % 2 == 1 && this->bobyqa)
     {
-      result_eigen bobyqa_res = run_bobyqa(this->bounds, samples.back(), this->bobyqa_maxfun, &f);
+      result_eigen bobyqa_res = run_bobyqa(this->bounds, samples.back(), this->bobyqa_maxfun, f);
       values.push_back(-bobyqa_res.second);
       samples.push_back(bobyqa_res.first);
     }
