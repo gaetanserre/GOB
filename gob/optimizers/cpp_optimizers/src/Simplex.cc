@@ -53,5 +53,6 @@ int simplex(Eigen::MatrixXd M, glp_smcp *param)
   glp_simplex(lp, param);
   int status = glp_get_status(lp);
   glp_delete_prob(lp);
+  glp_free_env();
   return status;
 }
