@@ -6,6 +6,18 @@
 #include "libcmaes/cmaes.h"
 using namespace libcmaes;
 
+void CMA_ES::transform_bounds(vec_bounds bounds)
+{
+  const int dim = this->bounds.size();
+  this->lbounds = new double[dim];
+  this->ubounds = new double[dim];
+  for (int i = 0; i < dim; i++)
+  {
+    this->lbounds[i] = 0;
+    this->ubounds[i] = 1;
+  }
+}
+
 result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
 {
   if (this->m0.size() == 0)
@@ -18,23 +30,23 @@ result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
     }
   }
 
-  CMAParameters<> cmaparams(m0, this->sigma);
-  cmaparams.set_max_iter(this->n_eval);
-
+  GenoPheno<pwqBoundStrategy> gp(this->lbounds, this->ubounds, this->m0.size());
+  CMAParameters<GenoPheno<pwqBoundStrategy>> cmaparams(this->m0, this->sigma, -1, 0, gp);
   if (this->has_stop_criteria)
   {
     cmaparams.set_ftarget(this->stop_criteria);
   }
+  cmaparams.set_max_fevals(this->n_eval);
 
   FitFunc f_ = [&f](const double *x, const int N)
   {
     dyn_vector xvec = dyn_vector::Map(x, N);
     return f(xvec);
   };
-  auto opt = cmaes<>(f_, cmaparams);
 
-  vector<Candidate> candidates = opt.candidates();
-  Candidate best_candidate = candidates[0];
+  CMASolutions cmasols = cmaes<GenoPheno<pwqBoundStrategy>>(f_, cmaparams);
+  dyn_vector best_x = gp.pheno(cmasols.get_best_seen_candidate().get_x_dvec());
+  double best_f = cmasols.get_best_seen_candidate().get_fvalue();
 
-  return make_pair(best_candidate.get_x_dvec(), best_candidate.get_fvalue());
+  return make_pair(best_x, best_f);
 }
