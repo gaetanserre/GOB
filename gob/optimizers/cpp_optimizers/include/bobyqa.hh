@@ -90,7 +90,12 @@ extern "C"
       const long maxfun,
       double *w);
 
-  extern result_eigen run_bobyqa(const vec_bounds bounds, const dyn_vector x, const int maxfun, function<double(dyn_vector x)> &f);
+  extern result_eigen run_bobyqa(
+      const vec_bounds bounds,
+      const dyn_vector x,
+      const double radius,
+      const int maxfun,
+      function<double(dyn_vector x)> &f);
 
 #ifdef __cplusplus
 }

@@ -64,7 +64,12 @@ BobyqaClosure make_closure(F &function)
   return BobyqaClosure{&function, &Wrap::call};
 }
 
-result_eigen run_bobyqa(const vec_bounds bounds, const dyn_vector x_dyn, const int maxfun, function<double(dyn_vector x)> &f)
+result_eigen run_bobyqa(
+    const vec_bounds bounds,
+    const dyn_vector x_dyn,
+    const double radius,
+    const int maxfun,
+    function<double(dyn_vector x)> &f)
 {
   auto closure = make_closure(f);
   const long variables_count = x_dyn.size();
@@ -81,8 +86,8 @@ result_eigen run_bobyqa(const vec_bounds bounds, const dyn_vector x_dyn, const i
     lower_bound[i] = bounds[i][0];
     upper_bound[i] = bounds[i][1];
   }
-  const double initial_trust_region_radius = 1e-3;
-  const double final_trust_region_radius = 1e-8;
+  const double initial_trust_region_radius = radius;
+  const double final_trust_region_radius = radius / 1e5;
   const size_t working_space_size = BOBYQA_WORKING_SPACE_SIZE(
       variables_count, number_of_interpolation_conditions);
   vector<double> working_space(working_space_size);

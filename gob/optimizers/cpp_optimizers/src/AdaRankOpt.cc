@@ -5,6 +5,7 @@
 #include "AdaRankOpt.hh"
 #include "PolynomialFeatures.hh"
 #include "Simplex.hh"
+#include "trust_regions.hh"
 
 Eigen::MatrixXd AdaRankOpt::polynomial_matrix(vector<pair<dyn_vector, double>> &samples, int degree)
 {
@@ -23,88 +24,74 @@ Eigen::MatrixXd AdaRankOpt::polynomial_matrix(vector<pair<dyn_vector, double>> &
   return M;
 }
 
-bool AdaRankOpt::is_polyhedral_set_empty(vector<pair<dyn_vector, double>> &samples, int degree)
+namespace AdaRankOpt_trust
 {
-  Eigen::MatrixXd M = this->polynomial_matrix(samples, degree);
-  return simplex(M, this->param) == GLP_NOFEAS;
+  bool decision(
+      vector<pair<dyn_vector, double>> samples,
+      dyn_vector x, vector<void *> data,
+      vector<void (*)(void)> functions)
+  {
+    if (samples.size() == 0)
+      return true;
+    int *degree = (int *)data[0];
+    glp_smcp *param = (glp_smcp *)data[1];
+    Eigen::MatrixXd (*polynomial_matrix)(vector<pair<dyn_vector, double>>, int) =
+        (Eigen::MatrixXd(*)(vector<pair<dyn_vector, double>>, int))functions[0];
+    double f_x_tmp = samples.back().second + 1;
+    samples.push_back(make_pair(x, f_x_tmp));
+    Eigen::MatrixXd M = polynomial_matrix(samples, *degree);
+    samples.pop_back();
+    return simplex(M, param) == GLP_NOFEAS;
+  }
+
+  void callback(
+      vector<pair<dyn_vector, double>> samples,
+      vector<void *> data,
+      vector<void (*)(void)> functions)
+  {
+    if (samples.size() >= 2)
+    {
+      int *degree = (int *)data[0];
+      glp_smcp *param = (glp_smcp *)data[1];
+      int *max_degree = (int *)data[2];
+      Eigen::MatrixXd (*polynomial_matrix)(vector<pair<dyn_vector, double>>, int) =
+          (Eigen::MatrixXd(*)(vector<pair<dyn_vector, double>>, int))functions[0];
+      while (*degree < *max_degree)
+      {
+        Eigen::MatrixXd M = polynomial_matrix(samples, *degree);
+        if (simplex(M, param) == GLP_NOFEAS)
+          break;
+
+        *degree = *degree + 1;
+      }
+    }
+  }
 }
 
 result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
 {
   int degree = 1;
 
-  vector<pair<dyn_vector, double>> samples;
-  dyn_vector x = unif_random_vector(this->re, this->bounds);
-  samples.push_back(make_pair(x, -f(x)));
+  vector<void *> data(3);
+  data[0] = (void *)&degree;
+  data[1] = (void *)this->param;
+  data[2] = (void *)&this->max_degree;
+  vector<void (*)(void)> functions(1);
+  functions[0] = (void (*)(void))&AdaRankOpt::polynomial_matrix;
 
-  auto compare_pair = [](pair<dyn_vector, double> a, pair<dyn_vector, double> b) -> bool
-  {
-    return a.second < b.second;
-  };
+  TrustRegions tr = TrustRegions(
+      this->bounds,
+      this->n_eval,
+      this->max_samples,
+      this->trust_region_radius,
+      this->bobyqa_eval,
+      data,
+      functions,
+      &AdaRankOpt_trust::decision,
+      &AdaRankOpt_trust::callback);
 
-  sort(samples.begin(), samples.end(), compare_pair);
+  if (this->has_stop_criteria)
+    tr.set_stop_criteria(this->stop_criteria);
 
-  dyn_vector last_sample = samples.back().first;
-
-  for (int t = 1; t < this->n_eval; t++)
-  {
-    if (t % 2 == 1 && this->bobyqa)
-    {
-      result_eigen bobyqa_res = run_bobyqa(this->bounds, last_sample, this->bobyqa_maxfun, f);
-      samples.push_back(make_pair(bobyqa_res.first, -bobyqa_res.second));
-      sort(samples.begin(), samples.end(), compare_pair);
-    }
-    else
-    {
-      if (Bernoulli(this->re, 0.1))
-      {
-        dyn_vector x = unif_random_vector(this->re, this->bounds);
-        samples.push_back(make_pair(x, -f(x)));
-        last_sample = x;
-        sort(samples.begin(), samples.end(), compare_pair);
-      }
-      else
-      {
-        int nb_samples = 0;
-        while (true)
-        {
-          dyn_vector x = unif_random_vector(this->re, this->bounds);
-          double f_x_tmp = samples.back().second + 1;
-          samples.push_back(make_pair(x, f_x_tmp));
-          if (this->is_polyhedral_set_empty(samples, degree))
-          {
-            samples[samples.size() - 1].second = -f(x);
-            last_sample = x;
-            sort(samples.begin(), samples.end(), compare_pair);
-            break;
-          }
-          else
-            samples.pop_back();
-
-          nb_samples++;
-
-          if (nb_samples > this->max_samples)
-          {
-            if (this->verbose)
-              printf("Warning: AdaRankOpt could not converge. Early stopping at iteration %d with degree %d.\n", t, degree);
-            return make_pair(samples.back().first, -samples.back().second);
-          }
-        }
-      }
-
-      if (this->has_stop_criteria && -samples.back().second <= this->stop_criteria)
-        break;
-
-      while (degree < this->max_degree)
-      {
-        if (this->is_polyhedral_set_empty(samples, degree))
-          break;
-
-        degree++;
-      }
-    }
-    if (this->has_stop_criteria && -samples.back().second <= this->stop_criteria)
-      break;
-  }
-  return make_pair(samples.back().first, -samples.back().second);
+  return tr.minimize(f);
 }

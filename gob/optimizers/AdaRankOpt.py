@@ -11,23 +11,26 @@ class AdaRankOpt(Optimizer):
         self,
         bounds,
         n_eval=1000,
-        max_degree=8,
         max_samples=800,
-        bobyqa=True,
-        bobyqa_maxfun=50,
+        max_degree=15,
+        trust_region_radius=0.1,
+        bobyqa_eval=10,
         verbose=False,
     ):
         super().__init__("AdaRankOpt", bounds)
-        if n_eval <= bobyqa_maxfun:
-            bobyqa = False
+
+        if n_eval // bobyqa_eval < 2:
+            raise ValueError(
+                "The number of evaluations should be at least twice the number of evaluations for the BOBYQA optimizer"
+            )
 
         self.c_opt = C_AdaRankOpt(
             bounds,
-            n_eval if not bobyqa else (2 * n_eval) // (bobyqa_maxfun + 1),
-            max_degree,
+            n_eval // bobyqa_eval,
             max_samples,
-            bobyqa,
-            bobyqa_maxfun,
+            max_degree,
+            trust_region_radius,
+            bobyqa_eval,
             verbose,
         )
 

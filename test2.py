@@ -5,17 +5,27 @@ from gob import create_bounds
 opt = AdaRankOpt(
     create_bounds(2, -5, 5),
     1000,
-    bobyqa=True,
-    bobyqa_maxfun=50,
+    trust_region_radius=1e-3,
     verbose=True,
 )
 
-# opt.set_stop_criteria(10)
+opt.set_stop_criteria(-10)
 
-pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", deterministic=True)
+pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="D", deterministic=True)
 
-f = Square()
+f = pygkls  # Square()
 
-res = opt.minimize(pygkls)
+res = opt.minimize(f)
 
-print(res, pygkls.n)
+print(res, f.n, f.min)
+
+f.n = 0
+
+opt = CMA_ES(
+    create_bounds(2, -5, 5),
+    1000,
+)
+
+res = opt.minimize(f)
+
+print(res, f.n, f.min)

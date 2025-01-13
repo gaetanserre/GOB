@@ -23,10 +23,10 @@ cdef extern from "include/AdaLIPO_P.hh":
     CAdaLIPO_P(
       vector[vector[double]] bounds,
       int n_eval,
-      int window_size,
-      double max_slope,
-      bool bobyqa,
-      int bobyqa_maxfun
+      int max_samples,
+      double trust_region_radius,
+      int bobyqa_eval,
+      bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criteria(double stop_criteria)
@@ -55,11 +55,11 @@ cdef extern from "include/AdaRankOpt.hh":
     CAdaRankOpt(
       vector[vector[double]] bounds,
       int n_eval,
-      int max_degree,
       int max_samples,
-      bool verbose,
-      bool bobyqa,
-      int bobyqa_maxfun
+      int max_degree,
+      double trust_region_radius,
+      int bobyqa_eval,
+      bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criteria(double stop_criteria)
@@ -88,12 +88,18 @@ cdef class AdaLIPO_P:
       self,
       bounds,
       int n_eval=1000,
-      int window_size=5,
-      double max_slope=600,
-      bool bobyqa=True,
-      int bobyqa_maxfun=100
+      int max_samples=800,
+      double trust_region_radius=0.1,
+      int bobyqa_eval=10,
+      bool verbose=False
     ):
-    self.thisptr = new CAdaLIPO_P(bounds, n_eval, window_size, max_slope, bobyqa, bobyqa_maxfun)
+    self.thisptr = new CAdaLIPO_P(
+        bounds,
+        n_eval,
+        max_samples,
+        trust_region_radius,
+        bobyqa_eval,
+        verbose)
   
   def minimize(self, f):
     py_init()
@@ -152,13 +158,20 @@ cdef class AdaRankOpt:
       self,
       bounds,
       int n_eval=1000,
-      int max_degree=40,
-      int max_samples=10000,
-      bool bobyqa=True,
-      int bobyqa_maxfun=100,
+      int max_samples=800,
+      int max_degree=80,
+      double trust_region_radius=0.1,
+      int bobyqa_eval=10,
       bool verbose=False
     ):
-    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_samples, bobyqa, bobyqa_maxfun, verbose)
+    self.thisptr = new CAdaRankOpt(
+        bounds,
+        n_eval,
+        max_samples,
+        max_degree,
+        trust_region_radius,
+        bobyqa_eval,
+        verbose)
   
   def minimize(self, f):
     py_init()

@@ -13,8 +13,8 @@ void CMA_ES::transform_bounds(vec_bounds bounds)
   this->ubounds = new double[dim];
   for (int i = 0; i < dim; i++)
   {
-    this->lbounds[i] = 0;
-    this->ubounds[i] = 1;
+    this->lbounds[i] = this->bounds[i][0];
+    this->ubounds[i] = this->bounds[i][1];
   }
 }
 

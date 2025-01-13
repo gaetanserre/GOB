@@ -11,22 +11,24 @@ class AdaLIPO_P(Optimizer):
         self,
         bounds,
         n_eval=1000,
-        window_slope=5,
-        max_slope=600,
-        bobyqa=True,
-        bobyqa_maxfun=50,
+        max_samples=800,
+        trust_region_radius=0.1,
+        bobyqa_eval=10,
+        verbose=False,
     ):
         super().__init__("AdaLIPO+", bounds)
-        if n_eval <= bobyqa_maxfun:
-            bobyqa = False
+        if n_eval // bobyqa_eval < 2:
+            raise ValueError(
+                "The number of evaluations should be at least twice the number of evaluations for the BOBYQA optimizer"
+            )
 
         self.c_opt = C_AdaLIPO_P(
             bounds,
-            n_eval if not bobyqa else (2 * n_eval) // (bobyqa_maxfun + 1),
-            window_slope,
-            max_slope,
-            bobyqa,
-            bobyqa_maxfun,
+            n_eval // bobyqa_eval,
+            max_samples,
+            trust_region_radius,
+            bobyqa_eval,
+            verbose,
         )
 
     def minimize(self, f):
