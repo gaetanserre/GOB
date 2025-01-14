@@ -2,7 +2,7 @@ name: Build GOB
 
 on:
   push:
-    branches: [ "main", "dev"]
+    branches: [ "main"]
     tags:
       - 'v*'
   pull_request:

@@ -14,7 +14,7 @@ class Levy(Benchmark):
     def __init__(self):
         super().__init__("Levy", 0)
 
-    def __call__(self, x):
+    def expr(self, x):
         w = 1 + (x - 1) / 4
         return (
             np.sin(np.pi * w[0]) ** 2

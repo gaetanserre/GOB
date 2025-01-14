@@ -21,3 +21,9 @@ class SBS(Optimizer):
 
     def minimize(self, f):
         return self.c_opt.minimize(f)
+
+    def set_stop_criteria(self, stop_criteria):
+        self.c_opt.set_stop_criteria(stop_criteria)
+
+    def __del__(self):
+        del self.c_opt

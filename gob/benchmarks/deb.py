@@ -14,5 +14,5 @@ class Deb(Benchmark):
     def __init__(self):
         super().__init__("Deb N.1", -1)
 
-    def __call__(self, x):
+    def expr(self, x):
         return -np.sum(np.sin(5 * np.pi * x) ** 6) / x.shape[0]

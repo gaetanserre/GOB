@@ -1,6 +1,6 @@
 #include "Simplex.hh"
 
-double simplex(Eigen::MatrixXd M, glp_smcp *param)
+int simplex(Eigen::MatrixXd M, glp_smcp *param)
 {
   glp_prob *lp = glp_create_prob();
   glp_set_obj_dir(lp, GLP_MIN);
@@ -51,5 +51,8 @@ double simplex(Eigen::MatrixXd M, glp_smcp *param)
   glp_load_matrix(lp, size_constraints_matrices - 1, ia, ja, ar);
 
   glp_simplex(lp, param);
-  return glp_get_status(lp);
+  int status = glp_get_status(lp);
+  glp_delete_prob(lp);
+  glp_free_env();
+  return status;
 }

@@ -14,7 +14,7 @@ class Ackley(Benchmark):
     def __init__(self):
         super().__init__("Ackley", 0)
 
-    def __call__(self, x):
+    def expr(self, x):
         a = 20
         b = 0.2
         c = 1

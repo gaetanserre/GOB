@@ -90,7 +90,7 @@ class OptBuild(build_ext):
             "&& cp -r glpk-5.0/src/**/*.c src/glpk "
             "&& cp -r glpk-5.0/src/**/*.h include/glpk "
             "&& cp -r glpk-5.0/src/*.h include/glpk "
-            "&& rm -rf glpk-5.0 glpk-5.0.tar.gz"
+            "&& rm -rf glpk-5.0 glpk-5.0.tar.gz src/glpk/main.c"
         )
 
         ext_dir = Path(self.get_ext_fullpath(ext.name)).parent.absolute()

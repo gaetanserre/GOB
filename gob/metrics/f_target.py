@@ -19,12 +19,14 @@ def f_target(f, bounds, p):
         The proportion.
     """
     d = bounds.shape[0]
-    x = np.random.uniform(bounds[:, 0], bounds[:, 1], (100_000, d))
-    fx = [-f(xi) for xi in x]
+    x = np.random.uniform(bounds[:, 0], bounds[:, 1], (1_000_000, d))
+    n = f.n
+    fx = [f(xi) for xi in x]
+    f.n = n
     if not hasattr(f, "min") or f.min is None:
-        mx = np.max(fx)
-        f.min = -mx
+        mn = np.min(fx)
+        f.min = mn
     else:
-        mx = -f.min
+        mn = f.min
     mean_val = np.mean(fx)
-    return -(mx - (mx - mean_val) * (1 - p))
+    return mn + (mean_val - mn) * (1 - p)

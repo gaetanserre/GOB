@@ -14,7 +14,7 @@ class Michalewicz(Benchmark):
     def __init__(self):
         super().__init__("Michalewicz", None)
 
-    def __call__(self, x):
+    def expr(self, x):
         dim = x.shape[0]
         id_ = np.arange(1, dim + 1)
         return -np.sum(np.sin(x) * np.sin(id_ * x**2 / np.pi) ** (2 * 10))

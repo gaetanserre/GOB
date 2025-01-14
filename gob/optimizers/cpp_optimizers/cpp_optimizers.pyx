@@ -16,16 +16,26 @@ cdef extern from "include/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
     pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criteria(double stop_criteria)
 
 cdef extern from "include/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
-    CAdaLIPO_P(vector[vector[double]] bounds, int n_eval, int window_size, double max_slope)
+    CAdaLIPO_P(
+      vector[vector[double]] bounds,
+      int n_eval,
+      int max_samples,
+      double trust_region_radius,
+      int bobyqa_eval,
+      bool verbose
+    )
     pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criteria(double stop_criteria)
 
 cdef extern from "include/CMA_ES.hh":
   cdef cppclass CCMA_ES "CMA_ES":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
     pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criteria(double stop_criteria)
 
 cdef extern from "include/SBS.hh":
   cdef cppclass CSBS "SBS":
@@ -38,17 +48,21 @@ cdef extern from "include/SBS.hh":
       double lr
     )
     pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criteria(double stop_criteria)
 
 cdef extern from "include/AdaRankOpt.hh":
   cdef cppclass CAdaRankOpt "AdaRankOpt":
     CAdaRankOpt(
       vector[vector[double]] bounds,
       int n_eval,
+      int max_samples,
       int max_degree,
-      int max_tries,
+      double trust_region_radius,
+      int bobyqa_eval,
       bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criteria(double stop_criteria)
 
 # Python interface
 
@@ -56,19 +70,47 @@ cdef class PRS:
   cdef CPRS *thisptr
   def __cinit__(self, bounds, int n_eval=1000):
     self.thisptr = new CPRS(bounds, n_eval)
+  
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
 
+  def set_stop_criteria(self, stop_criteria):
+    self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
+
 cdef class AdaLIPO_P:
   cdef CAdaLIPO_P *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, int window_size=5, double max_slope=600):
-    self.thisptr = new CAdaLIPO_P(bounds, n_eval, window_size, max_slope)
+  def __cinit__(
+      self,
+      bounds,
+      int n_eval=1000,
+      int max_samples=800,
+      double trust_region_radius=0.1,
+      int bobyqa_eval=10,
+      bool verbose=False
+    ):
+    self.thisptr = new CAdaLIPO_P(
+        bounds,
+        n_eval,
+        max_samples,
+        trust_region_radius,
+        bobyqa_eval,
+        verbose)
+  
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
+  
+  def set_stop_criteria(self, stop_criteria):
+    self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
 
 cdef class CMA_ES:
   cdef CCMA_ES *thisptr
@@ -79,6 +121,12 @@ cdef class CMA_ES:
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
+  
+  def set_stop_criteria(self, stop_criteria):
+    self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
 
 cdef class SBS:
   cdef CSBS *thisptr
@@ -98,15 +146,43 @@ cdef class SBS:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
 
+  def set_stop_criteria(self, stop_criteria):
+    self.thisptr.set_stop_criteria(stop_criteria)
+  
+  def __del__(self):
+    del self.thisptr
+
 cdef class AdaRankOpt:
   cdef CAdaRankOpt *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, int max_degree=40, int max_tries=10000, bool verbose=False):
-    self.thisptr = new CAdaRankOpt(bounds, n_eval, max_degree, max_tries, verbose)
+  def __cinit__(
+      self,
+      bounds,
+      int n_eval=1000,
+      int max_samples=800,
+      int max_degree=80,
+      double trust_region_radius=0.1,
+      int bobyqa_eval=10,
+      bool verbose=False
+    ):
+    self.thisptr = new CAdaRankOpt(
+        bounds,
+        n_eval,
+        max_samples,
+        max_degree,
+        trust_region_radius,
+        bobyqa_eval,
+        verbose)
   
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
+  
+  def set_stop_criteria(self, stop_criteria):
+    self.thisptr.set_stop_criteria(stop_criteria)
+
+  def __del__(self):
+    del self.thisptr
 
 def create_rect_bounds(lb, ub, n):
     return create_rect_bounds_(lb, ub, n)
