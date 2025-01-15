@@ -3,6 +3,33 @@
  */
 
 #include "optimizer.hh"
+#include "Cover_Tree.hh"
+
+class Point
+{
+public:
+  Point(dyn_vector x)
+  {
+    this->x = x;
+  }
+
+  double distance(const Point &p) const
+  {
+    return (this->x - p.x).norm();
+  }
+
+  double operator==(const Point &p) const
+  {
+    return this->x == p.x;
+  }
+
+  void print()
+  {
+    print_vector(this->x);
+  }
+
+  dyn_vector x;
+};
 
 typedef bool (*decision_f)(
     vector<pair<dyn_vector, double>>,

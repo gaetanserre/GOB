@@ -5,21 +5,23 @@
 #include "trust_regions.hh"
 #include "bobyqa.hh"
 
-bool check_in_ball(vector<dyn_vector> centers, dyn_vector x, double radius)
+bool check_in_ball(const CoverTree<Point> &cTree, const dyn_vector &x, const double &radius)
 {
-  for (dyn_vector center : centers)
+  Point px = Point(x);
+  vector<Point> points = cTree.kNearestNeighbors(px, 1);
+  if (points.size() == 0)
   {
-    if ((center - x).norm() < radius)
-    {
-      return true;
-    }
+    return false;
   }
-  return false;
+  else
+  {
+    return points[0].distance(px) <= radius;
+  }
 }
 
 result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
 {
-  vector<dyn_vector> centers;
+  CoverTree<Point> cTree;
   vector<pair<dyn_vector, double>> samples;
 
   auto compare_pair = [](pair<dyn_vector, double> a, pair<dyn_vector, double> b) -> bool
@@ -35,10 +37,11 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
       dyn_vector x = unif_random_vector(this->re, this->bounds);
       count++;
       if (
-          !check_in_ball(centers, x, this->region_radius) &&
+          !check_in_ball(cTree, x, this->region_radius) &&
           (*this->decision)(samples, x, this->data, this->functions))
       {
-        centers.push_back(x);
+        Point px = Point(x);
+        cTree.insert(px);
         result_eigen bobyqa_res = run_bobyqa(
             this->bounds,
             x,

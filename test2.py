@@ -6,6 +6,7 @@ opt = AdaRankOpt(
     create_bounds(2, -5, 5),
     1000,
     trust_region_radius=1e-3,
+    bobyqa_eval=50,
     verbose=True,
 )
 
