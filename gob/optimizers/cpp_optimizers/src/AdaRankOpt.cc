@@ -61,7 +61,6 @@ namespace AdaRankOpt_trust
         Eigen::MatrixXd M = polynomial_matrix(samples, *degree);
         if (simplex(M, param) == GLP_NOFEAS)
           break;
-
         *degree = *degree + 1;
       }
     }
