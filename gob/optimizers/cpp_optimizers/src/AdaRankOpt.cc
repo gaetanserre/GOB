@@ -81,7 +81,7 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
   TrustRegions tr = TrustRegions(
       this->bounds,
       this->n_eval,
-      this->max_samples,
+      this->max_trials,
       this->trust_region_radius,
       this->bobyqa_eval,
       data,

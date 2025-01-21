@@ -11,7 +11,7 @@ class AdaRankOpt(Optimizer):
         self,
         bounds,
         n_eval=1000,
-        max_samples=800,
+        max_trials=800,
         max_degree=15,
         trust_region_radius=0.1,
         bobyqa_eval=10,
@@ -27,7 +27,7 @@ class AdaRankOpt(Optimizer):
         self.c_opt = C_AdaRankOpt(
             bounds,
             n_eval // bobyqa_eval,
-            max_samples,
+            max_trials,
             max_degree,
             trust_region_radius,
             bobyqa_eval,

@@ -10,13 +10,13 @@ class AdaLIPO_P : public Optimizer
 public:
   AdaLIPO_P(vec_bounds bounds,
             int n_eval = 1000,
-            int max_samples = 800,
+            int max_trials = 800,
             double trust_region_radius = 0.1,
             int bobyqa_eval = 10,
             bool verbose = false) : Optimizer(bounds, "AdaLIPO+")
   {
     this->n_eval = n_eval;
-    this->max_samples = max_samples;
+    this->max_trials = max_trials;
     this->trust_region_radius = trust_region_radius;
     this->bobyqa_eval = bobyqa_eval;
     this->verbose = verbose;
@@ -25,7 +25,7 @@ public:
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_eval;
-  int max_samples;
+  int max_trials;
   double trust_region_radius;
   int bobyqa_eval;
   bool verbose;

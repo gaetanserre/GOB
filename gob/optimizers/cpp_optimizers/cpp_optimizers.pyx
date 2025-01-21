@@ -23,7 +23,7 @@ cdef extern from "include/AdaLIPO_P.hh":
     CAdaLIPO_P(
       vector[vector[double]] bounds,
       int n_eval,
-      int max_samples,
+      int max_trials,
       double trust_region_radius,
       int bobyqa_eval,
       bool verbose
@@ -55,7 +55,7 @@ cdef extern from "include/AdaRankOpt.hh":
     CAdaRankOpt(
       vector[vector[double]] bounds,
       int n_eval,
-      int max_samples,
+      int max_trials,
       int max_degree,
       double trust_region_radius,
       int bobyqa_eval,
@@ -88,7 +88,7 @@ cdef class AdaLIPO_P:
       self,
       bounds,
       int n_eval=1000,
-      int max_samples=800,
+      int max_trials=800,
       double trust_region_radius=0.1,
       int bobyqa_eval=10,
       bool verbose=False
@@ -96,7 +96,7 @@ cdef class AdaLIPO_P:
     self.thisptr = new CAdaLIPO_P(
         bounds,
         n_eval,
-        max_samples,
+        max_trials,
         trust_region_radius,
         bobyqa_eval,
         verbose)
@@ -158,7 +158,7 @@ cdef class AdaRankOpt:
       self,
       bounds,
       int n_eval=1000,
-      int max_samples=800,
+      int max_trials=800,
       int max_degree=80,
       double trust_region_radius=0.1,
       int bobyqa_eval=10,
@@ -167,7 +167,7 @@ cdef class AdaRankOpt:
     self.thisptr = new CAdaRankOpt(
         bounds,
         n_eval,
-        max_samples,
+        max_trials,
         max_degree,
         trust_region_radius,
         bobyqa_eval,

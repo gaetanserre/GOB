@@ -47,7 +47,7 @@ public:
   TrustRegions(
       vec_bounds bounds,
       int n_eval,
-      int max_samples,
+      int max_trials,
       double region_radius,
       int bobyqa_eval,
       vector<void *> data,
@@ -57,7 +57,7 @@ public:
       : Optimizer(bounds, "Trust Regions")
   {
     this->n_eval = n_eval;
-    this->max_samples = max_samples;
+    this->max_trials = max_trials;
     this->region_radius = region_radius;
     this->bobyqa_eval = bobyqa_eval;
     this->data = data;
@@ -69,7 +69,7 @@ public:
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_eval;
-  int max_samples;
+  int max_trials;
   double region_radius;
   int bobyqa_eval;
   vector<void *> data;

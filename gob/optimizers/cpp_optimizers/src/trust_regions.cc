@@ -53,7 +53,7 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
         break;
       }
 
-      if (count >= this->max_samples)
+      if (count >= this->max_trials)
       {
         result_eigen best = samples.back();
         return make_pair(best.first, -best.second);

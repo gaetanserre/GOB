@@ -11,7 +11,7 @@ class AdaLIPO_P(Optimizer):
         self,
         bounds,
         n_eval=1000,
-        max_samples=800,
+        max_trials=800,
         trust_region_radius=0.1,
         bobyqa_eval=10,
         verbose=False,
@@ -25,7 +25,7 @@ class AdaLIPO_P(Optimizer):
         self.c_opt = C_AdaLIPO_P(
             bounds,
             n_eval // bobyqa_eval,
-            max_samples,
+            max_trials,
             trust_region_radius,
             bobyqa_eval,
             verbose,
