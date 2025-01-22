@@ -84,8 +84,8 @@ result_eigen AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
       &AdaLIPO_P_trust::decision,
       &AdaLIPO_P_trust::callback);
 
-  if (this->has_stop_criteria)
-    tr.set_stop_criteria(this->stop_criteria);
+  if (this->has_stop_criterion)
+    tr.set_stop_criterion(this->stop_criterion);
 
   return tr.minimize(f);
 }

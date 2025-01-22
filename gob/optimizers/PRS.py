@@ -14,8 +14,8 @@ class PRS(Optimizer):
     def minimize(self, f):
         return self.c_opt.minimize(f)
 
-    def set_stop_criteria(self, stop_criteria):
-        self.c_opt.set_stop_criteria(stop_criteria)
+    def set_stop_criterion(self, stop_criterion):
+        self.c_opt.set_stop_criterion(stop_criterion)
 
     def __del__(self):
         del self.c_opt

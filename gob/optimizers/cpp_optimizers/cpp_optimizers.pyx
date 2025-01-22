@@ -16,7 +16,7 @@ cdef extern from "include/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
     pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criteria(double stop_criteria)
+    void set_stop_criterion(double stop_criterion)
 
 cdef extern from "include/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
@@ -29,13 +29,13 @@ cdef extern from "include/AdaLIPO_P.hh":
       bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criteria(double stop_criteria)
+    void set_stop_criterion(double stop_criterion)
 
 cdef extern from "include/CMA_ES.hh":
   cdef cppclass CCMA_ES "CMA_ES":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
     pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criteria(double stop_criteria)
+    void set_stop_criterion(double stop_criterion)
 
 cdef extern from "include/SBS.hh":
   cdef cppclass CSBS "SBS":
@@ -48,7 +48,7 @@ cdef extern from "include/SBS.hh":
       double lr
     )
     pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criteria(double stop_criteria)
+    void set_stop_criterion(double stop_criterion)
 
 cdef extern from "include/AdaRankOpt.hh":
   cdef cppclass CAdaRankOpt "AdaRankOpt":
@@ -62,7 +62,7 @@ cdef extern from "include/AdaRankOpt.hh":
       bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criteria(double stop_criteria)
+    void set_stop_criterion(double stop_criterion)
 
 # Python interface
 
@@ -76,8 +76,8 @@ cdef class PRS:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
 
-  def set_stop_criteria(self, stop_criteria):
-    self.thisptr.set_stop_criteria(stop_criteria)
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
   
   def __del__(self):
     del self.thisptr
@@ -106,8 +106,8 @@ cdef class AdaLIPO_P:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
   
-  def set_stop_criteria(self, stop_criteria):
-    self.thisptr.set_stop_criteria(stop_criteria)
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
   
   def __del__(self):
     del self.thisptr
@@ -122,8 +122,8 @@ cdef class CMA_ES:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
   
-  def set_stop_criteria(self, stop_criteria):
-    self.thisptr.set_stop_criteria(stop_criteria)
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
   
   def __del__(self):
     del self.thisptr
@@ -146,8 +146,8 @@ cdef class SBS:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
 
-  def set_stop_criteria(self, stop_criteria):
-    self.thisptr.set_stop_criteria(stop_criteria)
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
   
   def __del__(self):
     del self.thisptr
@@ -178,8 +178,8 @@ cdef class AdaRankOpt:
     cdef PyObject* pyob_ptr = <PyObject*>f
     return self.thisptr.py_minimize(pyob_ptr)
   
-  def set_stop_criteria(self, stop_criteria):
-    self.thisptr.set_stop_criteria(stop_criteria)
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
 
   def __del__(self):
     del self.thisptr

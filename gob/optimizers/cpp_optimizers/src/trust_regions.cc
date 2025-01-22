@@ -61,7 +61,7 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
     }
 
     result_eigen best = samples.back();
-    if (this->has_stop_criteria && -best.second <= this->stop_criteria)
+    if (this->has_stop_criterion && -best.second <= this->stop_criterion)
     {
       return make_pair(best.first, -best.second);
     }

@@ -10,7 +10,7 @@ opt = AdaRankOpt(
     verbose=True,
 )
 
-opt.set_stop_criteria(-10)
+# opt.set_stop_criterion(-10)
 
 pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="D", deterministic=True)
 

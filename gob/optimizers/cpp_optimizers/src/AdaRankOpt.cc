@@ -89,8 +89,8 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
       &AdaRankOpt_trust::decision,
       &AdaRankOpt_trust::callback);
 
-  if (this->has_stop_criteria)
-    tr.set_stop_criteria(this->stop_criteria);
+  if (this->has_stop_criterion)
+    tr.set_stop_criterion(this->stop_criterion);
 
   return tr.minimize(f);
 }
