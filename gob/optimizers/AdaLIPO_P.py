@@ -17,14 +17,16 @@ class AdaLIPO_P(Optimizer):
         verbose=False,
     ):
         super().__init__("AdaLIPO+", bounds)
-        if n_eval // bobyqa_eval < 2:
-            raise ValueError(
-                "The number of evaluations should be at least twice the number of evaluations for the BOBYQA optimizer"
-            )
+
+        if n_eval < bobyqa_eval:
+            bobyqa_eval = n_eval
+            n_eval = 1
+        else:
+            n_eval = n_eval // bobyqa_eval
 
         self.c_opt = C_AdaLIPO_P(
             bounds,
-            n_eval // bobyqa_eval,
+            n_eval,
             max_trials,
             trust_region_radius,
             bobyqa_eval,
