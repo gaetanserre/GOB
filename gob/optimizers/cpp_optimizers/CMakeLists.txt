@@ -15,7 +15,20 @@ endif()
 file(GLOB_RECURSE SRC_FILES src/*.cc src/*.cpp src/*.c)
 
 find_package(Eigen3 REQUIRED)
-find_package(Python COMPONENTS Development.Module REQUIRED)
+
+set(Python_EXECUTABLE "python" CACHE STRING "Path to the Python executable")
+
+execute_process(
+  COMMAND
+  ${Python_EXECUTABLE} -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+  OUTPUT_VARIABLE
+  Python_INCLUDE_DIRS
+  OUTPUT_STRIP_TRAILING_WHITESPACE
+)
+
+set(Python_INCLUDE_DIRS ${Python_INCLUDE_DIRS} CACHE STRING "" FORCE)
+message(STATUS "Python_EXECUTABLE: ${Python_EXECUTABLE}")
+message(STATUS "Python_INCLUDE_DIRS: ${Python_INCLUDE_DIRS}")
 
 include_directories(include include/glpk ${EIGEN3_INCLUDE_DIR} ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
 
