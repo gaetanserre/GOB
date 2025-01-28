@@ -11,7 +11,7 @@ class AdaRankOpt(Optimizer):
         self,
         bounds,
         n_eval=1000,
-        max_samples=800,
+        max_trials=800,
         max_degree=15,
         trust_region_radius=0.1,
         bobyqa_eval=10,
@@ -19,15 +19,16 @@ class AdaRankOpt(Optimizer):
     ):
         super().__init__("AdaRankOpt", bounds)
 
-        if n_eval // bobyqa_eval < 2:
-            raise ValueError(
-                "The number of evaluations should be at least twice the number of evaluations for the BOBYQA optimizer"
-            )
+        if n_eval < bobyqa_eval:
+            bobyqa_eval = n_eval
+            n_eval = 1
+        else:
+            n_eval = n_eval // bobyqa_eval
 
         self.c_opt = C_AdaRankOpt(
             bounds,
-            n_eval // bobyqa_eval,
-            max_samples,
+            n_eval,
+            max_trials,
             max_degree,
             trust_region_radius,
             bobyqa_eval,
@@ -37,8 +38,8 @@ class AdaRankOpt(Optimizer):
     def minimize(self, f):
         return self.c_opt.minimize(f)
 
-    def set_stop_criteria(self, stop_criteria):
-        self.c_opt.set_stop_criteria(stop_criteria)
+    def set_stop_criterion(self, stop_criterion):
+        self.c_opt.set_stop_criterion(stop_criterion)
 
     def __del__(self):
         del self.c_opt

@@ -77,7 +77,7 @@ result_eigen SBS::minimize(function<double(dyn_vector x)> f)
       for (int j = 0; j < this->n_particles; j++)
         particles.row(j) = clip_vector(particles.row(j), this->bounds);
 
-      if (this->has_stop_criteria && min_vec(all_evals) <= this->stop_criteria)
+      if (this->has_stop_criterion && min_vec(all_evals) <= this->stop_criterion)
         break;
     }
   }

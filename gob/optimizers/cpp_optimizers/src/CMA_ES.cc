@@ -32,9 +32,9 @@ result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
 
   GenoPheno<pwqBoundStrategy> gp(this->lbounds, this->ubounds, this->m0.size());
   CMAParameters<GenoPheno<pwqBoundStrategy>> cmaparams(this->m0, this->sigma, -1, 0, gp);
-  if (this->has_stop_criteria)
+  if (this->has_stop_criterion)
   {
-    cmaparams.set_ftarget(this->stop_criteria);
+    cmaparams.set_ftarget(this->stop_criterion);
   }
   cmaparams.set_max_fevals(this->n_eval);
 

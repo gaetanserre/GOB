@@ -11,6 +11,8 @@ sys.dont_write_bytecode = True
 
 from setuptools import Extension
 from setuptools.command.build_ext import build_ext
+from setuptools.command.build_ext import build_ext
+from importlib.machinery import EXTENSION_SUFFIXES
 
 
 def get_shared_lib_ext():
@@ -97,7 +99,7 @@ class OptBuild(build_ext):
         create_directory(ext_dir)
 
         pkg_name = "cpp_optimizers"
-        ext_suffix = os.popen("python3-config --extension-suffix").read().strip()
+        ext_suffix = EXTENSION_SUFFIXES[0]
         lib_name = ".".join((pkg_name + ext_suffix).split(".")[:-1])
 
         # Compile the Cython file
@@ -110,7 +112,7 @@ class OptBuild(build_ext):
             f"cd {cython_src_dir} "
             "&& mkdir -p build "
             "&& cd build "
-            f"&& cmake -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={lib_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. "
+            f"&& cmake -DPython_EXECUTABLE={sys.executable} -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={lib_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. "
             "&& make -j "
             f"&& mv lib{lib_name}{get_shared_lib_ext()} ../../{lib_name}.so "
             f"&& cd {ext.source_dir.as_posix()}"

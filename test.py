@@ -10,7 +10,7 @@ if __name__ == "__main__":
     opt = {
         "AdaRankOpt": {
             "n_eval": 1000,
-            "max_samples": 800,
+            "max_trials": 800,
             "max_degree": 80,
             "verbose": True,
         },

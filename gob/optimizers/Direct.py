@@ -32,5 +32,5 @@ class Direct(Optimizer):
         best = self.opt.optimize(x)
         return (best, f(best))
 
-    def set_stop_criteria(self, stop_criteria):
-        self.opt.set_stopval(stop_criteria)
+    def set_stop_criterion(self, stop_criterion):
+        self.opt.set_stopval(stop_criterion)

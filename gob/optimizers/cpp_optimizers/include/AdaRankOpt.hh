@@ -11,14 +11,14 @@ public:
   AdaRankOpt(
       vec_bounds bounds,
       int n_eval = 1000,
-      int max_samples = 800,
+      int max_trials = 800,
       int max_degree = 80,
       double trust_region_radius = 0.1,
       int bobyqa_eval = 10,
       bool verbose = false) : Optimizer(bounds, "AdaRankOpt")
   {
     this->n_eval = n_eval;
-    this->max_samples = max_samples;
+    this->max_trials = max_trials;
     this->max_degree = max_degree;
     this->trust_region_radius = trust_region_radius;
     this->bobyqa_eval = bobyqa_eval;
@@ -38,7 +38,7 @@ public:
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
   int n_eval;
-  int max_samples;
+  int max_trials;
   int max_degree;
   double trust_region_radius;
   int bobyqa_eval;

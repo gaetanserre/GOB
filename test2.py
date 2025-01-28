@@ -6,10 +6,11 @@ opt = AdaRankOpt(
     create_bounds(2, -5, 5),
     1000,
     trust_region_radius=1e-3,
+    bobyqa_eval=50,
     verbose=True,
 )
 
-opt.set_stop_criteria(-10)
+# opt.set_stop_criterion(-10)
 
 pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="D", deterministic=True)
 

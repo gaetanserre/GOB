@@ -21,7 +21,7 @@ result_eigen PRS::minimize(function<double(dyn_vector x)> f)
       first = false;
     }
 
-    if (this->has_stop_criteria && min < this->stop_criteria)
+    if (this->has_stop_criterion && min < this->stop_criterion)
     {
       break;
     }

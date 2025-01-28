@@ -61,7 +61,6 @@ namespace AdaRankOpt_trust
         Eigen::MatrixXd M = polynomial_matrix(samples, *degree);
         if (simplex(M, param) == GLP_NOFEAS)
           break;
-
         *degree = *degree + 1;
       }
     }
@@ -82,7 +81,7 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
   TrustRegions tr = TrustRegions(
       this->bounds,
       this->n_eval,
-      this->max_samples,
+      this->max_trials,
       this->trust_region_radius,
       this->bobyqa_eval,
       data,
@@ -90,8 +89,8 @@ result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
       &AdaRankOpt_trust::decision,
       &AdaRankOpt_trust::callback);
 
-  if (this->has_stop_criteria)
-    tr.set_stop_criteria(this->stop_criteria);
+  if (this->has_stop_criterion)
+    tr.set_stop_criterion(this->stop_criterion);
 
   return tr.minimize(f);
 }
