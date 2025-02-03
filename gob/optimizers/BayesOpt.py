@@ -9,6 +9,7 @@ import numpy as np
 
 class BayesOpt(Optimizer):
     def __init__(self, bounds, n_eval=100):
+        assert n_eval >= 2, "The number of evaluations must be at least 2."
         super().__init__("BayesOpt", bounds)
         self.n_eval = n_eval
 
@@ -18,6 +19,8 @@ class BayesOpt(Optimizer):
             verbose=0,
             allow_duplicate_points=False,
         )
+
+        self.stop_criterion = None
 
     @staticmethod
     def transform_bounds(domain):
@@ -33,9 +36,22 @@ class BayesOpt(Optimizer):
 
         return intermediate_fun
 
+    def set_stop_criterion(self, stop_criterion):
+        self.stop_criterion = stop_criterion
+
     def minimize(self, f):
+        init_points = min(5, self.n_eval)
         optimizer = self.create_optimizer(f)
-        optimizer.maximize(n_iter=self.n_eval)
+        if self.stop_criterion is not None:
+            optimizer.maximize(init_points=init_points, n_iter=1)
+            for _ in range(self.n_eval - init_points - 1):
+                if -optimizer.max["target"] <= self.stop_criterion:
+                    break
+                optimizer.maximize(init_points=0, n_iter=1)
+        else:
+            optimizer.maximize(
+                init_points=init_points, n_iter=self.n_eval - init_points
+            )
         x = []
         for v in optimizer.max["params"].values():
             x.append(v)
