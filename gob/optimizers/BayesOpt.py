@@ -9,7 +9,6 @@ import numpy as np
 
 class BayesOpt(Optimizer):
     def __init__(self, bounds, n_eval=100):
-        assert n_eval >= 2, "The number of evaluations must be at least 2."
         super().__init__("BayesOpt", bounds)
         self.n_eval = n_eval
 
