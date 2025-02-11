@@ -48,7 +48,7 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
             this->region_radius,
             this->bobyqa_eval,
             f);
-        samples.push_back(make_pair(bobyqa_res.first, -bobyqa_res.second));
+        samples.push_back({bobyqa_res.first, -bobyqa_res.second});
         sort(samples.begin(), samples.end(), compare_pair);
         break;
       }
@@ -56,14 +56,14 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
       if (count >= this->max_trials)
       {
         result_eigen best = samples.back();
-        return make_pair(best.first, -best.second);
+        return {best.first, -best.second};
       }
     }
 
     result_eigen best = samples.back();
     if (this->has_stop_criterion && -best.second <= this->stop_criterion)
     {
-      return make_pair(best.first, -best.second);
+      return {best.first, -best.second};
     }
 
     if (this->callback != nullptr)
@@ -73,5 +73,5 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
   }
 
   result_eigen best = samples.back();
-  return make_pair(best.first, -best.second);
+  return {best.first, -best.second};
 }

@@ -9,22 +9,22 @@ vector<double> empty_vector()
   return vector<double>(0);
 }
 
-double max_vec(vector<double> &v)
+double max_vec(const vector<double> &v)
 {
   return *max_element(v.begin(), v.end());
 }
 
-int argmax_vec(vector<double> &v)
+int argmax_vec(const vector<double> &v)
 {
   return distance(v.begin(), max_element(v.begin(), v.end()));
 }
 
-double min_vec(vector<double> &v)
+double min_vec(const vector<double> &v)
 {
   return *min_element(v.begin(), v.end());
 }
 
-int argmin_vec(vector<double> &v)
+int argmin_vec(const vector<double> &v)
 {
   return distance(v.begin(), min_element(v.begin(), v.end()));
 }
@@ -59,7 +59,7 @@ dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds)
   return x;
 }
 
-void print_vector(dyn_vector &x)
+void print_vector(const dyn_vector &x)
 {
   cout << '[';
   for (int i = 0; i < x.size() - 1; i++)
@@ -69,7 +69,7 @@ void print_vector(dyn_vector &x)
   cout << x(x.size() - 1) << ']' << endl;
 }
 
-void print_matrix(Eigen::MatrixXd &M)
+void print_matrix(const Eigen::MatrixXd &M)
 {
   cout << '[' << endl;
   for (int i = 0; i < M.rows(); i++)

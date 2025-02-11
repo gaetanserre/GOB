@@ -29,7 +29,4 @@ public:
   double trust_region_radius;
   int bobyqa_eval;
   bool verbose;
-
-private:
-  bool slope_stop_condition(deque<int> last_nb_samples);
 };

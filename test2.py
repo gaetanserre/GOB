@@ -2,31 +2,30 @@ from gob.benchmarks import *
 from gob.optimizers import *
 from gob import create_bounds
 
-opt = AdaRankOpt(
-    create_bounds(2, -5, 5),
-    1000,
-    trust_region_radius=1e-3,
-    bobyqa_eval=50,
-    verbose=True,
-)
+opt = ECP(create_bounds(2, -5, 5), 300)
 
 # opt.set_stop_criterion(-10)
 
-pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="D", deterministic=True)
+pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="ND", deterministic=True)
 
-f = pygkls  # Square()
+f = pygkls
 
-res = opt.minimize(f)
+res_mean = 0
+for _ in range(100):
+    res = opt.minimize(f)
+    res_mean += res[1]
+print(f"Results for {opt} : {res_mean / 100}")
 
-print(res, f.n, f.min)
 
 f.n = 0
 
-opt = CMA_ES(
+opt = AdaLIPO_P(
     create_bounds(2, -5, 5),
-    1000,
+    300,
 )
 
-res = opt.minimize(f)
-
-print(res, f.n, f.min)
+res_mean = 0
+for _ in range(100):
+    res = opt.minimize(f)
+    res_mean += res[1]
+print(f"Results for {opt} : {res_mean / 100}")

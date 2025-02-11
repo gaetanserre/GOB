@@ -12,6 +12,7 @@ from .Direct import Direct
 from .CRS import CRS
 from .MLSL import MLSL
 from .BayesOpt import BayesOpt
+from .ECP import ECP
 
 __all__ = [
     "PRS",
@@ -24,4 +25,5 @@ __all__ = [
     "CRS",
     "MLSL",
     "BayesOpt",
+    "ECP",
 ]

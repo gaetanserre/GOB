@@ -64,6 +64,19 @@ cdef extern from "include/AdaRankOpt.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
+cdef extern from "include/ECP.hh":
+  cdef cppclass CECP "ECP":
+    CECP(
+      vector[vector[double]] bounds,
+      int n_eval,
+      double epsilon,
+      double theta_init,
+      int C,
+      bool verbose
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
 # Python interface
 
 cdef class PRS:
@@ -171,6 +184,39 @@ cdef class AdaRankOpt:
         max_degree,
         trust_region_radius,
         bobyqa_eval,
+        verbose)
+  
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    return self.thisptr.py_minimize(pyob_ptr)
+  
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+  def __del__(self):
+    del self.thisptr
+
+def create_rect_bounds(lb, ub, n):
+    return create_rect_bounds_(lb, ub, n)
+
+cdef class ECP:
+  cdef CECP *thisptr
+  def __cinit__(
+      self,
+      bounds,
+      int n_eval=50,
+      double epsilon=1e-2,
+      double theta_init=1.001,
+      int C =1000,
+      bool verbose=False
+    ):
+    self.thisptr = new CECP(
+        bounds,
+        n_eval,
+        epsilon,
+        theta_init,
+        C,
         verbose)
   
   def minimize(self, f):

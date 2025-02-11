@@ -19,13 +19,13 @@ typedef pair<dyn_vector, double> result_eigen;
 
 extern vector<double> empty_vector();
 
-extern double max_vec(vector<double> &v);
+extern double max_vec(const vector<double> &v);
 
-extern double min_vec(vector<double> &v);
+extern double min_vec(const vector<double> &v);
 
-extern int argmax_vec(vector<double> &v);
+extern int argmax_vec(const vector<double> &v);
 
-extern int argmin_vec(vector<double> &v);
+extern int argmin_vec(const vector<double> &v);
 
 extern vec_bounds create_rect_bounds(double lb, double ub, int n);
 
@@ -33,9 +33,9 @@ extern double unif_random_double(default_random_engine &re, double lb, double ub
 
 extern dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds);
 
-extern void print_vector(dyn_vector &x);
+extern void print_vector(const dyn_vector &x);
 
-extern void print_matrix(Eigen::MatrixXd &M);
+extern void print_matrix(const Eigen::MatrixXd &M);
 
 extern PyArrayObject *vector_to_nparray(const dyn_vector &vec);
 
