@@ -36,8 +36,7 @@ result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
     {
       dyn_vector x = unif_random_vector(this->re, this->bounds);
       count++;
-      if (
-          !check_in_ball(cTree, x, this->region_radius) &&
+      if (!check_in_ball(cTree, x, this->region_radius) &&
           (*this->decision)(samples, x, this->data, this->functions))
       {
         Point px = Point(x);

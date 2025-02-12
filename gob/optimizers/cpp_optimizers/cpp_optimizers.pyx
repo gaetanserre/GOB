@@ -72,6 +72,9 @@ cdef extern from "include/ECP.hh":
       double epsilon,
       double theta_init,
       int C,
+      int max_trials,
+      double trust_region_radius,
+      int bobyqa_eval,
       bool verbose
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -209,6 +212,9 @@ cdef class ECP:
       double epsilon=1e-2,
       double theta_init=1.001,
       int C =1000,
+      int max_trials=1_000_000,
+      double trust_region_radius=0.1,
+      int bobyqa_eval=10,
       bool verbose=False
     ):
     self.thisptr = new CECP(
@@ -217,6 +223,9 @@ cdef class ECP:
         epsilon,
         theta_init,
         C,
+        max_trials,
+        trust_region_radius,
+        bobyqa_eval,
         verbose)
   
   def minimize(self, f):

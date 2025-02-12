@@ -3,57 +3,81 @@
  */
 
 #include "ECP.hh"
+#include "trust_regions.hh"
 
-bool decision(
-    const vector<dyn_vector> &points,
-    const vector<double> &values,
-    const dyn_vector &x,
-    const double &epsilon,
-    const function<double(dyn_vector x)> &f)
+namespace ECP_trust
 {
-  double max_values = max_vec(values);
-  vector<double> norms(points.size());
-  for (int i = 0; i < points.size(); i++)
+  bool decision(
+      vector<pair<dyn_vector, double>> samples,
+      dyn_vector x, vector<void *> data,
+      vector<void (*)(void)> functions)
   {
-    norms[i] = values[i] + epsilon * (x - points[i]).norm();
+    if (samples.size() == 0)
+      return true;
+
+    double *epsilon = (double *)data[0];
+    int *h1 = (int *)data[1];
+    int *h2 = (int *)data[2];
+    int *C = (int *)data[3];
+    double *theta = (double *)data[4];
+
+    *h2 = *h2 + 1;
+    if (*h2 - *h1 > *C)
+    {
+      *epsilon = *epsilon * *theta;
+      *h2 = 0;
+    }
+
+    vector<dyn_vector> points(samples.size());
+    vector<double> values(samples.size());
+    for (int i = 0; i < samples.size(); i++)
+    {
+      points[i] = samples[i].first;
+      values[i] = samples[i].second;
+    }
+
+    double max_values = max_vec(values);
+    vector<double> norms(points.size());
+    for (int i = 0; i < points.size(); i++)
+    {
+      norms[i] = values[i] + *epsilon * (x - points[i]).norm();
+    }
+    bool res = max_values <= min_vec(norms);
+    if (res)
+    {
+      *h1 = *h2;
+      *epsilon = *epsilon * *theta;
+      *h2 = 0;
+    }
+    return res;
   }
-  return max_values <= min_vec(norms);
-}
+};
 
 result_eigen ECP::minimize(function<double(dyn_vector x)> f)
 {
-  vector<dyn_vector> points;
-  vector<double> values;
-  dyn_vector x = unif_random_vector(this->re, this->bounds);
-  points.push_back(x);
-  values.push_back(-f(x));
-  int t = 1, h1 = 1, h2 = 0;
-  while (t < this->n_eval)
-  {
-    x = unif_random_vector(this->re, this->bounds);
-    h2++;
-    if ((h2 - h1) > this->C)
-    {
-      this->epsilon = this->epsilon * this->theta;
-      h2 = 0;
-    }
-    if (decision(points, values, x, this->epsilon, f))
-    {
-      points.push_back(x);
-      values.push_back(-f(x));
-      t++;
-      h1 = h2;
-      this->epsilon = this->epsilon * this->theta;
-      h2 = 0;
+  int h1 = 1, h2 = 0;
 
-      if (this->has_stop_criterion && -values.back() <= this->stop_criterion)
-      {
-        return {x, -values.back()};
-      }
-    }
-  }
+  vector<void *> data(5);
+  data[0] = (void *)&this->epsilon;
+  data[1] = (void *)&h1;
+  data[2] = (void *)&h2;
+  data[3] = (void *)&this->C;
+  data[4] = (void *)&this->theta;
 
-  int best_idx = argmax_vec(values);
+  vector<void (*)(void)> functions(0);
 
-  return {points[best_idx], -values[best_idx]};
+  TrustRegions tr = TrustRegions(
+      this->bounds,
+      this->n_eval,
+      10000000,
+      this->trust_region_radius,
+      this->bobyqa_eval,
+      data,
+      functions,
+      &ECP_trust::decision);
+
+  if (this->has_stop_criterion)
+    tr.set_stop_criterion(this->stop_criterion);
+
+  return tr.minimize(f);
 }
