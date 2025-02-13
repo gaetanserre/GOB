@@ -16,7 +16,7 @@ public:
       int max_trials = 1000000,
       double trust_region_radius = 0.1,
       int bobyqa_eval = 10,
-      bool verbose = false) : Optimizer(bounds, "ECP")
+      bool verbose = false) : Optimizer(bounds, "ECP+TR")
   {
     this->n_eval = n_eval;
     this->epsilon = epsilon;

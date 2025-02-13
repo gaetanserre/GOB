@@ -19,25 +19,8 @@ class ECP(Optimizer):
         bobyqa_eval=10,
         verbose=False,
     ):
-        super().__init__("ECP", bounds)
-
-        if n_eval < bobyqa_eval:
-            bobyqa_eval = n_eval
-            n_eval = 1
-        else:
-            n_eval = n_eval // bobyqa_eval
-
-        self.c_opt = C_ECP(
-            bounds,
-            n_eval,
-            epsilon,
-            theta_init,
-            C,
-            max_trials,
-            trust_region_radius,
-            bobyqa_eval,
-            verbose,
-        )
+        super().__init__("ECP+TR", bounds)
+        self.c_opt = C_ECP(bounds, n_eval, epsilon, theta_init, C, verbose)
 
     def minimize(self, f):
         return self.c_opt.minimize(f)
