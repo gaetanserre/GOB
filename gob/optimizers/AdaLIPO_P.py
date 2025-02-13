@@ -16,7 +16,7 @@ class AdaLIPO_P(Optimizer):
         bobyqa_eval=10,
         verbose=False,
     ):
-        super().__init__("AdaLIPO+", bounds)
+        super().__init__("AdaLIPO+TR", bounds)
 
         if n_eval < bobyqa_eval:
             bobyqa_eval = n_eval

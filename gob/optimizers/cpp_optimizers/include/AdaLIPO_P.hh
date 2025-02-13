@@ -13,7 +13,7 @@ public:
             int max_trials = 800,
             double trust_region_radius = 0.1,
             int bobyqa_eval = 10,
-            bool verbose = false) : Optimizer(bounds, "AdaLIPO+")
+            bool verbose = false) : Optimizer(bounds, "AdaLIPO+TR")
   {
     this->n_eval = n_eval;
     this->max_trials = max_trials;
