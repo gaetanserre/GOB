@@ -1,7 +1,7 @@
 # /bin/bash
 
 pkg_name=cpp_optimizers
-ext_suffix=$(python3-config --extension-suffix)
+ext_suffix=$(python -c "from importlib.machinery import EXTENSION_SUFFIXES; print(EXTENSION_SUFFIXES[0])")
 
 if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   shared_library_ext=.so
