@@ -26,5 +26,5 @@ result_eigen PRS::minimize(function<double(dyn_vector x)> f)
       break;
     }
   }
-  return make_pair(best_sample, min);
+  return {best_sample, min};
 }

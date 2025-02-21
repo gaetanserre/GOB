@@ -16,5 +16,5 @@ result Optimizer::py_minimize(PyObject *f)
   };
   result_eigen res = this->minimize(f_cpp);
   vector<double> x(res.first.data(), res.first.data() + res.first.size());
-  return make_pair(x, res.second);
+  return {x, res.second};
 }

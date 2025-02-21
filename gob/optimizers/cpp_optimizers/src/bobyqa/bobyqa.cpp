@@ -109,5 +109,5 @@ result_eigen run_bobyqa(
     x[i] = variables_values[i];
   }
 
-  return make_pair(x, result);
+  return {x, result};
 }

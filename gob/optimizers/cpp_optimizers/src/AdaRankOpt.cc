@@ -38,7 +38,7 @@ namespace AdaRankOpt_trust
     Eigen::MatrixXd (*polynomial_matrix)(vector<pair<dyn_vector, double>>, int) =
         (Eigen::MatrixXd(*)(vector<pair<dyn_vector, double>>, int))functions[0];
     double f_x_tmp = samples.back().second + 1;
-    samples.push_back(make_pair(x, f_x_tmp));
+    samples.push_back({x, f_x_tmp});
     Eigen::MatrixXd M = polynomial_matrix(samples, *degree);
     samples.pop_back();
     return simplex(M, param) == GLP_NOFEAS;

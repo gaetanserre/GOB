@@ -82,5 +82,5 @@ result_eigen SBS::minimize(function<double(dyn_vector x)> f)
     }
   }
   int argmin = argmin_vec(all_evals);
-  return make_pair(samples[argmin], all_evals[argmin]);
+  return {samples[argmin], all_evals[argmin]};
 }

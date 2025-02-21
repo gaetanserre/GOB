@@ -48,5 +48,5 @@ result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
   dyn_vector best_x = gp.pheno(cmasols.get_best_seen_candidate().get_x_dvec());
   double best_f = cmasols.get_best_seen_candidate().get_fvalue();
 
-  return make_pair(best_x, best_f);
+  return {best_x, best_f};
 }

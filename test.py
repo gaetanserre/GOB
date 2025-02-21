@@ -19,7 +19,7 @@ if __name__ == "__main__":
     }
     pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", deterministic=True)
     gob = GOB(
-        ["AdaRankOpt", "AdaLIPO+"],
+        ["AdaRankOpt", "AdaLIPO+TR"],
         ["Levy"],
         ["Proportion"],
         bounds=create_bounds(2, -10, 10, 2),

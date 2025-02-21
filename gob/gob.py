@@ -82,7 +82,7 @@ class GOB:
 
                     return CMA_ES(bounds=bounds, **options)
 
-                case "AdaLIPO+":
+                case "AdaLIPO+TR":
                     from .optimizers import AdaLIPO_P
 
                     return AdaLIPO_P(bounds=bounds, **options)
