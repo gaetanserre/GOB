@@ -26,9 +26,9 @@ int simplex(Eigen::MatrixXd M, glp_smcp *param)
 
   int size_constraints_matrices = 1 + n_variables + (n_constraints * n_variables);
 
-  int ia[size_constraints_matrices];
-  int ja[size_constraints_matrices];
-  double ar[size_constraints_matrices];
+  int *ia = new int[size_constraints_matrices];
+  int *ja = new int[size_constraints_matrices];
+  double *ar = new double[size_constraints_matrices];
 
   for (int i = 1; i <= n_variables; i++)
   {
@@ -54,5 +54,9 @@ int simplex(Eigen::MatrixXd M, glp_smcp *param)
   int status = glp_get_status(lp);
   glp_delete_prob(lp);
   glp_free_env();
+  delete[] ia;
+  delete[] ja;
+  delete[] ar;
+
   return status;
 }

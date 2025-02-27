@@ -1,7 +1,5 @@
 cmake_minimum_required(VERSION 3.28)
 project(optimizers)
-set(CMAKE_CXX_STANDARD 23)
-set(CMAKE_CXX_FLAGS "-O3 -fPIC")
 
 # Detect platform
 if(UNIX AND NOT APPLE)
@@ -15,6 +13,7 @@ endif()
 file(GLOB_RECURSE SRC_FILES src/*.cc src/*.cpp src/*.c)
 
 find_package(Eigen3 REQUIRED)
+message(STATUS "EIGEN3_INCLUDE_DIR: ${EIGEN3_INCLUDE_DIR}")
 
 set(Python_EXECUTABLE "python" CACHE STRING "Path to the Python executable")
 
@@ -32,7 +31,20 @@ message(STATUS "Python_INCLUDE_DIRS: ${Python_INCLUDE_DIRS}")
 
 include_directories(include include/glpk ${EIGEN3_INCLUDE_DIR} ${NUMPY_INCLUDE_DIRS} ${Python_INCLUDE_DIRS})
 
-add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
+if(WINDOWS)
+  set(CMAKE_CXX_STANDARD 17)
+  set(CMAKE_CXX_FLAGS_RELEASE "/O2")
+
+  # Find Python library
+  find_package(Python COMPONENTS Development.Module REQUIRED)
+  message(STATUS "Python_LIBRARIES: ${Python_LIBRARIES}")
+  add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
+  target_link_libraries(${EXT_NAME} ${Python_LIBRARIES})
+else()
+  set(CMAKE_CXX_STANDARD 23)
+  set(CMAKE_CXX_FLAGS "-fPIC -O3")
+  add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
+endif()
 
 # Set macOS-specific linker flags
 if(APPLE)
