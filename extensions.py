@@ -31,6 +31,13 @@ def create_directory(path: Path):
     return path
 
 
+def mkdir(dir):
+    if platform.system() == "Windows":
+        return f"mkdir {dir}"
+    else:
+        return f"mkdir -p {dir}"
+
+
 class OptBuildExtension(Extension):
     def __init__(self, name: str, version: str):
         super().__init__(name, sources=[])
@@ -57,6 +64,24 @@ class OptBuild(build_ext):
     def config(self):
         return "Debug" if self.debug else "Release"
 
+    def build_cma(self):
+        if platform.system() == "Windows":
+            return 'cmake -DLIBCMAES_BUILD_EXAMPLES=OFF -G "Visual Studio 17 2022" -A x64 .. && cmake --build . --config Release'
+        else:
+            return "cmake -DLIBCMAES_BUILD_EXAMPLES=OFF .. && make -j"
+
+    def build_gob(self, lib_name, pkg_name):
+        if platform.system() == "Windows":
+            return f'cmake -DPython_EXECUTABLE={sys.executable} -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={lib_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. -G "Visual Studio 17 2022" -A x64 && cmake --build . --config Release'
+        else:
+            return f"cmake -DPython_EXECUTABLE={sys.executable} -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={lib_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. && make -j"
+
+    def shared_lib_path(self, lib_name):
+        if platform.system() == "Windows":
+            return f"Release/{lib_name}{get_shared_lib_ext()}"
+        else:
+            return f"lib{lib_name}{get_shared_lib_ext()}"
+
     def build_extension(self, ext: Extension):
         cython_src_dir = Path("gob/optimizers/cpp_optimizers")
 
@@ -64,16 +89,15 @@ class OptBuild(build_ext):
         os.system(
             f"cd {cython_src_dir} "
             "&& rm -rf libcmaes "
-            "&& git clone https://github.com/CMA-ES/libcmaes.git "
+            "&& git clone https://github.com/gaetanserre/libcmaes "
             "&& cd libcmaes "
-            "&& mkdir -p build "
+            f"&& {mkdir('build')} "
             "&& cd build "
-            "&& cmake -DLIBCMAES_BUILD_EXAMPLES=OFF .. "
-            "&& make -j "
+            f"&& {self.build_cma()} "
             "&& cd ../.. "
             "&& cp -r libcmaes/include/libcmaes include "
             "&& cp -r libcmaes/build/include/libcmaes/* include/libcmaes "
-            "&& mkdir -p src/libcmaes "
+            f"&& cd src && {mkdir('libcmaes')} && cd .. "
             "&& cp libcmaes/src/**.cc src/libcmaes "
             "&& rm -rf libcmaes"
         )
@@ -83,12 +107,11 @@ class OptBuild(build_ext):
             "http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
             Path(cython_src_dir, "glpk-5.0.tar.gz"),
         )
-
         os.system(
             f"cd {cython_src_dir} "
             "&& tar -xvf glpk-5.0.tar.gz "
-            "&& mkdir -p src/glpk "
-            "&& mkdir -p include/glpk "
+            f"&& cd src && {mkdir('glpk')} && cd .. "
+            f"&& cd include && {mkdir('glpk')} && cd .. "
             "&& cp -r glpk-5.0/src/**/*.c src/glpk "
             "&& cp -r glpk-5.0/src/**/*.h include/glpk "
             "&& cp -r glpk-5.0/src/*.h include/glpk "
@@ -101,6 +124,7 @@ class OptBuild(build_ext):
         pkg_name = "cpp_optimizers"
         ext_suffix = EXTENSION_SUFFIXES[0]
         lib_name = ".".join((pkg_name + ext_suffix).split(".")[:-1])
+        pkg_ext = ".pyd" if platform.system() == "Windows" else ".so"
 
         # Compile the Cython file
         os.system(
@@ -110,11 +134,11 @@ class OptBuild(build_ext):
         # Compile the C++ files
         os.system(
             f"cd {cython_src_dir} "
-            "&& mkdir -p build "
+            f"rm -rf *{pkg_ext} "
+            f"&& {mkdir('build')} "
             "&& cd build "
-            f"&& cmake -DPython_EXECUTABLE={sys.executable} -DNUMPY_INCLUDE_DIRS={np.get_include()} -DEXT_NAME={lib_name} -DCYTHON_CPP_FILE={pkg_name}.cc .. "
-            "&& make -j "
-            f"&& mv lib{lib_name}{get_shared_lib_ext()} ../../{lib_name}.so "
+            f"&& {self.build_gob(lib_name, pkg_name)} "
+            f"&& mv {self.shared_lib_path(lib_name)} ../../{lib_name}{pkg_ext} "
             f"&& cd {ext.source_dir.as_posix()}"
         )
 

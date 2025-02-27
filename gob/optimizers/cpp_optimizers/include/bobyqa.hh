@@ -90,13 +90,6 @@ extern "C"
       const long maxfun,
       double *w);
 
-  extern result_eigen run_bobyqa(
-      const vec_bounds bounds,
-      const dyn_vector x,
-      const double radius,
-      const int maxfun,
-      function<double(dyn_vector x)> &f);
-
 #ifdef __cplusplus
 }
 #endif
@@ -105,3 +98,10 @@ extern "C"
   (npt + 5) * (npt + n) + 3 * n *(n + 5) / 2
 
 #endif // BOBYQA_H
+
+extern result_eigen run_bobyqa(
+    const vec_bounds bounds,
+    const dyn_vector x,
+    const double radius,
+    const int maxfun,
+    function<double(dyn_vector x)> &f);
