@@ -10,3 +10,4 @@ glpk
 gob.egg-info
 cpp_optimizers.cc
 dist
+.DS_Store

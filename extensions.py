@@ -134,7 +134,8 @@ class OptBuild(build_ext):
         # Compile the C++ files
         os.system(
             f"cd {cython_src_dir} "
-            f"rm -rf *{pkg_ext} "
+            "&& ls -la .. "
+            f"&& rm -rf ../*{pkg_ext} "
             f"&& {mkdir('build')} "
             "&& cd build "
             f"&& {self.build_gob(lib_name, pkg_name)} "
