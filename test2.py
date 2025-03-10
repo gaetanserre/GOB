@@ -17,7 +17,6 @@ for i in range(100):
     res_mean += res[1]
 print(f"Results for {opt} : {res_mean / 100}")
 
-
 f.n = 0
 
 res_mean = 0
