@@ -25,8 +25,7 @@ cdef extern from "include/AdaLIPO_P.hh":
       int n_eval,
       int max_trials,
       double trust_region_radius,
-      int bobyqa_eval,
-      bool verbose
+      int bobyqa_eval
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -58,8 +57,7 @@ cdef extern from "include/AdaRankOpt.hh":
       int max_trials,
       int max_degree,
       double trust_region_radius,
-      int bobyqa_eval,
-      bool verbose
+      int bobyqa_eval
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -74,8 +72,7 @@ cdef extern from "include/ECP.hh":
       int C,
       int max_trials,
       double trust_region_radius,
-      int bobyqa_eval,
-      bool verbose
+      int bobyqa_eval
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -106,16 +103,14 @@ cdef class AdaLIPO_P:
       int n_eval=1000,
       int max_trials=800,
       double trust_region_radius=0.1,
-      int bobyqa_eval=10,
-      bool verbose=False
+      int bobyqa_eval=10
     ):
     self.thisptr = new CAdaLIPO_P(
         bounds,
         n_eval,
         max_trials,
         trust_region_radius,
-        bobyqa_eval,
-        verbose)
+        bobyqa_eval)
   
   def minimize(self, f):
     py_init()
@@ -177,8 +172,7 @@ cdef class AdaRankOpt:
       int max_trials=800,
       int max_degree=80,
       double trust_region_radius=0.1,
-      int bobyqa_eval=10,
-      bool verbose=False
+      int bobyqa_eval=10
     ):
     self.thisptr = new CAdaRankOpt(
         bounds,
@@ -186,8 +180,7 @@ cdef class AdaRankOpt:
         max_trials,
         max_degree,
         trust_region_radius,
-        bobyqa_eval,
-        verbose)
+        bobyqa_eval)
   
   def minimize(self, f):
     py_init()
@@ -214,8 +207,7 @@ cdef class ECP:
       int C =1000,
       int max_trials=1_000_000,
       double trust_region_radius=0.1,
-      int bobyqa_eval=10,
-      bool verbose=False
+      int bobyqa_eval=10
     ):
     self.thisptr = new CECP(
         bounds,
@@ -225,8 +217,7 @@ cdef class ECP:
         C,
         max_trials,
         trust_region_radius,
-        bobyqa_eval,
-        verbose)
+        bobyqa_eval)
   
   def minimize(self, f):
     py_init()

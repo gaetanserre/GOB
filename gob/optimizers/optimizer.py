@@ -9,16 +9,6 @@ class Optimizer:
     """
 
     def __init__(self, name, bounds):
-        """
-        Initialize the optimizer.
-
-        Parameters
-        ----------
-        name : str
-            The name of the optimizer.
-        bounds : array_like of shape (n_variables, 2)
-            The bounds of the search space.
-        """
         self.name = name
         self.bounds = bounds
 
@@ -55,6 +45,31 @@ class Optimizer:
         f_ = lambda x: -f(x)
         res = self.minimize(f_)
         return res[0], -res[1]
+
+    def verbose_function(self, f):
+        """
+        Print the value of the function at each evaluation.
+
+        Parameters
+        ----------
+        f : Function
+            The objective function.
+
+        Returns
+        -------
+        function
+            A function that prints the value of the function at each evaluation.
+        """
+        i = 1
+
+        def f_(*args):
+            nonlocal i
+            r = f(*args)
+            print(f"{self.name} eval #{i} : {r}")
+            i += 1
+            return r
+
+        return f_
 
     def __str__(self):
         return self.name

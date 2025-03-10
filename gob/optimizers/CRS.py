@@ -9,9 +9,22 @@ import nlopt
 
 
 class CRS(Optimizer):
-    def __init__(self, bounds, n_eval=1000):
+    def __init__(self, bounds, n_eval=1000, verbose=False):
+        """
+        Interface for the CRS optimizer.
+
+        Parameters
+        ----------
+        bounds : ndarray
+            The bounds of the search space.
+        n_eval : int
+            The maximum number of function evaluations.
+        verbose : bool
+            Whether to print information about the optimization process.
+        """
         super().__init__("CRS", bounds)
         self.n_eval = n_eval
+        self.verbose = verbose
         self.opt = nlopt.opt(nlopt.GN_CRS2_LM, len(self.bounds))
 
     def minimize(self, f):
@@ -19,6 +32,9 @@ class CRS(Optimizer):
             if grad.size > 0:
                 grad[:] = f.gradient(x)
             return f(x)
+
+        if self.verbose:
+            f_ = self.verbose_function(f_)
 
         lb = self.bounds[:, 0]
         ub = self.bounds[:, 1]

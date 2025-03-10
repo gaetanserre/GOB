@@ -9,9 +9,23 @@ import nlopt
 
 
 class MLSL(Optimizer):
-    def __init__(self, bounds, n_eval=1000):
+    """
+    Interface for the MLSL optimizer.
+
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_eval : int
+        The maximum number of function evaluations.
+    verbose : bool
+        Whether to print information about the optimization process.
+    """
+
+    def __init__(self, bounds, n_eval=1000, verbose=False):
         super().__init__("MLSL", bounds)
         self.n_eval = n_eval
+        self.verbose = verbose
         self.opt = nlopt.opt(nlopt.GN_MLSL, len(self.bounds))
 
     def minimize(self, f):
@@ -19,6 +33,9 @@ class MLSL(Optimizer):
             if grad.size > 0:
                 grad[:] = f.gradient(x)
             return f(x)
+
+        if self.verbose:
+            f_ = self.verbose_function(f_)
 
         lb = self.bounds[:, 0]
         ub = self.bounds[:, 1]

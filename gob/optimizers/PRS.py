@@ -7,11 +7,26 @@ from .cpp_optimizers import PRS as C_PRS
 
 
 class PRS(Optimizer):
-    def __init__(self, bounds, n_eval=1000):
+    def __init__(self, bounds, n_eval=1000, verbose=False):
+        """
+        Interface for the PRS optimizer.
+
+        Parameters
+        ----------
+        bounds : ndarray
+            The bounds of the search space.
+        n_eval : int
+            The maximum number of function evaluations.
+        verbose : bool
+            Whether to print information about the optimization process.
+        """
         super().__init__("PRS", bounds)
         self.c_opt = C_PRS(bounds, n_eval)
+        self.verbose = verbose
 
     def minimize(self, f):
+        if self.verbose:
+            f = self.verbose_function(f)
         return self.c_opt.minimize(f)
 
     def set_stop_criterion(self, stop_criterion):

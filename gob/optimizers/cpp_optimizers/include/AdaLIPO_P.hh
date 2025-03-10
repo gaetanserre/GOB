@@ -12,14 +12,12 @@ public:
             int n_eval = 1000,
             int max_trials = 800,
             double trust_region_radius = 0.1,
-            int bobyqa_eval = 10,
-            bool verbose = false) : Optimizer(bounds, "AdaLIPO+TR")
+            int bobyqa_eval = 10) : Optimizer(bounds, "AdaLIPO+TR")
   {
     this->n_eval = n_eval;
     this->max_trials = max_trials;
     this->trust_region_radius = trust_region_radius;
     this->bobyqa_eval = bobyqa_eval;
-    this->verbose = verbose;
   };
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
@@ -28,5 +26,4 @@ public:
   int max_trials;
   double trust_region_radius;
   int bobyqa_eval;
-  bool verbose;
 };

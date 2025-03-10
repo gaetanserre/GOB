@@ -8,9 +8,23 @@ import numpy as np
 
 
 class BayesOpt(Optimizer):
-    def __init__(self, bounds, n_eval=100):
+    def __init__(self, bounds, n_eval=100, verbose=False):
+        """
+        Interface for the BayesOpt optimizer.
+
+        Parameters
+        ----------
+        bounds : ndarray
+            The bounds of the search space.
+        n_eval : int
+            The maximum number of function evaluations.
+        verbose : bool
+            Whether to print information about the optimization process.
+        """
+
         super().__init__("BayesOpt", bounds)
         self.n_eval = n_eval
+        self.verbose = verbose
 
         self.create_optimizer = lambda function: BayesianOptimization(
             f=self.transform_function(function),
@@ -40,7 +54,9 @@ class BayesOpt(Optimizer):
 
     def minimize(self, f):
         init_points = min(5, self.n_eval)
-        optimizer = self.create_optimizer(f)
+        optimizer = self.create_optimizer(
+            self.verbose_function(f) if self.verbose else f
+        )
         if self.stop_criterion is not None:
             optimizer.maximize(init_points=init_points, n_iter=1)
             for _ in range(self.n_eval - init_points - 1):

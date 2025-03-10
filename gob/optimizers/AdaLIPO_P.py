@@ -16,6 +16,24 @@ class AdaLIPO_P(Optimizer):
         bobyqa_eval=10,
         verbose=False,
     ):
+        """
+        Interface for the AdaLIPO+TR optimizer.
+
+        Parameters
+        ----------
+        bounds : ndarray
+            The bounds of the search space.
+        n_eval : int
+            The maximum number of function evaluations.
+        max_trials : int
+            The maximum number of potential candidates sampled at each iteration.
+        trust_region_radius : float
+            The trust region radius.
+        bobyqa_eval : int
+            The number of evaluations for the BOBYQA optimizer.
+        verbose : bool
+            Whether to print information about the optimization process.
+        """
         super().__init__("AdaLIPO+TR", bounds)
 
         if n_eval < bobyqa_eval:
@@ -30,10 +48,13 @@ class AdaLIPO_P(Optimizer):
             max_trials,
             trust_region_radius,
             bobyqa_eval,
-            verbose,
         )
 
+        self.verbose = verbose
+
     def minimize(self, f):
+        if self.verbose:
+            f = self.verbose_function(f)
         return self.c_opt.minimize(f)
 
     def set_stop_criterion(self, stop_criterion):
