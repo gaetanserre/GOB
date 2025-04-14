@@ -1,0 +1,1 @@
+[![CI](https://github.com/gaetanserre/GOB/actions/workflows/build.yml/badge.svg)](https://github.com/gaetanserre/GOB/actions/workflows/build.yml)
