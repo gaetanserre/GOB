@@ -39,6 +39,10 @@ class GOB:
         """
         if bounds is None:
             bounds = create_bounds(len(benchmarks), -1, 1, 2)
+
+        if len(bounds.shape) > 3:
+            bounds = np.array(bounds)
+
         self.bounds = bounds
 
         self.options = options
