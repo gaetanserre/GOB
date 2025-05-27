@@ -8,6 +8,7 @@ from .CMA_ES import CMA_ES
 from .AdaLIPO_P import AdaLIPO_P
 from .AdaRankOpt import AdaRankOpt
 from .SBS import SBS
+from .CBO import CBO
 from .Direct import Direct
 from .CRS import CRS
 from .MLSL import MLSL
@@ -20,6 +21,7 @@ __all__ = [
     "CMA_ES",
     "AdaLIPO_P",
     "SBS",
+    "CBO",
     "AdaRankOpt",
     "Direct",
     "CRS",

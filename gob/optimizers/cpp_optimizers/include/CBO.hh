@@ -4,27 +4,32 @@
 
 #include "particles_optimizer.hh"
 
-class SBS : public Particles_Optimizer
+class CBO : public Particles_Optimizer
 {
 public:
-  SBS(
+  CBO(
       vec_bounds bounds,
       int n_particles = 200,
-      int iter = 4,
-      int k = 10000,
-      double sigma = 1e-2,
+      int iter = 100,
+      double lambda = 1e-1,
+      double epsilon = 1e-2,
+      double alpha = 500,
+      double sigma = 5,
       double lr = 0.5) : Particles_Optimizer(bounds, n_particles, iter, lr)
   {
-    this->k = k;
+    this->lambda = lambda;
+    this->epsilon = epsilon;
+    this->alpha = alpha;
     this->sigma = sigma;
   };
 
   virtual Eigen::MatrixXd dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
 
-  int k;
+  double lambda;
+  double epsilon;
+  double alpha;
   double sigma;
 
 private:
-  Eigen::MatrixXd rbf(Eigen::MatrixXd &particles);
-  Eigen::MatrixXd rbf_grad(Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
+  dyn_vector weights(Eigen::MatrixXd &particles, function<double(dyn_vector x)> f, vector<double> *evals);
 };

@@ -48,6 +48,14 @@ double unif_random_double(default_random_engine &re, double lb, double ub)
   return res;
 }
 
+double unif_random_normal(default_random_engine &re, double mean, double stddev)
+{
+  normal_distribution<double> norm(mean, stddev);
+  double res = norm(re);
+  re.seed(chrono::system_clock::now().time_since_epoch().count());
+  return res;
+}
+
 dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds)
 {
   int n = bounds.size();

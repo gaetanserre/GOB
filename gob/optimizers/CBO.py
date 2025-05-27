@@ -3,22 +3,24 @@
 #
 
 from .optimizer import Optimizer
-from .cpp_optimizers import SBS as C_SBS
+from .cpp_optimizers import CBO as C_CBO
 
 
-class SBS(Optimizer):
+class CBO(Optimizer):
     def __init__(
         self,
         bounds,
         n_particles=200,
         iter=100,
-        k=10_000,
-        sigma=0.1,
+        lam=1e-1,
+        epsilon=1e-2,
+        alpha=500,
+        sigma=5,
         lr=0.5,
         verbose=False,
     ):
         """
-        Interface for the SBS optimizer.
+        Interface for the CBO optimizer.
 
         Parameters
         ----------
@@ -28,17 +30,9 @@ class SBS(Optimizer):
             The number of particles.
         iter : int
             The number of iterations for the SVGD algorithm.
-        k : list
-            The kappa exponent.
-        sigma : float
-            The kernel bandwidth.
-        lr : float
-            The learning rate.
-        verbose : bool
-            Whether to print information about the optimization process.
         """
-        super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, k, sigma, lr)
+        super().__init__("CBO", bounds)
+        self.c_opt = C_CBO(bounds, n_particles, iter, lam, epsilon, alpha, sigma, lr)
         self.verbose = verbose
 
     def minimize(self, f):

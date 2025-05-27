@@ -41,8 +41,23 @@ cdef extern from "include/SBS.hh":
     CSBS(
       vector[vector[double]] bounds,
       int n_particles,
-      int svgd_iter,
-      vector[int] k_iter,
+      int iter,
+      int k,
+      double sigma,
+      double lr
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/CBO.hh":
+  cdef cppclass CCBO "CBO":
+    CCBO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double lam,
+      double epsilon,
+      double alpha,
       double sigma,
       double lr
     )
@@ -145,12 +160,38 @@ cdef class SBS:
     self,
     bounds,
     int n_particles=200,
-    int svgd_iter=100,
-    vector[int] k_iter=[10_000],
+    int iter=100,
+    int k=10_000,
     double sigma=0.01,
     double lr=0.5
   ):
-    self.thisptr = new CSBS(bounds, n_particles, svgd_iter, k_iter, sigma, lr)
+    self.thisptr = new CSBS(bounds, n_particles, iter, k, sigma, lr)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    return self.thisptr.py_minimize(pyob_ptr)
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+  
+  def __del__(self):
+    del self.thisptr
+
+cdef class CBO:
+  cdef CCBO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles=200,
+    int iter=100,
+    double lam=1e-1,
+    double epsilon=1e-2,
+    double alpha=500,
+    double sigma=5,
+    double lr=0.5
+  ):
+    self.thisptr = new CCBO(bounds, n_particles, iter, lam, epsilon, alpha, sigma, lr)
 
   def minimize(self, f):
     py_init()
