@@ -1,19 +1,18 @@
 /*
- * Created in 2024 by Gaëtan Serré
+ * Created in 2025 by Gaëtan Serré
  */
 
 #include "optimizer.hh"
 
-class SBS : public Optimizer
+class Particles_Optimizer : public Optimizer
 {
 public:
   SBS(
       vec_bounds bounds,
-      int n_particles = 200,
-      int svgd_iter = 4,
-      std::vector<int> k_iter = {10000},
-      double sigma = 1e-2,
-      double lr = 0.5) : Optimizer(bounds, "SBS")
+      function<function<double(dyn_vector x), Eigen::MatrixXd>> dynamics,
+      int n_particles = 1,
+      int iter = 100,
+      double lr = 0.5) : Optimizer(bounds, "Particles_Optimizer")
   {
     this->n_particles = n_particles;
     this->svgd_iter = svgd_iter;
