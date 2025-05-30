@@ -50,3 +50,5 @@ extern dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsi
 extern bool Bernoulli(default_random_engine &re, double p);
 
 extern dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds);
+
+extern bool contains_nan(const dyn_vector &x);

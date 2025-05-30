@@ -13,21 +13,26 @@ public:
       int iter = 100,
       double lambda = 1e-1,
       double epsilon = 1e-2,
-      double alpha = 500,
-      double sigma = 5) : Particles_Optimizer(bounds, n_particles, iter, false, 0)
+      double beta = 5,
+      double sigma = 5,
+      bool use_batch = true) : Particles_Optimizer(bounds, n_particles, iter, false, 0)
   {
     this->lambda = lambda;
     this->epsilon = epsilon;
-    this->alpha = alpha;
+    this->beta = beta;
     this->sigma = sigma;
+    this->use_batch = use_batch;
   };
 
   virtual Eigen::MatrixXd dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
+  virtual Eigen::MatrixXd full_dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
+  virtual Eigen::MatrixXd batch_dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
 
   double lambda;
   double epsilon;
-  double alpha;
+  double beta;
   double sigma;
+  bool use_batch;
 
 private:
   dyn_vector weights(Eigen::MatrixXd &particles, function<double(dyn_vector x)> f, vector<double> *evals);

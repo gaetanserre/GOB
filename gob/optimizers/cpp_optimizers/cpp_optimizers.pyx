@@ -57,8 +57,9 @@ cdef extern from "include/CBO.hh":
       int iter,
       double lam,
       double epsilon,
-      double alpha,
+      double beta,
       double sigma,
+      bool use_batch
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -186,10 +187,11 @@ cdef class CBO:
     int iter=100,
     double lam=1e-1,
     double epsilon=1e-2,
-    double alpha=500,
+    double beta=5,
     double sigma=5,
+    bool use_batch=True
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, lam, epsilon, alpha, sigma)
+    self.thisptr = new CCBO(bounds, n_particles, iter, lam, epsilon, beta, sigma, use_batch)
 
   def minimize(self, f):
     py_init()

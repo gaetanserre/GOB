@@ -15,7 +15,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - Gradient Descent
 - [Multi-Level Single-Linkage](https://ageconsearch.umn.edu/record/272327)
 - [Stein Boltzmann Sampling](https://arxiv.org/abs/2402.04689)
-- [Consensus Based Sampling](https://arxiv.org/abs/1604.05648)
+- [Consensus Based Sampling](https://arxiv.org/abs/1909.09249)
 
 ### Installation (Python>=3.10)
 Download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:

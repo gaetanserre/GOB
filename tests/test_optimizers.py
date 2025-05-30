@@ -9,9 +9,9 @@ pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="ND", deterministic=True)
 
 f = Square()
 
-bounds = create_bounds(2, -32, 32)
+bounds = create_bounds(2, -10, 10)
 
-opt = CBO(bounds)
+opt = CBO(bounds, beta=5)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
 
