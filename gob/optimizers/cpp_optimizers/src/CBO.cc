@@ -36,18 +36,15 @@ dyn_vector CBO::weights(Eigen::MatrixXd &particles, function<double(dyn_vector x
 Eigen::MatrixXd CBO::dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals)
 {
   dyn_vector vf = compute_vf(particles, this->weights(particles, f, evals));
-  Eigen::MatrixXd vf_matrix_dupl(particles.rows(), particles.cols());
+  double f_vf = f(vf);
+
+  Eigen::MatrixXd dyn(particles.rows(), particles.cols());
+
   for (int i = 0; i < particles.rows(); i++)
   {
-    vf_matrix_dupl.row(i) = vf;
-  }
-  Eigen::MatrixXd particles_diff = particles - vf_matrix_dupl;
-  Eigen::MatrixXd heaviside(particles_diff.rows(), particles_diff.cols());
-  double f_vf = f(vf);
-  for (int i = 0; i < particles_diff.rows(); i++)
-  {
-    heaviside.row(i) = particles_diff.row(i) * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf));
+    dyn_vector diff = vf.transpose() - particles.row(i);
+    dyn.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) + sqrt(2) * this->sigma * diff * unif_random_normal(this->re, 0, this->lambda);
   }
 
-  return -this->lambda * heaviside + sqrt(2) * this->sigma * particles_diff * unif_random_normal(this->re, 0, this->lambda);
+  return dyn;
 }

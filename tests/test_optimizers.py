@@ -9,14 +9,16 @@ pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="ND", deterministic=True)
 
 f = Square()
 
-opt = CBO(bounds=create_bounds(2, -5, 5), n_particles=500, iter=1000)
+bounds = create_bounds(2, -32, 32)
+
+opt = CBO(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
 
-opt = SBS(bounds=create_bounds(2, -5, 5))
+opt = SBS(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
 
-opt = AdaLIPO_P(bounds=create_bounds(2, -5, 5))
+opt = AdaLIPO_P(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
