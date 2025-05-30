@@ -24,7 +24,10 @@ result_eigen Particles_Optimizer::minimize(function<double(dyn_vector x)> f)
       all_evals.push_back(evals[j]);
       samples.push_back(particles.row(j));
     }
-    particles = optimizer.step(dyns, particles);
+    if (this->use_adam)
+      particles = optimizer.step(dyns, particles);
+    else
+      particles += dyns;
 
     for (int j = 0; j < this->n_particles; j++)
       particles.row(j) = clip_vector(particles.row(j), this->bounds);

@@ -16,7 +16,6 @@ class CBO(Optimizer):
         epsilon=1e-2,
         alpha=500,
         sigma=5,
-        lr=0.5,
         verbose=False,
     ):
         """
@@ -32,7 +31,7 @@ class CBO(Optimizer):
             The number of iterations for the SVGD algorithm.
         """
         super().__init__("CBO", bounds)
-        self.c_opt = C_CBO(bounds, n_particles, iter, lam, epsilon, alpha, sigma, lr)
+        self.c_opt = C_CBO(bounds, n_particles, iter, lam, epsilon, alpha, sigma)
         self.verbose = verbose
 
     def minimize(self, f):

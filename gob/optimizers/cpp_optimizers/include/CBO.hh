@@ -14,8 +14,7 @@ public:
       double lambda = 1e-1,
       double epsilon = 1e-2,
       double alpha = 500,
-      double sigma = 5,
-      double lr = 0.5) : Particles_Optimizer(bounds, n_particles, iter, lr)
+      double sigma = 5) : Particles_Optimizer(bounds, n_particles, iter, false, 0)
   {
     this->lambda = lambda;
     this->epsilon = epsilon;

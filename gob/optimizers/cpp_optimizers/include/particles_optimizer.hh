@@ -13,10 +13,12 @@ public:
       vec_bounds bounds,
       int n_particles = 200,
       int iter = 100,
+      bool use_adam = true,
       double lr = 0.5) : Optimizer(bounds, "Particles_Optimizer")
   {
     this->n_particles = n_particles;
     this->iter = iter;
+    this->use_adam = use_adam;
     this->lr = lr;
   };
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
@@ -24,5 +26,6 @@ public:
 
   int n_particles;
   int iter;
+  bool use_adam;
   double lr;
 };
