@@ -10,12 +10,13 @@ class CBO(Optimizer):
     def __init__(
         self,
         bounds,
-        n_particles=200,
-        iter=100,
-        lam=1e-1,
+        n_particles=20,
+        iter=1000,
+        dt=0.01,
+        lam=1,
         epsilon=1e-2,
-        beta=5,
-        sigma=5,
+        beta=1,
+        sigma=5.1,
         use_batch=True,
         verbose=False,
     ):
@@ -33,7 +34,7 @@ class CBO(Optimizer):
         """
         super().__init__("CBO", bounds)
         self.c_opt = C_CBO(
-            bounds, n_particles, iter, lam, epsilon, beta, sigma, use_batch
+            bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, use_batch
         )
         self.verbose = verbose
 

@@ -55,6 +55,7 @@ cdef extern from "include/CBO.hh":
       vector[vector[double]] bounds,
       int n_particles,
       int iter,
+      double dt,
       double lam,
       double epsilon,
       double beta,
@@ -185,13 +186,14 @@ cdef class CBO:
     bounds,
     int n_particles=200,
     int iter=100,
-    double lam=1e-1,
+    double dt=0.01,
+    double lam=1,
     double epsilon=1e-2,
-    double beta=5,
-    double sigma=5,
+    double beta=1,
+    double sigma=5.1,
     bool use_batch=True
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, lam, epsilon, beta, sigma, use_batch)
+    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, use_batch)
 
   def minimize(self, f):
     py_init()

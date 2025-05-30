@@ -11,7 +11,7 @@ f = Square()
 
 bounds = create_bounds(2, -10, 10)
 
-opt = CBO(bounds, beta=5)
+opt = CBO(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
 

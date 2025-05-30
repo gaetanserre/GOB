@@ -4,6 +4,7 @@
 
 #include "CBO.hh"
 
+// TODO: Compute vf using logsumexp
 dyn_vector compute_vf(Eigen::MatrixXd &particles, dyn_vector weights)
 {
   dyn_vector v = Eigen::VectorXd::Zero(particles.cols());
@@ -52,10 +53,10 @@ Eigen::MatrixXd CBO::full_dynamics(function<double(dyn_vector x)> f, int &time, 
     dyn_vector noise(particles.row(i).cols());
     for (int j = 0; j < particles.row(i).cols(); j++)
     {
-      noise[j] = diff[j] * unif_random_normal(this->re, 0, this->lambda);
+      noise[j] = diff[j] * unif_random_normal(this->re, 0, this->dt);
     }
 
-    dyn.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) + sqrt(2) * this->sigma * noise;
+    dyn.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) * this->dt + sqrt(2) * this->sigma * noise;
   }
 
   return dyn;
@@ -90,7 +91,7 @@ Eigen::MatrixXd CBO::batch_dynamics(function<double(dyn_vector x)> f, int &time,
 
     if (contains_nan(vf))
     {
-      throw runtime_error("CBO: Weights are all 0s. Consider decreasing beta.");
+      throw runtime_error("CBO: Weights are all 0s. Consider decreasing beta. Current beta: " + std::to_string(this->beta));
     }
     double f_vf = f(vf);
 
@@ -101,10 +102,10 @@ Eigen::MatrixXd CBO::batch_dynamics(function<double(dyn_vector x)> f, int &time,
       dyn_vector noise(batch_particles.row(i).cols());
       for (int j = 0; j < batch_particles.row(i).cols(); j++)
       {
-        noise[j] = diff[j] * unif_random_normal(this->re, 0, this->lambda);
+        noise[j] = diff[j] * unif_random_normal(this->re, 0, this->dt);
       }
 
-      dyn.row(perm[batch * M + i]) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * (batch_evals[i] - f_vf)) + sqrt(2) * this->sigma * noise;
+      dyn.row(perm[batch * M + i]) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * (batch_evals[i] - f_vf)) * this->dt + sqrt(2) * this->sigma * noise;
     }
   }
 
@@ -113,12 +114,9 @@ Eigen::MatrixXd CBO::batch_dynamics(function<double(dyn_vector x)> f, int &time,
 
 Eigen::MatrixXd CBO::dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals)
 {
-  if (this->use_batch)
-  {
-    return this->batch_dynamics(f, time, particles, evals);
-  }
-  else
-  {
-    return this->full_dynamics(f, time, particles, evals);
-  }
+  Eigen::MatrixXd dyn = this->use_batch ? this->batch_dynamics(f, time, particles, evals) : this->full_dynamics(f, time, particles, evals);
+
+  // this->beta *= 1.05;
+
+  return dyn;
 }
