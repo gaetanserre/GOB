@@ -30,7 +30,7 @@ dyn_vector CBO::compute_vf(const Eigen::MatrixXd &particles, const function<doub
     (*evals)[i] = f_x;
     weights[i] = -this->beta * f_x;
   }
-  double lse = log_sum_exp(weights.begin(), weights.end());
+  double lse = log_sum_exp(weights.data(), weights.data() + weights.size());
 
   dyn_vector vf = Eigen::VectorXd::Zero(particles.cols());
   for (int i = 0; i < particles.rows(); i++)
