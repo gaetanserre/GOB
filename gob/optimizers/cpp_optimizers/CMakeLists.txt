@@ -33,7 +33,7 @@ include_directories(include include/glpk ${EIGEN3_INCLUDE_DIR} ${NUMPY_INCLUDE_D
 
 if(WINDOWS)
   set(CMAKE_CXX_STANDARD 17)
-  set(CMAKE_CXX_FLAGS_RELEASE "/O3")
+  set(CMAKE_CXX_FLAGS_RELEASE "/O2")
 
   # Find Python library
   find_package(Python COMPONENTS Development.Module REQUIRED)
