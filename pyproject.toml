@@ -1,4 +1,10 @@
 [project]
+authors = [
+  { name = "Gaëtan Serré", email = "gaetan.serre@ens-paris-saclay.fr" },
+]
+maintainers = [
+  { name = "Gaëtan Serré", email = "gaetan.serre@ens-paris-saclay.fr" },
+]
 name = "gob"
 version = "0.0.1"
 dependencies = [
@@ -9,6 +15,9 @@ dependencies = [
   "bayesian-optimization==1.5.1",
   "gkls",
 ]
+description = "A collection of global optimization algorithms implemented in C++ and linked with Python."
+readme = "README.md"
+license-files = ["LICENSE"]
 
 [project.urls]
 Repository = "https://github.com/gaetanserre/GOB"
