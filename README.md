@@ -4,7 +4,6 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 [![CI](https://github.com/gaetanserre/GOB/actions/workflows/build.yml/badge.svg)](https://github.com/gaetanserre/GOB/actions/workflows/build.yml)
 
 ### Algorithms
-- Pure Random Search
 - [AdaLIPO+](https://dl.acm.org/doi/full/10.1145/3688671.3688763)
 - [AdaRankOpt](https://arxiv.org/abs/1603.04381)
 - [Bayesian Optimization](https://github.com/bayesian-optimization/BayesianOptimization)
@@ -16,6 +15,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - [Stein Boltzmann Sampling](https://arxiv.org/abs/2402.04689)
 - [Consensus Based Sampling](https://arxiv.org/abs/1909.09249)
 - Gradient Descent
+- Pure Random Search
 
 ### Installation (Python>=3.10)
 Download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:
