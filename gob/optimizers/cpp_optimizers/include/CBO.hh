@@ -26,9 +26,9 @@ public:
     this->use_batch = use_batch;
   };
 
-  virtual Eigen::MatrixXd dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
-  virtual Eigen::MatrixXd full_dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
-  virtual Eigen::MatrixXd batch_dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
+  virtual Eigen::MatrixXd dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals);
+  virtual Eigen::MatrixXd full_dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals);
+  virtual Eigen::MatrixXd batch_dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals);
 
   double dt;
   double lambda;
@@ -38,5 +38,5 @@ public:
   bool use_batch;
 
 private:
-  dyn_vector weights(Eigen::MatrixXd &particles, function<double(dyn_vector x)> f, vector<double> *evals);
+  dyn_vector compute_vf(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 };

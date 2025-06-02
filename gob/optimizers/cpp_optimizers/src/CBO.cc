@@ -3,18 +3,41 @@
  */
 
 #include "CBO.hh"
+#include <iterator>
 
-// TODO: Compute vf using logsumexp
-dyn_vector compute_vf(Eigen::MatrixXd &particles, dyn_vector weights)
+template <typename Iter>
+typename std::iterator_traits<Iter>::value_type
+log_sum_exp(Iter begin, Iter end)
 {
-  dyn_vector v = Eigen::VectorXd::Zero(particles.cols());
-  double sum_weights = 0;
+  using VT = typename std::iterator_traits<Iter>::value_type;
+  if (begin == end)
+    return VT{};
+  using std::exp;
+  using std::log;
+  auto max_elem = *std::max_element(begin, end);
+  auto sum = std::accumulate(begin, end, VT{},
+                             [max_elem](VT a, VT b)
+                             { return a + exp(b - max_elem); });
+  return max_elem + log(sum);
+}
+
+dyn_vector CBO::compute_vf(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+{
+  dyn_vector weights(particles.rows());
   for (int i = 0; i < particles.rows(); i++)
   {
-    v += particles.row(i) * weights(i);
-    sum_weights += weights(i);
+    double f_x = f(particles.row(i));
+    (*evals)[i] = f_x;
+    weights[i] = -this->beta * f_x;
   }
-  return v / sum_weights;
+  double lse = log_sum_exp(weights.begin(), weights.end());
+
+  dyn_vector vf = Eigen::VectorXd::Zero(particles.cols());
+  for (int i = 0; i < particles.rows(); i++)
+  {
+    vf += exp(weights[i] - lse) * particles.row(i).transpose();
+  }
+  return vf;
 }
 
 double smooth_heaviside(double x)
@@ -22,26 +45,9 @@ double smooth_heaviside(double x)
   return 0.5 * erf(x) + 0.5;
 }
 
-dyn_vector CBO::weights(Eigen::MatrixXd &particles, function<double(dyn_vector x)> f, vector<double> *evals)
+Eigen::MatrixXd CBO::full_dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals)
 {
-  dyn_vector w(particles.rows());
-  for (int i = 0; i < particles.rows(); i++)
-  {
-    double f_x = f(particles.row(i));
-    (*evals)[i] = f_x;
-    w[i] = exp(-this->beta * f_x);
-  }
-  return w;
-}
-
-Eigen::MatrixXd CBO::full_dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals)
-{
-  dyn_vector weights = this->weights(particles, f, evals);
-  dyn_vector vf = compute_vf(particles, weights);
-  if (contains_nan(vf))
-  {
-    throw runtime_error("CBO: Weights are all 0s. Consider decreasing beta.");
-  }
+  dyn_vector vf = compute_vf(particles, f, evals);
   double f_vf = f(vf);
 
   Eigen::MatrixXd dyn(particles.rows(), particles.cols());
@@ -56,13 +62,13 @@ Eigen::MatrixXd CBO::full_dynamics(function<double(dyn_vector x)> f, int &time, 
       noise[j] = diff[j] * unif_random_normal(this->re, 0, this->dt);
     }
 
-    dyn.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) * this->dt + sqrt(2) * this->sigma * noise;
+    dyn.row(i) = -this->lambda * this->dt * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) + sqrt(2) * this->sigma * noise;
   }
 
   return dyn;
 }
 
-Eigen::MatrixXd CBO::batch_dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals)
+Eigen::MatrixXd CBO::batch_dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals)
 {
   vector<int> perm(particles.rows());
   for (size_t i = 0; i < perm.size(); ++i)
@@ -81,18 +87,13 @@ Eigen::MatrixXd CBO::batch_dynamics(function<double(dyn_vector x)> f, int &time,
       batch_particles.row(i) = particles.row(perm[batch * M + i]);
     }
     vector<double> batch_evals(M);
-    dyn_vector weights = this->weights(batch_particles, f, &batch_evals);
+    dyn_vector vf = compute_vf(batch_particles, f, &batch_evals);
 
     for (int i = 0; i < M; i++)
     {
       (*evals)[perm[batch * M + i]] = batch_evals[i];
     }
-    dyn_vector vf = compute_vf(batch_particles, weights);
 
-    if (contains_nan(vf))
-    {
-      throw runtime_error("CBO: Weights are all 0s. Consider decreasing beta. Current beta: " + std::to_string(this->beta));
-    }
     double f_vf = f(vf);
 
     for (int i = 0; i < M; i++)
@@ -105,18 +106,18 @@ Eigen::MatrixXd CBO::batch_dynamics(function<double(dyn_vector x)> f, int &time,
         noise[j] = diff[j] * unif_random_normal(this->re, 0, this->dt);
       }
 
-      dyn.row(perm[batch * M + i]) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * (batch_evals[i] - f_vf)) * this->dt + sqrt(2) * this->sigma * noise;
+      dyn.row(perm[batch * M + i]) = -this->lambda * this->dt * diff * smooth_heaviside((1.0 / this->epsilon) * (batch_evals[i] - f_vf)) + sqrt(2) * this->sigma * noise;
     }
   }
 
   return dyn;
 }
 
-Eigen::MatrixXd CBO::dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals)
+Eigen::MatrixXd CBO::dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals)
 {
   Eigen::MatrixXd dyn = this->use_batch ? this->batch_dynamics(f, time, particles, evals) : this->full_dynamics(f, time, particles, evals);
 
-  // this->beta *= 1.05;
+  this->beta = min(this->beta * 1.05, 100000.0);
 
   return dyn;
 }
