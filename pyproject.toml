@@ -17,7 +17,6 @@ dependencies = [
 ]
 description = "A collection of global optimization algorithms implemented in C++ and linked with Python."
 readme = "README.md"
-license-files = ["LICENSE"]
 
 [project.urls]
 Repository = "https://github.com/gaetanserre/GOB"
