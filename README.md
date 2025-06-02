@@ -24,7 +24,7 @@ pip install gob-<version>-<architecture>.whl
 ```
 
 ### Usage
-This package can be used to design a complete benchmarking framework for global optimization algorithms, testing multiple algorithms on a set of benchmark functions. See [test_gob.py](tests/test_gob_tools.py) for an example of how to use it.
+This package can be used to design a complete benchmarking framework for global optimization algorithms, testing multiple algorithms on a set of benchmark functions. See [`test_gob.py`](tests/test_gob_tools.py) for an example of how to use it.
 
 The global optimization algorithms can also be used independently. For example, to run the AdaLIPO+ algorithm on a benchmark function:
 
@@ -38,7 +38,7 @@ opt = AdaLIPO_P(create_bounds(2, -5, 5), 300)
 res = opt.minimize(f)
 print(f"Optimal point: {res[0]}, Optimal value: {res[1]}")
 ```
-See [test_optimizers.py](tests/test_optimizers.py) for more examples of how to use the algorithms.
+See [`test_optimizers.py`](tests/test_optimizers.py) for more examples of how to use the algorithms.
 
 ### References
 - [BayesianOptimization](https://github.com/bayesian-optimization/BayesianOptimization)
