@@ -19,12 +19,12 @@ public:
     this->sigma = sigma;
   };
 
-  virtual Eigen::MatrixXd dynamics(function<double(dyn_vector x)> f, int &time, Eigen::MatrixXd &particles, vector<double> *evals);
+  virtual Eigen::MatrixXd dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals);
 
   int k;
   double sigma;
 
 private:
-  Eigen::MatrixXd rbf(Eigen::MatrixXd &particles);
-  Eigen::MatrixXd rbf_grad(Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
+  Eigen::MatrixXd rbf(const Eigen::MatrixXd &particles);
+  Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
 };
