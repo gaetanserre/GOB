@@ -40,23 +40,29 @@ vec_bounds create_rect_bounds(double lb, double ub, int n)
   return bounds;
 }
 
-double unif_random_double(default_random_engine &re, double lb, double ub)
+double unif_random_double(mt19937_64 &re, double lb, double ub)
 {
   uniform_real_distribution<double> unif(lb, ub);
-  double res = unif(re);
-  re.seed(chrono::system_clock::now().time_since_epoch().count());
-  return res;
+  return unif(re);
 }
 
-double unif_random_normal(default_random_engine &re, double mean, double stddev)
+double normal_random_double(mt19937_64 &re, double mean, double stddev)
 {
   normal_distribution<double> norm(mean, stddev);
-  double res = norm(re);
-  re.seed(chrono::system_clock::now().time_since_epoch().count());
-  return res;
+  return norm(re);
 }
 
-dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds)
+dyn_vector normal_random_vector(mt19937_64 &re, int size, double mean, double stddev)
+{
+  dyn_vector x(size);
+  for (int i = 0; i < size; i++)
+  {
+    x(i) = normal_random_double(re, mean, stddev);
+  }
+  return x;
+}
+
+dyn_vector unif_random_vector(mt19937_64 &re, vec_bounds &bounds)
 {
   int n = bounds.size();
   dyn_vector x(n);
@@ -125,7 +131,7 @@ dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsigned in
   return v.segment(start, end - start);
 }
 
-bool Bernoulli(default_random_engine &re, double p)
+bool Bernoulli(mt19937_64 &re, double p)
 {
   bernoulli_distribution d(p);
   return d(re);

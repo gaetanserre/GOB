@@ -29,11 +29,13 @@ extern int argmin_vec(const vector<double> &v);
 
 extern vec_bounds create_rect_bounds(double lb, double ub, int n);
 
-extern double unif_random_double(default_random_engine &re, double lb, double ub);
+extern double unif_random_double(mt19937_64 &re, double lb, double ub);
 
-extern double unif_random_normal(default_random_engine &re, double mean, double stddev);
+extern double normal_random_double(mt19937_64 &re, double mean, double stddev);
 
-extern dyn_vector unif_random_vector(default_random_engine &re, vec_bounds &bounds);
+extern dyn_vector unif_random_vector(mt19937_64 &re, vec_bounds &bounds);
+
+extern dyn_vector normal_random_vector(mt19937_64 &re, int size, double mean, double stddev);
 
 extern void print_vector(const dyn_vector &x);
 
@@ -47,7 +49,7 @@ extern void py_finalize();
 
 extern dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsigned int &end);
 
-extern bool Bernoulli(default_random_engine &re, double p);
+extern bool Bernoulli(mt19937_64 &re, double p);
 
 extern dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds);
 

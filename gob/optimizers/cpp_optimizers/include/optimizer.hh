@@ -16,7 +16,7 @@ public:
     // Py_Initialize();
     this->bounds = bounds;
     this->name = name;
-    this->re.seed(time(NULL));
+    this->re.seed(chrono::system_clock::now().time_since_epoch().count());
   };
   ~Optimizer() {
     // Py_Finalize();
@@ -33,7 +33,7 @@ public:
 
   vec_bounds bounds;
   string name;
-  std::default_random_engine re;
+  mt19937_64 re;
 
   bool has_stop_criterion = false;
   double stop_criterion;
