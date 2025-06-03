@@ -3,15 +3,13 @@ from gob.optimizers import *
 from gob import create_bounds
 
 
-# opt.set_stop_criterion(-10)
-
-pygkls = PyGKLS(2, 15, [-5, 5], -100, smoothness="ND", deterministic=True)
+pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND", gen=42)
 
 f = Square()
 
-bounds = create_bounds(2, -10, 10)
+bounds = create_bounds(2, -100, 100)
 
-opt = CBO(bounds)
+opt = CBO(bounds, use_batch=False)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
 

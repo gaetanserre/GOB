@@ -17,7 +17,7 @@ class PyGKLS(Benchmark):
         global_min,
         global_dist=None,
         global_radius=None,
-        deterministic=False,
+        gen=None,
         smoothness="D",
     ):
         super().__init__("PyGKLS", global_min)
@@ -29,7 +29,7 @@ class PyGKLS(Benchmark):
             global_min,
             global_dist,
             global_radius,
-            deterministic,
+            gen,
         )
         match smoothness:
             case "D":
