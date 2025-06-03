@@ -35,7 +35,7 @@ dyn_vector CBO::compute_vf(const Eigen::MatrixXd &particles, const function<doub
   dyn_vector vf = Eigen::VectorXd::Zero(particles.cols());
   for (int i = 0; i < particles.rows(); i++)
   {
-    vf += exp(weights[i] - lse) * particles.row(i).transpose();
+    vf += exp(weights[i] - lse) * particles.row(i);
   }
   return vf;
 }
@@ -56,13 +56,9 @@ Eigen::MatrixXd CBO::full_dynamics(const function<double(dyn_vector x)> &f, cons
   {
     dyn_vector diff = (particles.row(i) - vf.transpose());
 
-    dyn_vector noise(particles.row(i).cols());
-    for (int j = 0; j < particles.row(i).cols(); j++)
-    {
-      noise[j] = diff[j] * unif_random_normal(this->re, 0, this->dt);
-    }
+    dyn_vector noise = diff.norm() * normal_random_vector(this->re, particles.row(i).cols(), 0, sqrt(this->dt));
 
-    dyn.row(i) = -this->lambda * this->dt * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) + sqrt(2) * this->sigma * noise;
+    dyn.row(i) = -this->lambda * this->dt * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf)) + this->sigma * noise;
   }
 
   return dyn;
@@ -100,13 +96,9 @@ Eigen::MatrixXd CBO::batch_dynamics(const function<double(dyn_vector x)> &f, con
     {
       dyn_vector diff = (batch_particles.row(i) - vf.transpose());
 
-      dyn_vector noise(batch_particles.row(i).cols());
-      for (int j = 0; j < batch_particles.row(i).cols(); j++)
-      {
-        noise[j] = diff[j] * unif_random_normal(this->re, 0, this->dt);
-      }
+      dyn_vector noise = diff.norm() * normal_random_vector(this->re, batch_particles.row(i).cols(), 0, sqrt(this->dt));
 
-      dyn.row(perm[batch * M + i]) = -this->lambda * this->dt * diff * smooth_heaviside((1.0 / this->epsilon) * (batch_evals[i] - f_vf)) + sqrt(2) * this->sigma * noise;
+      dyn.row(perm[batch * M + i]) = -this->lambda * this->dt * diff * smooth_heaviside((1.0 / this->epsilon) * (batch_evals[i] - f_vf)) + this->sigma * noise;
     }
   }
 

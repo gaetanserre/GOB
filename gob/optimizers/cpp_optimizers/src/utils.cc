@@ -46,10 +46,20 @@ double unif_random_double(mt19937_64 &re, double lb, double ub)
   return unif(re);
 }
 
-double unif_random_normal(mt19937_64 &re, double mean, double stddev)
+double normal_random_double(mt19937_64 &re, double mean, double stddev)
 {
   normal_distribution<double> norm(mean, stddev);
   return norm(re);
+}
+
+dyn_vector normal_random_vector(mt19937_64 &re, int size, double mean, double stddev)
+{
+  dyn_vector x(size);
+  for (int i = 0; i < size; i++)
+  {
+    x(i) = normal_random_double(re, mean, stddev);
+  }
+  return x;
 }
 
 dyn_vector unif_random_vector(mt19937_64 &re, vec_bounds &bounds)

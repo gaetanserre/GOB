@@ -191,7 +191,7 @@ cdef class CBO:
     double epsilon=1e-2,
     double beta=1,
     double sigma=5.1,
-    bool use_batch=True
+    bool use_batch=False
   ):
     self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, use_batch)
 

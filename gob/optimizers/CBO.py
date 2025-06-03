@@ -17,7 +17,7 @@ class CBO(Optimizer):
         epsilon=1e-2,
         beta=1,
         sigma=5.1,
-        use_batch=True,
+        use_batch=False,
         verbose=False,
     ):
         """

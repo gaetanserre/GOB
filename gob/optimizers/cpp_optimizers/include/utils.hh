@@ -31,9 +31,11 @@ extern vec_bounds create_rect_bounds(double lb, double ub, int n);
 
 extern double unif_random_double(mt19937_64 &re, double lb, double ub);
 
-extern double unif_random_normal(mt19937_64 &re, double mean, double stddev);
+extern double normal_random_double(mt19937_64 &re, double mean, double stddev);
 
 extern dyn_vector unif_random_vector(mt19937_64 &re, vec_bounds &bounds);
+
+extern dyn_vector normal_random_vector(mt19937_64 &re, int size, double mean, double stddev);
 
 extern void print_vector(const dyn_vector &x);
 

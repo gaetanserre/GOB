@@ -16,7 +16,7 @@ public:
       double epsilon = 1e-2,
       double beta = 1,
       double sigma = 5.1,
-      bool use_batch = true) : Particles_Optimizer(bounds, n_particles, iter, false, 0)
+      bool use_batch = false) : Particles_Optimizer(bounds, n_particles, iter, false, 0)
   {
     this->dt = dt;
     this->lambda = lambda;
