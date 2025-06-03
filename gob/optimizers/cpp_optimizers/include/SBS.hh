@@ -10,7 +10,7 @@ public:
   SBS(
       vec_bounds bounds,
       int n_particles = 200,
-      int iter = 4,
+      int iter = 100,
       int k = 10000,
       double sigma = 1e-2,
       double lr = 0.5) : Particles_Optimizer(bounds, n_particles, iter, lr)
