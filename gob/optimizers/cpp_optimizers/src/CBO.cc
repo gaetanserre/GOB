@@ -64,6 +64,7 @@ Eigen::MatrixXd CBO::full_dynamics(const function<double(dyn_vector x)> &f, cons
   return dyn;
 }
 
+// TODO: dynamic batch size
 Eigen::MatrixXd CBO::batch_dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals)
 {
   vector<int> perm(particles.rows());
