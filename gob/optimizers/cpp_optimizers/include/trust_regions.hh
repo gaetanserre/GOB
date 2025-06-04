@@ -64,10 +64,11 @@ public:
     this->functions = functions;
     this->decision = decision;
     this->callback = callback;
-  };
+  }
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
+private:
   int n_eval;
   int max_trials;
   double region_radius;

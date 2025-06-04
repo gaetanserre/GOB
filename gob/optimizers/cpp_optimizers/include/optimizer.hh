@@ -17,10 +17,13 @@ public:
     this->bounds = bounds;
     this->name = name;
     this->re.seed(chrono::system_clock::now().time_since_epoch().count());
-  };
-  ~Optimizer() {
+  }
+
+  ~Optimizer()
+  {
     // Py_Finalize();
-  };
+  }
+
   virtual result_eigen minimize(function<double(dyn_vector x)> f) = 0;
 
   result py_minimize(PyObject *f);
@@ -31,6 +34,7 @@ public:
     this->has_stop_criterion = true;
   }
 
+protected:
   vec_bounds bounds;
   string name;
   mt19937_64 re;

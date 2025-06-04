@@ -14,7 +14,8 @@ class SBS(Optimizer):
         iter=100,
         k=10_000,
         sigma=0.1,
-        lr=0.5,
+        dt=0.01,
+        batch_size=0,
         verbose=False,
     ):
         """
@@ -32,13 +33,13 @@ class SBS(Optimizer):
             The kappa exponent.
         sigma : float
             The kernel bandwidth.
-        lr : float
-            The learning rate.
+        dt : float
+            The time step for the SVGD algorithm.
         verbose : bool
             Whether to print information about the optimization process.
         """
         super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, k, sigma, lr)
+        self.c_opt = C_SBS(bounds, n_particles, iter, k, sigma, dt, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):

@@ -47,10 +47,12 @@ Eigen::MatrixXd SBS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd 
   return dxkxy;
 }
 
-Eigen::MatrixXd SBS::dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals)
+dynamic SBS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
 {
-  Eigen::MatrixXd grads(this->n_particles, this->bounds.size());
-  for (int j = 0; j < this->n_particles; j++)
+  dyn_vector stddev = Eigen::VectorXd::Zero(particles.rows());
+
+  Eigen::MatrixXd grads(particles.rows(), this->bounds.size());
+  for (int j = 0; j < particles.rows(); j++)
   {
     double f_x;
     grads.row(j) = -this->k * gradient(particles.row(j), f, &f_x);
@@ -64,5 +66,5 @@ Eigen::MatrixXd SBS::dynamics(const function<double(dyn_vector x)> &f, const int
     double eval = f(particles.row(i));
     (*evals)[i] = eval;
   }
-  return -((kernel * grads + kernel_grad) / this->n_particles);
+  return {((kernel * grads + kernel_grad) / particles.rows()), stddev};
 }

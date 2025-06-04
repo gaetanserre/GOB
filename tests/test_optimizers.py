@@ -5,11 +5,11 @@ from gob import create_bounds
 
 pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND", gen=42)
 
-f = Square()
+f = pygkls
 
-bounds = create_bounds(2, -100, 100)
+bounds = create_bounds(2, -99, 99)
 
-opt = CBO(bounds, use_batch=False)
+opt = CBO(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt} : {res[1]}")
 

@@ -18,10 +18,11 @@ public:
     this->max_trials = max_trials;
     this->trust_region_radius = trust_region_radius;
     this->bobyqa_eval = bobyqa_eval;
-  };
+  }
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
+private:
   int n_eval;
   int max_trials;
   double trust_region_radius;

@@ -18,17 +18,18 @@ public:
     this->sigma = sigma;
 
     this->transform_bounds(bounds);
-  };
+  }
 
   ~CMA_ES()
   {
     delete[] lbounds;
     delete[] ubounds;
-  };
+  }
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
-  virtual void transform_bounds(vec_bounds bounds);
 
+private:
+  virtual void transform_bounds(vec_bounds bounds);
   int n_eval;
   double *lbounds;
   double *ubounds;

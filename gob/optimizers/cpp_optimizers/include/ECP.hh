@@ -29,10 +29,11 @@ public:
 
     int d = bounds.size();
     this->theta = max(2.0 + 1.0 / (n_eval * d), theta_init);
-  };
+  }
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
+private:
   int n_eval;
   double epsilon;
   double theta;

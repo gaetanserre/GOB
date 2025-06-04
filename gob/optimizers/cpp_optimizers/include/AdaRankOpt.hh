@@ -26,22 +26,21 @@ public:
     glp_init_smcp(param);
     param->msg_lev = GLP_MSG_OFF;
     param->it_lim = 100;
-  };
+  }
 
   ~AdaRankOpt()
   {
     delete param;
-  };
+  }
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
+private:
   int n_eval;
   int max_trials;
   int max_degree;
   double trust_region_radius;
   int bobyqa_eval;
   glp_smcp *param;
-
-private:
   static Eigen::MatrixXd polynomial_matrix(vector<pair<dyn_vector, double>> &samples, int degree);
 };

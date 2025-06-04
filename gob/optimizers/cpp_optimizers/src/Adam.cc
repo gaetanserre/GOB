@@ -18,5 +18,10 @@ Eigen::MatrixXd Adam::step(Eigen::MatrixXd grads, Eigen::MatrixXd params)
     this->state_v_max = this->state_v_max.cwiseMax(v_hat);
     return params.array() - this->lr * m_hat.array() / (this->state_v_max.array().sqrt() + this->epsilon);
   }
-  return params.array() - this->lr * m_hat.array() / (v_hat.array().sqrt() + this->epsilon);
+  Eigen::MatrixXd res = this->lr * m_hat.array() / (v_hat.array().sqrt() + this->epsilon);
+  for (int i = 0; i < params.rows(); i++)
+  {
+    printf("Norm %d: %f\n", i, res.row(i).norm());
+  }
+  return params - res;
 }

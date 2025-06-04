@@ -44,7 +44,8 @@ cdef extern from "include/SBS.hh":
       int iter,
       int k,
       double sigma,
-      double lr
+      double dt,
+      int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -60,7 +61,7 @@ cdef extern from "include/CBO.hh":
       double epsilon,
       double beta,
       double sigma,
-      bool use_batch
+      int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -164,9 +165,10 @@ cdef class SBS:
     int iter=100,
     int k=10_000,
     double sigma=0.01,
-    double lr=0.5
+    double dt=0.01,
+    int batch_size=0
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, k, sigma, lr)
+    self.thisptr = new CSBS(bounds, n_particles, iter, k, sigma, dt, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -191,9 +193,9 @@ cdef class CBO:
     double epsilon=1e-2,
     double beta=1,
     double sigma=5.1,
-    bool use_batch=False
+    int batch_size=0
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, use_batch)
+    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, batch_size)
 
   def minimize(self, f):
     py_init()

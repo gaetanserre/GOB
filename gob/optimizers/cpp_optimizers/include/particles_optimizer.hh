@@ -3,8 +3,15 @@
  */
 
 #include "optimizer.hh"
+#include "schedulers.hh"
 
 #pragma once
+
+struct dynamic
+{
+  Eigen::MatrixXd drift;
+  dyn_vector stddev;
+};
 
 class Particles_Optimizer : public Optimizer
 {
@@ -13,19 +20,27 @@ public:
       vec_bounds bounds,
       int n_particles = 200,
       int iter = 100,
-      bool use_adam = true,
-      double lr = 0.5) : Optimizer(bounds, "Particles_Optimizer")
+      double dt = 0.01,
+      int batch_size = 0,
+      unique_ptr<Scheduler> sched = make_unique<Scheduler>()) : Optimizer(bounds, "Particles_Optimizer")
   {
     this->n_particles = n_particles;
     this->iter = iter;
-    this->use_adam = use_adam;
-    this->lr = lr;
-  };
-  virtual result_eigen minimize(function<double(dyn_vector x)> f);
-  virtual Eigen::MatrixXd dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals) = 0;
+    this->dt = dt;
+    this->sched = move(sched);
+    this->batch_size = batch_size;
+  }
 
+  virtual result_eigen minimize(function<double(dyn_vector x)> f);
+
+protected:
+  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals) = 0;
   int n_particles;
   int iter;
-  bool use_adam;
-  double lr;
+  double dt;
+  int batch_size;
+  unique_ptr<Scheduler> sched;
+
+private:
+  void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples);
 };

@@ -13,18 +13,18 @@ public:
       int iter = 100,
       int k = 10000,
       double sigma = 1e-2,
-      double lr = 0.5) : Particles_Optimizer(bounds, n_particles, iter, lr)
+      double dt = 0.01,
+      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, make_unique<LinearScheduler>(&this->dt, 0.99))
   {
     this->k = k;
     this->sigma = sigma;
-  };
+  }
 
-  virtual Eigen::MatrixXd dynamics(const function<double(dyn_vector x)> &f, const int &time, const Eigen::MatrixXd &particles, vector<double> *evals);
-
-  int k;
-  double sigma;
+  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 
 private:
+  int k;
+  double sigma;
   Eigen::MatrixXd rbf(const Eigen::MatrixXd &particles);
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
 };
