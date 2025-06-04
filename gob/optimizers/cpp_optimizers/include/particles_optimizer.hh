@@ -4,6 +4,7 @@
 
 #include "optimizer.hh"
 #include "schedulers.hh"
+#include <memory>
 
 #pragma once
 
