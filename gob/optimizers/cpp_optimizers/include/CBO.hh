@@ -22,7 +22,6 @@ public:
     this->epsilon = epsilon;
     this->beta = beta;
     this->sigma = sigma;
-    this->use_batch = use_batch;
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
@@ -32,6 +31,5 @@ private:
   double epsilon;
   double beta;
   double sigma;
-  bool use_batch;
   dyn_vector compute_consensus(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 };
