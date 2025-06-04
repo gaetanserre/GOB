@@ -4,7 +4,6 @@
 
 #include "optimizer.hh"
 #include "schedulers.hh"
-#include <memory>
 
 #pragma once
 
@@ -23,13 +22,18 @@ public:
       int iter = 100,
       double dt = 0.01,
       int batch_size = 0,
-      unique_ptr<Scheduler> sched = make_unique<Scheduler>()) : Optimizer(bounds, "Particles_Optimizer")
+      Scheduler *sched = new Scheduler()) : Optimizer(bounds, "Particles_Optimizer")
   {
     this->n_particles = n_particles;
     this->iter = iter;
     this->dt = dt;
-    this->sched = move(sched);
+    this->sched = sched;
     this->batch_size = batch_size;
+  }
+
+  ~Particles_Optimizer()
+  {
+    delete sched;
   }
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
@@ -40,7 +44,7 @@ protected:
   int iter;
   double dt;
   int batch_size;
-  unique_ptr<Scheduler> sched;
+  Scheduler *sched;
 
 private:
   void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples);

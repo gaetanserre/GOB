@@ -14,7 +14,7 @@ public:
       int k = 10000,
       double sigma = 1e-2,
       double dt = 0.01,
-      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, make_unique<LinearScheduler>(&this->dt, 0.99))
+      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, 0.99))
   {
     this->k = k;
     this->sigma = sigma;
