@@ -17,7 +17,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - Gradient Descent
 - Pure Random Search
 
-### Installation (Python>=3.10)
+### Installation (Python ≥ 3.10)
 Download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:
 ```bash
 pip install gob-<version>-<architecture>.whl
