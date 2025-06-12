@@ -13,7 +13,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - [Every Call is Precious](https://arxiv.org/abs/2502.04290?)
 - [Multi-Level Single-Linkage](https://ageconsearch.umn.edu/record/272327)
 - [Stein Boltzmann Sampling](https://arxiv.org/abs/2402.04689)
-- [Consensus Based Sampling](https://arxiv.org/abs/1909.09249)
+- [Consensus Based Optimization](https://arxiv.org/abs/1909.09249)
 - Gradient Descent
 - Pure Random Search
 
