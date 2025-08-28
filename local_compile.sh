@@ -63,6 +63,7 @@ cp -r glpk-5.0/src/**/*.c src/glpk
 cp -r glpk-5.0/src/**/*.h include/glpk
 cp -r glpk-5.0/src/*.h include/glpk
 rm -rf glpk-5.0 glpk-5.0.tar.gz src/glpk/main.c
+sed -i 's/^typedef int bool;/\/\/typedef int bool;/' include/glpk/minisat.h
 fi
 
 numpy_include=$(python -c "import numpy; print(numpy.get_include())")

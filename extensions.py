@@ -116,6 +116,7 @@ class OptBuild(build_ext):
             "&& cp -r glpk-5.0/src/**/*.h include/glpk "
             "&& cp -r glpk-5.0/src/*.h include/glpk "
             "&& rm -rf glpk-5.0 glpk-5.0.tar.gz src/glpk/main.c"
+            "&& sed -i 's/^typedef int bool;/\/\/typedef int bool;/' include/glpk/minisat.h"
         )
 
         ext_dir = Path(self.get_ext_fullpath(ext.name)).parent.absolute()
