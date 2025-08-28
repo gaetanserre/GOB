@@ -54,16 +54,10 @@ if [ ! -f include/libcmaes/cmaes_export.h ]; then
   rm -rf libcmaes
 fi
 
-if [ ! -f include/glpk/glpk.h ]; then
+if [ ! -d glpk-5.0 ]; then
 curl http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
 tar -xzf glpk-5.0.tar.gz
-mkdir -p src/glpk
-mkdir -p include/glpk
-cp -r glpk-5.0/src/**/*.c src/glpk
-cp -r glpk-5.0/src/**/*.h include/glpk
-cp -r glpk-5.0/src/*.h include/glpk
-rm -rf glpk-5.0 glpk-5.0.tar.gz src/glpk/main.c
-sed -i 's/^typedef int bool;/\/\/typedef int bool;/' include/glpk/minisat.h
+rm glpk-5.0.tar.gz
 fi
 
 numpy_include=$(python -c "import numpy; print(numpy.get_include())")
