@@ -44,7 +44,7 @@ if(WINDOWS)
   target_link_libraries(${EXT_NAME} ${Python_LIBRARIES})
 else()
   set(CMAKE_CXX_STANDARD 23)
-  set(CMAKE_CXX_FLAGS "-fPIC -O3")
+  set(CMAKE_CXX_FLAGS "-fPIC -O3 -std=c++20")
   add_library(${EXT_NAME} SHARED ${SRC_FILES} ${CYTHON_CPP_FILE})
 endif()
 
