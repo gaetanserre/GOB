@@ -3,6 +3,7 @@
  */
 
 #include "CBO.hh"
+#include "noise.hh"
 
 double log_sum_exp(double *begin, double *end)
 {
@@ -54,5 +55,6 @@ dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
     drift.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf));
   }
   this->beta = min(this->beta * 1.05, 100000.0);
-  return {drift, stddev};
+  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
+  return {drift, stddev, noise};
 }

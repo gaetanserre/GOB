@@ -11,9 +11,9 @@ class AdaLIPO_P(Optimizer):
         self,
         bounds,
         n_eval=1000,
-        max_trials=800,
+        max_trials=50_000,
         trust_region_radius=0.1,
-        bobyqa_eval=10,
+        bobyqa_eval=20,
         verbose=False,
     ):
         """
