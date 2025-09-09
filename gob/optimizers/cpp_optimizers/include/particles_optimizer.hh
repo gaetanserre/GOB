@@ -11,6 +11,7 @@ struct dynamic
 {
   Eigen::MatrixXd drift;
   dyn_vector stddev;
+  Eigen::MatrixXd noise;
 };
 
 class Particles_Optimizer : public Optimizer
