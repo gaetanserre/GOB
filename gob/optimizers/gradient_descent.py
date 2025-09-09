@@ -7,21 +7,22 @@ from .optimizer import Optimizer
 
 
 class GD(Optimizer):
-    def __init__(self, bounds, n_step=1000, step_size=1e-3, verbose=False):
-        """
-        The gradient descent optimizer.
+    """
+    The gradient descent optimizer.
 
-        Parameters
-        ----------
-        bounds : ndarray
-            The bounds of the search space.
-        n_step : int
-            The number of steps to take.
-        step_size : float
-            The step size of the gradient
-        verbose : bool
-            Whether to print information about the optimization process.
-        """
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_step : int
+        The number of steps to take.
+    step_size : float
+        The step size of the gradient
+    verbose : bool
+        Whether to print information about the optimization process.
+    """
+
+    def __init__(self, bounds, n_step=1000, step_size=1e-3, verbose=False):
         super().__init__("GD", bounds)
         self.n_step = n_step
         self.step_size = step_size

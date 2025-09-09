@@ -3,8 +3,7 @@
 #
 
 from gob import GOB
-from gob import create_bounds
-from gob.benchmarks import PyGKLS
+from gob.benchmarks import PyGKLS, create_bounds
 
 if __name__ == "__main__":
     opt = {

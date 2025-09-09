@@ -10,6 +10,7 @@ from .rastrigin import Rastrigin
 from .rosenbrock import Rosenbrock
 from .deb import Deb
 from .pygkls import PyGKLS
+from .create_bounds import create_bounds
 
 __all__ = [
     "Square",
@@ -20,4 +21,5 @@ __all__ = [
     "Rosenbrock",
     "Deb",
     "PyGKLS",
+    "create_bounds",
 ]

@@ -9,19 +9,20 @@ import nlopt
 
 
 class CRS(Optimizer):
-    def __init__(self, bounds, n_eval=1000, verbose=False):
-        """
-        Interface for the CRS optimizer.
+    """
+    Interface for the CRS optimizer.
 
-        Parameters
-        ----------
-        bounds : ndarray
-            The bounds of the search space.
-        n_eval : int
-            The maximum number of function evaluations.
-        verbose : bool
-            Whether to print information about the optimization process.
-        """
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_eval : int
+        The maximum number of function evaluations.
+    verbose : bool
+        Whether to print information about the optimization process.
+    """
+
+    def __init__(self, bounds, n_eval=1000, verbose=False):
         super().__init__("CRS", bounds)
         self.n_eval = n_eval
         self.verbose = verbose

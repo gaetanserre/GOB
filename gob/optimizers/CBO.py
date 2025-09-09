@@ -7,6 +7,19 @@ from .cpp_optimizers import CBO as C_CBO
 
 
 class CBO(Optimizer):
+    """
+    Interface for the CBO optimizer.
+
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_particles : int
+        The number of particles.
+    iter : int
+        The number of iterations for the SVGD algorithm.
+    """
+
     def __init__(
         self,
         bounds,
@@ -20,18 +33,6 @@ class CBO(Optimizer):
         batch_size=0,
         verbose=False,
     ):
-        """
-        Interface for the CBO optimizer.
-
-        Parameters
-        ----------
-        bounds : ndarray
-            The bounds of the search space.
-        n_particles : int
-            The number of particles.
-        iter : int
-            The number of iterations for the SVGD algorithm.
-        """
         super().__init__("CBO", bounds)
         self.c_opt = C_CBO(
             bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, batch_size

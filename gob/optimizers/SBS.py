@@ -7,6 +7,27 @@ from .cpp_optimizers import SBS as C_SBS
 
 
 class SBS(Optimizer):
+    """
+    Interface for the SBS optimizer.
+
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_particles : int
+        The number of particles.
+    iter : int
+        The number of iterations for the SVGD algorithm.
+    k : list
+        The kappa exponent.
+    sigma : float
+        The kernel bandwidth.
+    dt : float
+        The time step for the SVGD algorithm.
+    verbose : bool
+        Whether to print information about the optimization process.
+    """
+
     def __init__(
         self,
         bounds,
@@ -18,26 +39,6 @@ class SBS(Optimizer):
         batch_size=0,
         verbose=False,
     ):
-        """
-        Interface for the SBS optimizer.
-
-        Parameters
-        ----------
-        bounds : ndarray
-            The bounds of the search space.
-        n_particles : int
-            The number of particles.
-        iter : int
-            The number of iterations for the SVGD algorithm.
-        k : list
-            The kappa exponent.
-        sigma : float
-            The kernel bandwidth.
-        dt : float
-            The time step for the SVGD algorithm.
-        verbose : bool
-            Whether to print information about the optimization process.
-        """
         super().__init__("SBS", bounds)
         self.c_opt = C_SBS(bounds, n_particles, iter, k, sigma, dt, batch_size)
         self.verbose = verbose

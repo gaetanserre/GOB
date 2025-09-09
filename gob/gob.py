@@ -2,7 +2,7 @@
 # Created in 2024 by Gaëtan Serré
 #
 import numpy as np
-from .create_bounds import create_bounds
+from .benchmarks.create_bounds import create_bounds
 
 from .utils import print_table_by_metric
 from .utils import print_competitive_ratios
@@ -236,7 +236,7 @@ class GOB:
 
     def competitive_ratio(self, res_dict, min_dict):
         """
-        Compute the competitive ratio: 1 / |F| * sum_{f in F} (approx(f) / min(f)).
+        Compute the competitive ratio: :math: `1 / |F| * sum_{f in F} (approx(f) / min(f))`.
 
         Parameters
         ----------

@@ -1,6 +1,5 @@
 from gob.benchmarks import *
 from gob.optimizers import *
-from gob import create_bounds
 
 
 pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND", gen=42)

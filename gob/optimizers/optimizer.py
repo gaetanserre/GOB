@@ -71,5 +71,16 @@ class Optimizer:
 
         return f_
 
+    def set_stop_criterion(self, stop_criterion):
+        """
+        Set a stop criterion for the optimizer.
+
+        Parameters
+        ----------
+        stop_criterion : float
+            The stop criterion.
+        """
+        pass
+
     def __str__(self):
         return self.name

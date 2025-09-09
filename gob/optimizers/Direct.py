@@ -9,19 +9,20 @@ import nlopt
 
 
 class Direct(Optimizer):
-    def __init__(self, bounds, n_eval=1000, verbose=False):
-        """
-        Interface for the Direct optimizer.
+    """
+    Interface for the Direct optimizer.
 
-        Parameters
-        ----------
-        bounds : ndarray
-            The bounds of the search space.
-        n_eval : int
-            The maximum number of function evaluations.
-        verbose : bool
-            Whether to print information about the optimization
-        """
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_eval : int
+        The maximum number of function evaluations.
+    verbose : bool
+        Whether to print information about the optimization
+    """
+
+    def __init__(self, bounds, n_eval=1000, verbose=False):
         super().__init__("Direct", bounds)
         self.n_eval = n_eval
         self.verbose = verbose

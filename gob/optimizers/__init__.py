@@ -14,18 +14,3 @@ from .CRS import CRS
 from .MLSL import MLSL
 from .BayesOpt import BayesOpt
 from .ECP import ECP
-
-__all__ = [
-    "PRS",
-    "GD",
-    "CMA_ES",
-    "AdaLIPO_P",
-    "SBS",
-    "CBO",
-    "AdaRankOpt",
-    "Direct",
-    "CRS",
-    "MLSL",
-    "BayesOpt",
-    "ECP",
-]

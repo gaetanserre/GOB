@@ -8,20 +8,20 @@ import numpy as np
 
 
 class BayesOpt(Optimizer):
+    """
+    Interface for the BayesOpt optimizer.
+
+    Parameters
+    ----------
+    bounds : ndarray
+        The bounds of the search space.
+    n_eval : int
+        The maximum number of function evaluations.
+    verbose : bool
+        Whether to print information about the optimization process.
+    """
+
     def __init__(self, bounds, n_eval=100, verbose=False):
-        """
-        Interface for the BayesOpt optimizer.
-
-        Parameters
-        ----------
-        bounds : ndarray
-            The bounds of the search space.
-        n_eval : int
-            The maximum number of function evaluations.
-        verbose : bool
-            Whether to print information about the optimization process.
-        """
-
         super().__init__("BayesOpt", bounds)
         self.n_eval = n_eval
         self.verbose = verbose
