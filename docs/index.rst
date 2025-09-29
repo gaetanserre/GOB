@@ -99,7 +99,7 @@ For more details, explore the modules below and refer to the examples for practi
    source/quickstart
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Optimizers
 
    source/optimizers/gob.prs
@@ -116,7 +116,7 @@ For more details, explore the modules below and refer to the examples for practi
    source/optimizers/gob.sbs
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Benchmark
 
    source/benchmarks/gob.square
@@ -129,7 +129,7 @@ For more details, explore the modules below and refer to the examples for practi
    source/benchmarks/gob.pygkls
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :caption: Metrics
 
    source/metrics/gob.ftarget
