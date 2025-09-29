@@ -9,7 +9,7 @@ from .f_target import f_target
 
 class Proportion(Metric):
     """
-    Metric that computes the proportion of runs that reached the f-target value.
+    Metric that computes the proportion of runs that reached the :math:`f`-target value.
 
     Parameters
     ----------

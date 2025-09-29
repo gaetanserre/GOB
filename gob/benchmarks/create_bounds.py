@@ -21,7 +21,7 @@ def create_bounds(d, mi, ma, n=1):
         The number of benchmarks.
     Returns
     -------
-    array_like of shape (d, 2)
+    array-like of shape (d, 2)
         The bounds of the search space.
     """
     if n == 1:

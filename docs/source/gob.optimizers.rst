@@ -11,6 +11,7 @@ gob.optimizers.AdaLIPO\_P module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.AdaRankOpt module
 --------------------------------
@@ -19,6 +20,7 @@ gob.optimizers.AdaRankOpt module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.BayesOpt module
 ------------------------------
@@ -27,6 +29,7 @@ gob.optimizers.BayesOpt module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.CBO module
 -------------------------
@@ -35,6 +38,7 @@ gob.optimizers.CBO module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.CMA\_ES module
 -----------------------------
@@ -43,6 +47,7 @@ gob.optimizers.CMA\_ES module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.CRS module
 -------------------------
@@ -51,6 +56,7 @@ gob.optimizers.CRS module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.Direct module
 ----------------------------
@@ -59,6 +65,7 @@ gob.optimizers.Direct module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.ECP module
 -------------------------
@@ -67,6 +74,7 @@ gob.optimizers.ECP module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.MLSL module
 --------------------------
@@ -75,6 +83,7 @@ gob.optimizers.MLSL module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.PRS module
 -------------------------
@@ -83,6 +92,7 @@ gob.optimizers.PRS module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.SBS module
 -------------------------
@@ -91,6 +101,7 @@ gob.optimizers.SBS module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.cpp\_optimizers module
 -------------------------------------
@@ -107,6 +118,7 @@ gob.optimizers.gradient\_descent module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.optimizers.optimizer module
 -------------------------------
