@@ -15,14 +15,6 @@ Subpackages
 Submodules
 ----------
 
-gob.create\_bounds module
--------------------------
-
-.. automodule:: gob.create_bounds
-   :members:
-   :show-inheritance:
-   :undoc-members:
-
 gob.gob module
 --------------
 

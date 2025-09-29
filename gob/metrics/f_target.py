@@ -7,7 +7,7 @@ import numpy as np
 
 def f_target(f, bounds, p):
     """
-    Compute the f-target metric for a given function and a given proportion.
+    Compute the :math:`f`-target metric for a given function and a given proportion.
 
     Parameters
     ----------

@@ -3,6 +3,7 @@
 #
 
 import numpy as np
+from typing import Tuple
 
 
 class Benchmark:
@@ -28,7 +29,7 @@ class Benchmark:
 
         Parameters
         ----------
-        x : array_like
+        x : array-like
             The point at which to evaluate the function.
 
         Returns
@@ -44,7 +45,7 @@ class Benchmark:
 
         Parameters
         ----------
-        x : array_like
+        x : array-like
             The point at which to evaluate the function.
 
         Returns
@@ -63,15 +64,15 @@ class Benchmark:
         ----------
         f : callable
             The function to estimate the gradient of. It should take a single argument.
-        x : array_like
+        x : array-like
             The point at which to estimate the gradient of `f`.
         eps : float, optional
             The perturbation used to estimate the gradient.
 
         Returns
         -------
-        array_like
-            The estimated gradient of `f` at `x`.
+        pair
+            The estimated gradient of `f` at `x` and the value of `f` at `x`.
         """
         eps = 1e-12
         f_x = self(x)

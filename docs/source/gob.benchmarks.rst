@@ -11,11 +11,20 @@ gob.benchmarks.ackley module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.benchmark module
 -------------------------------
 
 .. automodule:: gob.benchmarks.benchmark
+   :members:
+   :show-inheritance:
+   :undoc-members:
+
+gob.benchmarks.create\_bounds module
+------------------------------------
+
+.. automodule:: gob.benchmarks.create_bounds
    :members:
    :show-inheritance:
    :undoc-members:
@@ -27,6 +36,7 @@ gob.benchmarks.deb module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.levy module
 --------------------------
@@ -35,6 +45,7 @@ gob.benchmarks.levy module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.michalewicz module
 ---------------------------------
@@ -43,6 +54,7 @@ gob.benchmarks.michalewicz module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.pygkls module
 ----------------------------
@@ -51,6 +63,7 @@ gob.benchmarks.pygkls module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.rastrigin module
 -------------------------------
@@ -59,6 +72,7 @@ gob.benchmarks.rastrigin module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.rosenbrock module
 --------------------------------
@@ -67,6 +81,7 @@ gob.benchmarks.rosenbrock module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.benchmarks.square module
 ----------------------------
@@ -75,6 +90,7 @@ gob.benchmarks.square module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 Module contents
 ---------------

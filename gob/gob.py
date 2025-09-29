@@ -31,7 +31,7 @@ class GOB:
         metrics : List str | Object
             The metrics to use.
 
-        bounds : array_like of shape (n_benchmark, n_variables, 2)
+        bounds : array-like of shape (n_benchmark, n_variables, 2)
             The bounds of the search space.
 
         **kwargs : dict of keyword arguments for the optimizers or the metrics
@@ -60,7 +60,7 @@ class GOB:
         ----------
         optimizer : str | Object
             The optimizer to use.
-        bounds : array_like of shape (n_variables, 2)
+        bounds : array-like of shape (n_variables, 2)
             The bounds of the search space.
 
         **kwargs : dict of keyword arguments
@@ -195,7 +195,7 @@ class GOB:
             The metric to use.
         benchmark : Benchmark
             The benchmark function.
-        bounds : array_like of shape (n_variables, 2)
+        bounds : array-like of shape (n_variables, 2)
             The bounds of the search space.
 
         Returns
