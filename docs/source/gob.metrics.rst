@@ -11,6 +11,7 @@ gob.metrics.f\_target module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 gob.metrics.metric module
 -------------------------
@@ -27,6 +28,7 @@ gob.metrics.proportion module
    :members:
    :show-inheritance:
    :undoc-members:
+   :noindex:
 
 Module contents
 ---------------

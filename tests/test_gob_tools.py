@@ -11,12 +11,11 @@ if __name__ == "__main__":
             "n_eval": 1000,
             "max_trials": 800,
             "max_degree": 80,
-            "verbose": True,
         },
         "SBS": {"n_particles": 200, "svgd_iter": 100},
         "Proportion": {"p": 0.9},
     }
-    pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", deterministic=True)
+    pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", gen=42)
     gob = GOB(
         ["AdaRankOpt", "AdaLIPO+TR"],
         ["Levy"],

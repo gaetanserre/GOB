@@ -31,6 +31,9 @@ class PyGKLS(Benchmark):
             global_radius,
             gen,
         )
+
+        self.smoothness = smoothness
+
         match smoothness:
             case "D":
                 self.f = self.gkls_function.get_d_f
@@ -49,3 +52,12 @@ class PyGKLS(Benchmark):
 
     def expr(self, x):
         return self.f(x)
+
+    def gradient(self, x):
+        match self.smoothness:
+            case "D":
+                return self.gkls_function.get_d_grad(x), self(x)
+            case "D2":
+                return self.gkls_function.get_d2_grad(x), self(x)
+            case "ND":
+                raise NotImplementedError("ND GKLS functions are not differentiable")
