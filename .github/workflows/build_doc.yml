@@ -1,0 +1,29 @@
+name: Build GOB documentation
+
+on:
+  push:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build_docs:
+    name: Build docs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup Python 3.13
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Build docs
+        run: |
+          cd docs
+          python -m pip install -r requirements.txt
+          python gen_doc_files.py
+          make html
