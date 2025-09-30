@@ -2,3 +2,6 @@ sphinx
 sphinx-autodoc-typehints
 furo
 myst_parser
+numpy
+matplotlib
+gkls
