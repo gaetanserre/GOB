@@ -3,34 +3,37 @@
 #
 
 from .create_bounds import create_bounds
-from .square import Square
 from .ackley import Ackley
+from .bentcigar import Bentcigar
+from .deb import Deb
+from .dixonprice import Dixonprice
+from .hyperellipsoid import Hyperellipsoid
 from .levy import Levy
 from .michalewicz import Michalewicz
 from .rastrigin import Rastrigin
 from .rosenbrock import Rosenbrock
-from .deb import Deb
-from .dixonprice import Dixonprice
-from .hyperellipsoid import Hyperellipsoid
+from .square import Square
+from .styblinskitang import Styblinskitang
 from .sumpow import Sumpow
 from .trid import Trid
 from .zakharov import Zakharov
-from .styblinskitang import Styblinskitang
 from .pygkls import PyGKLS
 
 __all__ = [
     "create_bounds",
-    "Square",
+    "PyGKLS",
     "Ackley",
+    "Bentcigar"
+    "Deb",
+    "Dixonprice",
+    "Hyperellipsoid",
+    "Levy",
     "Levy",
     "Michalewicz",
     "Rastrigin",
     "Rosenbrock",
-    "Deb",
-    "PyGKLS",
-    "Dixonprice",
+    "Square",
     "Styblinskitang",
-    "Hyperellipsoid",
     "Sumpow",
     "Trid",
     "Zakharov"

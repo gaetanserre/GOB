@@ -121,6 +121,7 @@ For more details, explore the modules below and refer to the examples for practi
 
    source/benchmarks/gob.pygkls
    source/benchmarks/gob.ackley
+   source/benchmarks/gob.bentcigar
    source/benchmarks/gob.deb
    source/benchmarks/gob.hyperellipsoid
    source/benchmarks/gob.levy
