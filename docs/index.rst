@@ -123,12 +123,14 @@ For more details, explore the modules below and refer to the examples for practi
    source/benchmarks/gob.ackley
    source/benchmarks/gob.bentcigar
    source/benchmarks/gob.deb
+   source/benchmarks/gob.dixonprice
    source/benchmarks/gob.hyperellipsoid
    source/benchmarks/gob.levy
    source/benchmarks/gob.michalewicz
    source/benchmarks/gob.rastrigin
    source/benchmarks/gob.rosenbrock
    source/benchmarks/gob.square
+   source/benchmarks/gob.styblinskitang
    source/benchmarks/gob.sumpow
    source/benchmarks/gob.trid
    source/benchmarks/gob.zakharov
