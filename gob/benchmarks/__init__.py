@@ -2,24 +2,39 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .square import Square
+from .create_bounds import create_bounds
 from .ackley import Ackley
+from .bentcigar import Bentcigar
+from .deb import Deb
+from .dixonprice import Dixonprice
+from .hyperellipsoid import Hyperellipsoid
 from .levy import Levy
 from .michalewicz import Michalewicz
 from .rastrigin import Rastrigin
 from .rosenbrock import Rosenbrock
-from .deb import Deb
+from .square import Square
+from .styblinskitang import Styblinskitang
+from .sumpow import Sumpow
+from .trid import Trid
+from .zakharov import Zakharov
 from .pygkls import PyGKLS
-from .create_bounds import create_bounds
 
 __all__ = [
-    "Square",
+    "create_bounds",
+    "PyGKLS",
     "Ackley",
+    "Bentcigar"
+    "Deb",
+    "Dixonprice",
+    "Hyperellipsoid",
+    "Levy",
     "Levy",
     "Michalewicz",
     "Rastrigin",
     "Rosenbrock",
-    "Deb",
-    "PyGKLS",
-    "create_bounds",
+    "Square",
+    "Styblinskitang",
+    "Sumpow",
+    "Trid",
+    "Zakharov"
 ]

@@ -8,6 +8,10 @@ from .benchmark import Benchmark
 class Square(Benchmark):
     """
     The d-square function.
+
+    :math:`f(x) = x \\cdot x^\\top`.
+
+    Its minimum is :math:`0` achieved at :math:`x = 0`.
     """
 
     def __init__(self):

@@ -9,6 +9,10 @@ from .benchmark import Benchmark
 class Michalewicz(Benchmark):
     """
     The Michalewicz function.
+
+    :math:`f(x) =  - \\sum_{i=1}^d \\sin(x_i) \\sin\\left(\\frac{x_i^2}{\\pi}\\right)^{2\\times 10}`
+
+    Its minimum is unknown.
     """
 
     def __init__(self):
