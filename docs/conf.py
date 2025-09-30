@@ -24,6 +24,7 @@ extensions = [
     "sphinx.ext.napoleon",  # <-- si tu utilises Google/NumPy style docstrings
     "sphinx_autodoc_typehints",  # <-- affiche les hints de type
     "myst_parser",
+    "sphinx.ext.mathjax",
 ]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]

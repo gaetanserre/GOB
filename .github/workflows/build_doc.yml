@@ -20,13 +20,18 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Build docs
+      
+      - name: Install dependencies
         run: |
           sudo apt install libeigen3-dev
           python -m pip install numpy Cython nlopt prettytable bayesian-optimization gkls
-          python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+
+      - name: Build GOB
+        run: |
           ./local_compile.sh
+
+      - name: Build documentation
+        run: |
           cd docs
           python -m pip install -r requirements.txt
           python gen_doc_files.py

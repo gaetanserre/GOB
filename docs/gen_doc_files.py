@@ -7,10 +7,7 @@ import gob.metrics as gm
 import gob.benchmarks as gb
 from pathlib import Path
 import numpy as np
-import matplotlib
 import matplotlib.pyplot as plt
-
-matplotlib.rcParams["text.usetex"] = True
 
 
 def create_dir(path: Path):
@@ -117,8 +114,8 @@ if __name__ == "__main__":
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
             ax.plot_surface(X, Y, Z, cmap="coolwarm")
-            ax.set_xlabel("$x$")
-            ax.set_ylabel("$y$")
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
             plt.savefig(
                 wd / f"benchmarks/graphs/{name}.png",
                 dpi=300,
@@ -129,7 +126,7 @@ if __name__ == "__main__":
 
             file_content = (
                 f"{ben}\n"
-                f"{''.join(['='] * len(str(met)))}\n\n"
+                f"{''.join(['='] * len(str(ben)))}\n\n"
                 f".. image:: graphs/{name}.png\n"
                 "   :width: 500px\n"
                 "   :height: 500px\n"
