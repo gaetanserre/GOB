@@ -9,7 +9,7 @@ from .benchmark import Benchmark
 class Sumpow(Benchmark):
     """
     The Sum of different power function.
-    :math:`x : \to \sum_{i=1}^d |x_i|^{i+1}`
+    :math:`x : \\to \\sum_{i=1}^d |x_i|^{i+1}`
     """
 
     def __init__(self):

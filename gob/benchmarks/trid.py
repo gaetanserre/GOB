@@ -19,4 +19,4 @@ class Trid(Benchmark):
         return (
             np.sum((x - 1)**2)
             - np.sum(x[1:] * x[:-1])
-        ) / len(x) * (len(x) + 4) * (len(x) - 1)
+        )/ (len(x) * (len(x) + 4) * (len(x) - 1))

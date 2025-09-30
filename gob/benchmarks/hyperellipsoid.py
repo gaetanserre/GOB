@@ -6,14 +6,14 @@ import numpy as np
 from .benchmark import Benchmark
 
 
-class Sumcumsum(Benchmark):
+class Hyperellipsoid(Benchmark):
     """
-    The Sum Cum-Sum function, alias Rotated Hyper-Ellipsoid.
-    :math:`x : \to \sum_{i=1}^d \sum_{j=1}^i x_j^2`
+    The Rotated Hyper-Ellipsoid function.
+    :math:`x : \\to \\sum_{i=1}^d \\sum_{j=1}^i x_j^2`
     """
 
     def __init__(self):
-        super().__init__("Sum Cum-Sum", 0)
+        super().__init__("Hyper-Ellipsoid", 0)
 
     def expr(self, x):
         return np.sum(np.cumsum(x ** 2))
