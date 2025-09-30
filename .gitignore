@@ -11,5 +11,5 @@ gob.egg-info
 cpp_optimizers.cc
 dist
 .DS_Store
-docs/_build
-docs/source
+docs/_build/
+docs/source/
