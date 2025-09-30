@@ -2,11 +2,8 @@ name: Build GOB
 
 on:
   push:
-    branches: [ "main" ]
     tags:
-      - 'v*'
-  pull_request:
-    branches: [ "main" ]
+    - "v*"
 
   workflow_dispatch:
 
