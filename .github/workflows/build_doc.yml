@@ -11,10 +11,10 @@ jobs:
     name: Build docs
     runs-on: ubuntu-latest
     steps:
-      - name: Setup Python 3.13
+      - name: Setup Python 3.11
         uses: actions/setup-python@v4
         with:
-          python-version: "3.13"
+          python-version: "3.11"
 
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,6 +23,10 @@ jobs:
 
       - name: Build docs
         run: |
+          sudo apt install libeigen3-dev
+          python -m pip install numpy Cython nlopt prettytable bayesian-optimization gkls
+          python -c "from distutils.sysconfig import get_python_inc; print(get_python_inc())"
+          ./local_compile.sh
           cd docs
           python -m pip install -r requirements.txt
           python gen_doc_files.py

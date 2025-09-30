@@ -1,5 +1,7 @@
 # /bin/bash
 
+set -e
+
 pkg_name=cpp_optimizers
 ext_suffix=$(python -c "from importlib.machinery import EXTENSION_SUFFIXES; print(EXTENSION_SUFFIXES[0])")
 
