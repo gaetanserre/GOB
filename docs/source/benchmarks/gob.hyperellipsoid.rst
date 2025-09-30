@@ -1,5 +1,10 @@
 Hyper-ellipsoid
-======
+===============
+
+.. image:: graphs/Hyperellipsoid.png
+   :width: 500px
+   :height: 500px
+   :align: center
 
 .. automodule:: gob.benchmarks.hyperellipsoid
    :members:

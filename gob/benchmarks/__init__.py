@@ -23,7 +23,7 @@ __all__ = [
     "create_bounds",
     "PyGKLS",
     "Ackley",
-    "Bentcigar"
+    "Bentcigar",
     "Deb",
     "Dixonprice",
     "Hyperellipsoid",
@@ -36,5 +36,5 @@ __all__ = [
     "Styblinskitang",
     "Sumpow",
     "Trid",
-    "Zakharov"
+    "Zakharov",
 ]

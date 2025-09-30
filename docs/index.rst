@@ -117,7 +117,7 @@ For more details, explore the modules below and refer to the examples for practi
 
 .. toctree::
    :maxdepth: 1
-   :caption: Benchmark
+   :caption: Benchmarks
 
    source/benchmarks/gob.pygkls
    source/benchmarks/gob.ackley

@@ -1,5 +1,10 @@
 Bent-Cigar
-======
+==========
+
+.. image:: graphs/Bentcigar.png
+   :width: 500px
+   :height: 500px
+   :align: center
 
 .. automodule:: gob.benchmarks.bentcigar
    :members:
