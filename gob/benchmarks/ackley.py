@@ -11,16 +11,16 @@ class Ackley(Benchmark):
     The Ackley function.
     """
 
-    def __init__(self):
+    def __init__(self, a=20, b=0.2, c=1):
         super().__init__("Ackley", 0)
+        self.a = a
+        self.b = b
+        self.c = c
 
     def expr(self, x):
-        a = 20
-        b = 0.2
-        c = 1
         return (
-            -a * np.exp(-b * np.sqrt(np.sum(x**2) / len(x)))
-            - np.exp(np.sum(np.cos(c * x)) / len(x))
-            + a
+            -self.a * np.exp(-self.b * np.sqrt(np.sum(x**2) / len(x)))
+            - np.exp(np.sum(np.cos(self.c * x)) / len(x))
+            + self.a
             + np.e
         )
