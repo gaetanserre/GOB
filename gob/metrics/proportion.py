@@ -32,5 +32,5 @@ class Proportion(Metric):
 
     def __call__(self, sols):
         if self.f_target is None:
-            self.f_target = f_target(self.f, self.bounds, self.p)
+            self.f_target = f_target(self.f, self.bounds, self.p)()
         return np.mean([sol <= self.f_target for sol in sols])

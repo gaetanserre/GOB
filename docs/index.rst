@@ -96,48 +96,20 @@ For more details, explore the modules below and refer to the examples for practi
 .. toctree::
    :maxdepth: 2
 
-   source/quickstart
+   quickstart
 
 .. toctree::
    :maxdepth: 1
-   :caption: Optimizers
 
-   source/optimizers/gob.prs
-   source/optimizers/gob.gd
-   source/optimizers/gob.direct
-   source/optimizers/gob.mlsl
-   source/optimizers/gob.crs
-   source/optimizers/gob.bayesopt
-   source/optimizers/gob.cma_es
-   source/optimizers/gob.ecp
-   source/optimizers/gob.adalipo
-   source/optimizers/gob.adarankopt
-   source/optimizers/gob.cbo
-   source/optimizers/gob.sbs
+   source/optimizers/index
 
 .. toctree::
    :maxdepth: 1
-   :caption: Benchmarks
 
-   source/benchmarks/gob.pygkls
-   source/benchmarks/gob.ackley
-   source/benchmarks/gob.bentcigar
-   source/benchmarks/gob.deb
-   source/benchmarks/gob.dixonprice
-   source/benchmarks/gob.hyperellipsoid
-   source/benchmarks/gob.levy
-   source/benchmarks/gob.michalewicz
-   source/benchmarks/gob.rastrigin
-   source/benchmarks/gob.rosenbrock
-   source/benchmarks/gob.square
-   source/benchmarks/gob.styblinskitang
-   source/benchmarks/gob.sumpow
-   source/benchmarks/gob.trid
-   source/benchmarks/gob.zakharov
+   source/benchmarks/index
+
 
 .. toctree::
    :maxdepth: 1
-   :caption: Metrics
 
-   source/metrics/gob.ftarget
-   source/metrics/gob.proportion
+   source/metrics/index

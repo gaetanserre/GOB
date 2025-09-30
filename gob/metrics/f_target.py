@@ -3,11 +3,12 @@
 #
 
 import numpy as np
+from .metric import Metric
 
 
-def f_target(f, bounds, p):
+class f_target(Metric):
     """
-    Compute the :math:`f`-target metric for a given function and a given proportion.
+    Metric that compute the :math:`f`-target metric for a given function and a given proportion.
 
     Parameters
     ----------
@@ -18,15 +19,23 @@ def f_target(f, bounds, p):
     p : float
         The proportion.
     """
-    d = bounds.shape[0]
-    x = np.random.uniform(bounds[:, 0], bounds[:, 1], (1_000_000, d))
-    n = f.n
-    fx = [f(xi) for xi in x]
-    f.n = n
-    if not hasattr(f, "min") or f.min is None:
-        mn = np.min(fx)
-        f.min = mn
-    else:
-        mn = f.min
-    mean_val = np.mean(fx)
-    return mn + (mean_val - mn) * (1 - p)
+
+    def __init__(self, f, bounds, p=0.99):
+        super().__init__("f_target")
+        self.f = f
+        self.bounds = bounds
+        self.p = p
+
+    def __call__(self):
+        d = self.bounds.shape[0]
+        x = np.random.uniform(self.bounds[:, 0], self.bounds[:, 1], (1_000_000, d))
+        n = self.f.n
+        fx = [self.f(xi) for xi in x]
+        self.f.n = n
+        if not hasattr(self.f, "min") or self.f.min is None:
+            mn = np.min(fx)
+            self.f.min = mn
+        else:
+            mn = self.f.min
+        mean_val = np.mean(fx)
+        return mn + (mean_val - mn) * (1 - self.p)

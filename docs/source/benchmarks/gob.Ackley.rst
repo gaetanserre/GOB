@@ -1,0 +1,12 @@
+Ackley
+========
+
+.. image:: graphs/Ackley.png
+   :width: 500px
+   :height: 500px
+   :align: center
+
+.. automodule:: gob.benchmarks.ackley
+   :members:
+   :show-inheritance:
+   :undoc-members:
