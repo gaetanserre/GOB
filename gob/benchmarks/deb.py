@@ -9,6 +9,10 @@ from .benchmark import Benchmark
 class Deb(Benchmark):
     """
     The Deb N.1 function.
+
+    :math:`f(x) = -\\frac{1}{d}\\sum_{i=1}^d \\sin(5\\pi x_i)^6`
+
+    Its minimum is :math:`-1`.
     """
 
     def __init__(self):

@@ -9,6 +9,10 @@ from .benchmark import Benchmark
 class Zakharov(Benchmark):
     """
     The Zakharov function.
+
+    :math:`f(x) = \\sum_{i=1}^d x_i^2 + \\left(\\sum_{i=1}^d \\frac{1}{2} i x_i\\right)^2 + \\left(\\sum_{i=1}^d \\frac{1}{2} i x_i\\right)^4`.
+
+    Its minimum is :math:`0` achieved at :math:`x = 0`.
     """
 
     def __init__(self):

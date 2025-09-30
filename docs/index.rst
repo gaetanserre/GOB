@@ -95,7 +95,7 @@ For more details, explore the modules below and refer to the examples for practi
 
 .. toctree::
    :maxdepth: 2
-   
+
    source/quickstart
 
 .. toctree::
@@ -119,14 +119,18 @@ For more details, explore the modules below and refer to the examples for practi
    :maxdepth: 1
    :caption: Benchmark
 
-   source/benchmarks/gob.square
+   source/benchmarks/gob.pygkls
    source/benchmarks/gob.ackley
    source/benchmarks/gob.deb
+   source/benchmarks/gob.hyperellipsoid
    source/benchmarks/gob.levy
    source/benchmarks/gob.michalewicz
    source/benchmarks/gob.rastrigin
    source/benchmarks/gob.rosenbrock
-   source/benchmarks/gob.pygkls
+   source/benchmarks/gob.square
+   source/benchmarks/gob.sumpow
+   source/benchmarks/gob.trid
+   source/benchmarks/gob.zakharov
 
 .. toctree::
    :maxdepth: 1

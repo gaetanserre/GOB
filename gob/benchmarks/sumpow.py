@@ -9,7 +9,10 @@ from .benchmark import Benchmark
 class Sumpow(Benchmark):
     """
     The Sum of different power function.
-    :math:`x : \\to \\sum_{i=1}^d |x_i|^{i+1}`
+
+    :math:`f(x) = \\sum_{i=1}^d |x_i|^{i+1}`
+
+    Its minimum is :math:`0` achieved at :math:`0`.
     """
 
     def __init__(self):

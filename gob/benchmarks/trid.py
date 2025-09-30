@@ -10,8 +10,10 @@ class Trid(Benchmark):
     """
     The Trid function.
     The function is normalized according to the dimension to ensure consistency in the global minima.
-    :math:`x : \\to \\sum_{i=1}^d (x_i - 1)^2 - \\sum_{i=2}^d x_i x_{i-1}`
-    minimum is achieved at :math:`x_i = i(d + 1 - i) \\forall i`
+
+    :math:`f(x) = \\frac{1}{d(d+4)(d-1)} \\left(\\sum_{i=1}^d (x_i - 1)^2 - \\sum_{i=2}^d x_i x_{i-1}\\right)`.
+
+    Its minimum is :math:`-\\frac{1}{6}` achieved at :math:`x_i = i(d + 1 - i)`.
     """
 
     def __init__(self):

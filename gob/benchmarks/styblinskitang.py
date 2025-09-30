@@ -10,7 +10,10 @@ class Styblinskitang(Benchmark):
     """
     The Styblinski-Tang function.
     This function is normalized by the dimension of x to ensure stability of the minimum.
-    :math:`x \\in \\mathbb{R}^d \\to \\frac{1}{2d}\\sum_{i=1}^d (x_i^4 - 16 x_i^2 + 5x_i)`
+
+    :math:`f(x) = \\frac{1}{2d}\\sum_{i=1}^d (x_i^4 - 16 x_i^2 + 5x_i)`.
+
+    Its minimum is :math:`-39.16599` achieved at :math:`x_i = -2.903534`.
     """
 
     def __init__(self):

@@ -9,6 +9,10 @@ from .benchmark import Benchmark
 class Rosenbrock(Benchmark):
     """
     The Rosenbrock function.
+
+    :math:`f(x) = \\sum_{i=1}^{d-1} \\left[100(x_{i+1} - x_i^2)^2 + (x_i - 1)^2 \\right]`
+
+    Its minimum is :math:`0` achieved at :math:`x_i = 1`.
     """
 
     def __init__(self):
