@@ -10,7 +10,7 @@ class Levy(Benchmark):
     """
     The Levy function.
 
-    :math:`f(x) = \\sin(\\pi w_1)^2 + \\sum_{i=1}^{d-1}(w_i - 1)^2[1 + 10 \\sin(\\pi w_i +1)^2] + (w_d - 1)^2[1 + sin^2(2\\pi w_d)]`, where :math:`w_i = \\frac{x_i + 3}{4}`
+    :math:`f(x) = \\sin(\\pi w_1)^2 + \\sum_{i=1}^{d-1}(w_i - 1)^2[1 + 10 \\sin(\\pi w_i +1)^2] + (w_d - 1)^2[1 + sin^2(2\\pi w_d)]`, where :math:`w_i = \\frac{x_i + 3}{4}`.
 
     Its minimum is :math:`0` achieved at :math:`x_i = 1`.
     """

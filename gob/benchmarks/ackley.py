@@ -11,7 +11,7 @@ class Ackley(Benchmark):
     The Ackley function.
 
     :math:`f(x) = -a\\exp\\left(-b \\sqrt{\\frac{1}{d} \\sum_{i=1}^d x_i^2} \\right) - \\exp\\left( \\frac{1}{d} \\sum_{i=1}^d \\cos(c x_i) \\right) + a + \\exp(1)`.
-    By default, hyper-parameters are selected as: :math:`a = 20, b=0.2, c=1`
+    By default, hyper-parameters are set to :math:`a = 20, b=0.2, c=1`.
 
     Its minimum is :math:`0` achieved at :math:`x =0`.
     """
