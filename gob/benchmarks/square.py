@@ -11,7 +11,7 @@ class Square(Benchmark):
 
     :math:`f(x) = x \\cdot x^\\top`.
 
-    Its minimum is :math:`0` achieved at :math:`0`.
+    Its minimum is :math:`0` achieved at :math:`x = 0`.
     """
 
     def __init__(self):
