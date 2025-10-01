@@ -1,6 +1,0 @@
-recursive-include gob *
-include LICENSE
-include README.md
-include MANIFEST.in
-include setup.py
-include extensions.py
