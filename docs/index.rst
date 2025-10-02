@@ -108,7 +108,6 @@ For more details, explore the modules below and refer to the examples for practi
 
    source/benchmarks/index
 
-
 .. toctree::
    :maxdepth: 1
 
