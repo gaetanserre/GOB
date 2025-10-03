@@ -1,9 +1,10 @@
 ## Global Optimization Benchmark (GOB)
-GOB is a collection of global optimization algorithms implemented in C++ and linked with Python. It also includes a set of analytical benchmark functions and a random function generator ([PyGKLS](https://github.com/gaetanserre/pyGKLS)) to test the performance of these algorithms.
 
 [![CI](https://github.com/gaetanserre/GOB/actions/workflows/build.yml/badge.svg)](https://github.com/gaetanserre/GOB/actions/workflows/build.yml)
 [![CI](https://github.com/gaetanserre/GOB/actions/workflows/build_doc.yml/badge.svg)](https://github.com/gaetanserre/GOB/actions/workflows/build_doc.yml)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
+
+GOB is a collection of global optimization algorithms implemented in C++ and linked with Python. It also includes a set of analytical benchmark functions and a random function generator ([PyGKLS](https://github.com/gaetanserre/pyGKLS)) to test the performance of these algorithms.
 
 ### Algorithms
 - [AdaLIPO+](https://dl.acm.org/doi/full/10.1145/3688671.3688763)
