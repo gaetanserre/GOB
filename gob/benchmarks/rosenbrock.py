@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Rosenbrock(Benchmark):
@@ -16,7 +17,7 @@ class Rosenbrock(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Rosenbrock", 0)
+        super().__init__("Rosenbrock", 0, create_bounds(2, -5, 10))
 
     def expr(self, x):
         return np.sum(100 * (x[1:] - x[:-1] ** 2) ** 2 + (1 - x[:-1]) ** 2)

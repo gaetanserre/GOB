@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Sumpow(Benchmark):
@@ -16,7 +17,7 @@ class Sumpow(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Sumpow", 0)
+        super().__init__("Sumpow", 0, create_bounds(2, 0, 2))
 
     def expr(self, x):
         return np.sum(np.abs(x) ** (np.arange(1, len(x) + 1) + 1))

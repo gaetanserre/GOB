@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Trid(Benchmark):
@@ -17,10 +18,9 @@ class Trid(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Trid", -1/6)
+        super().__init__("Trid", -1 / 6, create_bounds(2, -4, 4))
 
     def expr(self, x):
-        return (
-            np.sum((x - 1)**2)
-            - np.sum(x[1:] * x[:-1])
-        )/ (len(x) * (len(x) + 4) * (len(x) - 1))
+        return (np.sum((x - 1) ** 2) - np.sum(x[1:] * x[:-1])) / (
+            len(x) * (len(x) + 4) * (len(x) - 1)
+        )

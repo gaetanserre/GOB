@@ -16,12 +16,15 @@ class Benchmark:
         The name of the function.
     min : float
         The global minimum of the function.
+    visual_bounds : list of list of float, optional
+        The bounds for visualization in 2D (default is None).
     """
 
-    def __init__(self, name, min):
+    def __init__(self, name, min, visual_bounds=None):
         self.name = name
         self.min = min
         self.n = 0
+        self.visual_bounds = visual_bounds
 
     def expr(self, x):
         """

@@ -87,10 +87,34 @@ if __name__ == "__main__":
     files = []
     for name, ben in benchmarks:
         if name == "PyGKLS":
-            ben = ben(1, 1, [-1, 1], -1)
+            seed = 125794
+            ben = ben(2, 30, [-10, 10], -10, gen=seed)
+            x = np.linspace(-10, 10, 500)
+            y = np.linspace(-10, 10, 500)
+            X, Y = np.meshgrid(x, y)
+            Z = np.array(
+                [ben(np.array([x, y])) for x, y in zip(np.ravel(X), np.ravel(Y))]
+            ).reshape(X.shape)
+            fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
+
+            ax.plot_surface(X, Y, Z, cmap="coolwarm")
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
+            plt.savefig(
+                wd / f"benchmarks/graphs/{name}.png",
+                dpi=300,
+                bbox_inches="tight",
+                transparent=True,
+            )
+            plt.close()
+
             file_content = (
                 f"{ben}\n"
                 f"{''.join(['='] * len(str(ben)))}\n\n"
+                f".. image:: graphs/{name}.png\n"
+                "   :width: 500px\n"
+                "   :height: 500px\n"
+                "   :align: center\n\n"
                 "Uses the `pyGKLS <https://pypi.org/project/gkls/>`_ package to generate random test functions, with control over their geometry. \n\n"
                 f".. automodule:: gob.benchmarks.{name.lower()}\n"
                 "   :members:\n"
@@ -105,8 +129,9 @@ if __name__ == "__main__":
 
             create_dir(wd / "benchmarks/graphs")
 
-            x = np.linspace(-10, 10, 500)
-            y = np.linspace(-10, 10, 500)
+            bounds = ben.visual_bounds
+            x = np.linspace(bounds[0][0], bounds[0][1], 500)
+            y = np.linspace(bounds[1][0], bounds[1][1], 500)
             X, Y = np.meshgrid(x, y)
             Z = np.array(
                 [ben(np.array([x, y])) for x, y in zip(np.ravel(X), np.ravel(Y))]

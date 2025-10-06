@@ -3,6 +3,7 @@
 #
 
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Square(Benchmark):
@@ -15,7 +16,7 @@ class Square(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Square", 0)
+        super().__init__("Square", 0, create_bounds(2, -10, 10))
 
     def expr(self, x):
         return x.T @ x

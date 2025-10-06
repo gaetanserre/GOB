@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Bentcigar(Benchmark):
@@ -16,7 +17,7 @@ class Bentcigar(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Bent cigar", 0)
+        super().__init__("Bent cigar", 0, create_bounds(2, -5, 5))
 
     def expr(self, x):
-        return x[0]**2 + 10 ** 6 * np.sum(x[1:]**2)
+        return x[0] ** 2 + 10**6 * np.sum(x[1:] ** 2)

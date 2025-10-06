@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Deb(Benchmark):
@@ -16,7 +17,7 @@ class Deb(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Deb N.1", -1)
+        super().__init__("Deb N.1", -1, create_bounds(2, -0.5, 0.5))
 
     def expr(self, x):
         return -np.sum(np.sin(5 * np.pi * x) ** 6) / x.shape[0]

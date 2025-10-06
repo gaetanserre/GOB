@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Michalewicz(Benchmark):
@@ -16,7 +17,7 @@ class Michalewicz(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Michalewicz", None)
+        super().__init__("Michalewicz", None, create_bounds(2, 0, np.pi))
 
     def expr(self, x):
         dim = x.shape[0]

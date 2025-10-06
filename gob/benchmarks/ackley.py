@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Ackley(Benchmark):
@@ -17,7 +18,7 @@ class Ackley(Benchmark):
     """
 
     def __init__(self, a=20, b=0.2, c=1):
-        super().__init__("Ackley", 0)
+        super().__init__("Ackley", 0, create_bounds(2, -32.768, 32.768))
         self.a = a
         self.b = b
         self.c = c

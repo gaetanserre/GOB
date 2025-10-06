@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Rastrigin(Benchmark):
@@ -16,7 +17,7 @@ class Rastrigin(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Rastrigin", 0)
+        super().__init__("Rastrigin", 0, create_bounds(2, -5.12, 5.12))
 
     def expr(self, x):
         return 10 * x.shape[0] + np.sum(x**2 - 10 * np.cos(2 * np.pi * x))

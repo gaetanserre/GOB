@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Styblinskitang(Benchmark):
@@ -17,7 +18,7 @@ class Styblinskitang(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Styblinski-Tang", -39.16599)
+        super().__init__("Styblinski-Tang", -39.16599, create_bounds(2, -5, 5))
 
     def expr(self, x):
-        return np.sum(x**4 - 16 * x**2 + 5 * x ) / (2 * len(x))
+        return np.sum(x**4 - 16 * x**2 + 5 * x) / (2 * len(x))

@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Levy(Benchmark):
@@ -16,7 +17,7 @@ class Levy(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Levy", 0)
+        super().__init__("Levy", 0, create_bounds(2, -10, 10))
 
     def expr(self, x):
         w = 1 + (x - 1) / 4

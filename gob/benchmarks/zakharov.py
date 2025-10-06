@@ -4,6 +4,7 @@
 
 import numpy as np
 from .benchmark import Benchmark
+from .create_bounds import create_bounds
 
 
 class Zakharov(Benchmark):
@@ -16,11 +17,11 @@ class Zakharov(Benchmark):
     """
 
     def __init__(self):
-        super().__init__("Zakharov", 0)
+        super().__init__("Zakharov", 0, create_bounds(2, -5, 10))
 
     def expr(self, x):
         return (
-            - np.sum(x**2)
-            + np.dot(np.arange(1, len(x) + 1), x/2)**2
-            + np.dot(np.arange(1, len(x) + 1), x/2)**4
+            -np.sum(x**2)
+            + np.dot(np.arange(1, len(x) + 1), x / 2) ** 2
+            + np.dot(np.arange(1, len(x) + 1), x / 2) ** 4
         )
