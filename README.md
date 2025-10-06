@@ -24,9 +24,14 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 The documentation is available at [gaetanserre.fr/GOB](https://gaetanserre.fr/GOB/).
 
 ### Installation (Python ≥ 3.10)
-Download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:
+Install the package via pip from PyPI:
 ```bash
-pip install gob-<version>-<architecture>.whl
+pip install gob
+```
+
+Alternatively, download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:
+```bash
+pip install gob
 ```
 
 ### Build from source

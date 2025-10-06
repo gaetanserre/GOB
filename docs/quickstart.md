@@ -2,7 +2,11 @@
 
 ## Using wheel
 
-The easiest way to install GOB is via pip. You can download the latest wheel from the [releases page](https://github.com/gaetanserre/GOB/releases) on GitHub and install it using pip:
+The easiest way to install GOB is via pip from PyPI:
+```bash
+pip install gob
+```
+Alternatively, you can download the latest wheel from the [releases page](https://github.com/gaetanserre/GOB/releases) on GitHub and install it using pip:
 
 ```bash
 pip install gob-<version>-<architecture>.whl
