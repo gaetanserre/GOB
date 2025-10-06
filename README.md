@@ -17,10 +17,25 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - Gradient Descent
 - Pure Random Search
 
+### Documentation
+The documentation is available at [gaetanserre.fr/GOB](https://gaetanserre.fr/GOB/).
+
 ### Installation (Python ≥ 3.10)
 Download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:
 ```bash
 pip install gob-<version>-<architecture>.whl
+```
+
+### Build from source
+Make sure you have CMake (≥ 3.28), a c++ compiler, and the eigen3 library installed. Then clone the repository and run:
+```bash
+pip install . -v
+```
+It should build the C++ extensions and install the package. You can also build the documentation with:
+```bash
+cd docs
+pip install -r requirements.txt
+make html
 ```
 
 ### Usage
@@ -39,6 +54,9 @@ res = opt.minimize(f)
 print(f"Optimal point: {res[0]}, Optimal value: {res[1]}")
 ```
 See [`test_optimizers.py`](tests/test_optimizers.py) for more examples of how to use the algorithms.
+
+### Contributing
+Contributions are welcome! Please see the [CONTRIBUTING](CONTRIBUTING.md) file for guidelines.
 
 ### References
 - [BayesianOptimization](https://github.com/bayesian-optimization/BayesianOptimization)
