@@ -1,5 +1,3 @@
-# Create a setup.py file to install the optimizers module using invoke.
-
 from setuptools import setup
 from extensions import *
 from toml import load
