@@ -31,7 +31,7 @@ pip install gob
 
 Alternatively, download the corresponding wheel file from the [releases](https://github.com/gaetanserre/GOB/releases) and install it with pip:
 ```bash
-pip install gob
+pip install gob-<version>-<architecture>.whl
 ```
 
 ### Build from source
