@@ -283,19 +283,32 @@
 </pre></div>
 </div>
 </section>
-<section id="from-source">
-<h2>From source<a class="headerlink" href="#from-source" title="Link to this heading">¶</a></h2>
-<p>First, you will need to have a C++ compiler, <code class="docutils literal notranslate"><span class="pre">make</span></code>, <code class="docutils literal notranslate"><span class="pre">cmake</span></code>, and the Eigen library installed on your system.</p>
-<section id="clone-the-repository">
-<h3>Clone the repository<a class="headerlink" href="#clone-the-repository" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>gob-&lt;version&gt;-&lt;architecture&gt;.whl
+<section id="build-from-source">
+<h2>Build from source<a class="headerlink" href="#build-from-source" title="Link to this heading">¶</a></h2>
+<p>Make sure you have CMake (≥ 3.28), a c++ compiler, and the eigen3 library installed. Then clone the repository and run:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>It should build the C++ extensions and install the package. You can also build the documentation with:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./local_compile.sh
+<span class="nb">cd</span><span class="w"> </span>docs
+pip<span class="w"> </span>install<span class="w"> </span>-r<span class="w"> </span>requirements.txt
+make<span class="w"> </span>html
 </pre></div>
 </div>
 </section>
-<section id="compile-and-install-the-package">
-<h3>Compile and install the package<a class="headerlink" href="#compile-and-install-the-package" title="Link to this heading">¶</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="nb">cd</span><span class="w"> </span>GOB
-pip<span class="w"> </span>install<span class="w"> </span>.
+<section id="contributing">
+<h2>Contributing<a class="headerlink" href="#contributing" title="Link to this heading">¶</a></h2>
+<p>When contributing to this repository, please first discuss the change you wish to make via issue or any other method with the owners of this repository before making a change.</p>
+<p>Create a pull request from your forked repository to the <code class="docutils literal notranslate"><span class="pre">main</span></code> branch of the original repository. The pull request will be reviewed and discussed.</p>
+<section id="dependencies">
+<h3>Dependencies<a class="headerlink" href="#dependencies" title="Link to this heading">¶</a></h3>
+<p>To contribute, you will need to locally compile the package. Make sure you have CMake (≥ 3.28), a c++ compiler, and the eigen3 library installed. Then, you can either install the package on your system:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>.<span class="w"> </span>-v
+</pre></div>
+</div>
+<p>or compile it in-place for development:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./local_compile.sh
 </pre></div>
 </div>
 </section>
@@ -366,9 +379,9 @@ pip<span class="w"> </span>install<span class="w"> </span>.
             <ul>
 <li><a class="reference internal" href="#">Quickstart</a><ul>
 <li><a class="reference internal" href="#using-wheel">Using wheel</a></li>
-<li><a class="reference internal" href="#from-source">From source</a><ul>
-<li><a class="reference internal" href="#clone-the-repository">Clone the repository</a></li>
-<li><a class="reference internal" href="#compile-and-install-the-package">Compile and install the package</a></li>
+<li><a class="reference internal" href="#build-from-source">Build from source</a></li>
+<li><a class="reference internal" href="#contributing">Contributing</a><ul>
+<li><a class="reference internal" href="#dependencies">Dependencies</a></li>
 </ul>
 </li>
 </ul>
