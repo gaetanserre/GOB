@@ -1,6 +1,11 @@
 PyGKLS
 ======
 
+.. image:: graphs/PyGKLS.png
+   :width: 500px
+   :height: 500px
+   :align: center
+
 Uses the `pyGKLS <https://pypi.org/project/gkls/>`_ package to generate random test functions, with control over their geometry. 
 
 .. automodule:: gob.benchmarks.pygkls
