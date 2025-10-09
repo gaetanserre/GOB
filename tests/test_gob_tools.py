@@ -6,21 +6,11 @@ from gob import GOB
 from gob.benchmarks import PyGKLS, create_bounds
 
 if __name__ == "__main__":
-    opt = {
-        "AdaRankOpt": {
-            "n_eval": 1000,
-            "max_trials": 800,
-            "max_degree": 80,
-        },
-        "SBS": {"n_particles": 200, "svgd_iter": 100},
-        "Proportion": {"p": 0.9},
-    }
-    pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", gen=42)
+    pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND")
     gob = GOB(
-        ["AdaRankOpt", "AdaLIPO+TR"],
-        ["Levy"],
+        ["CBO", "SBS", "AdaLIPO+TR", "CMA-ES", "PSO"],
+        ["Square", pygkls],
         ["Proportion"],
-        bounds=create_bounds(2, -10, 10, 2),
-        options=opt,
+        bounds=create_bounds(2, -99, 99, 2),
     )
-    gob.run(n_runs=5, verbose=True)
+    gob.run(n_runs=10, verbose=1)

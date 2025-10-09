@@ -2,7 +2,7 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "PRS.hh"
+#include "optimizers/PRS.hh"
 
 result_eigen PRS::minimize(function<double(dyn_vector x)> f)
 {

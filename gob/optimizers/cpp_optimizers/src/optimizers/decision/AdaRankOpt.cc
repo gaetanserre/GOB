@@ -2,10 +2,10 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "AdaRankOpt.hh"
-#include "PolynomialFeatures.hh"
-#include "Simplex.hh"
-#include "trust_regions.hh"
+#include "optimizers/decision/AdaRankOpt.hh"
+#include "optimizers/decision/PolynomialFeatures.hh"
+#include "optimizers/decision/Simplex.hh"
+#include "optimizers/decision/trust_regions.hh"
 
 Eigen::MatrixXd AdaRankOpt::polynomial_matrix(vector<pair<dyn_vector, double>> &samples, int degree)
 {
@@ -36,7 +36,7 @@ namespace AdaRankOpt_trust
     int *degree = (int *)data[0];
     glp_smcp *param = (glp_smcp *)data[1];
     Eigen::MatrixXd (*polynomial_matrix)(vector<pair<dyn_vector, double>>, int) =
-        (Eigen::MatrixXd(*)(vector<pair<dyn_vector, double>>, int))functions[0];
+        (Eigen::MatrixXd (*)(vector<pair<dyn_vector, double>>, int))functions[0];
     double f_x_tmp = samples.back().second + 1;
     samples.push_back({x, f_x_tmp});
     Eigen::MatrixXd M = polynomial_matrix(samples, *degree);
@@ -55,7 +55,7 @@ namespace AdaRankOpt_trust
       glp_smcp *param = (glp_smcp *)data[1];
       int *max_degree = (int *)data[2];
       Eigen::MatrixXd (*polynomial_matrix)(vector<pair<dyn_vector, double>>, int) =
-          (Eigen::MatrixXd(*)(vector<pair<dyn_vector, double>>, int))functions[0];
+          (Eigen::MatrixXd (*)(vector<pair<dyn_vector, double>>, int))functions[0];
       while (*degree < *max_degree)
       {
         Eigen::MatrixXd M = polynomial_matrix(samples, *degree);

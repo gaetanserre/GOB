@@ -1,14 +1,14 @@
 #
-# Created in 2024 by Gaëtan Serré
+# Created in 2025 by Gaëtan Serré
 #
 
 from .optimizer import Optimizer
-from .cpp_optimizers import SBS as C_SBS
+from .cpp_optimizers import PSO as C_PSO
 
 
-class SBS(Optimizer):
+class PSO(Optimizer):
     """
-    Interface for the SBS optimizer.
+    Interface for the *social only* PSO optimizer.
 
     Parameters
     ----------
@@ -20,10 +20,12 @@ class SBS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : list
-        The kappa exponent.
-    sigma : float
-        The kernel bandwidth.
+    omega : float
+        The inertia weight.
+    c2 : float
+        The cognitive coefficient.
+    beta : float
+        The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -35,15 +37,16 @@ class SBS(Optimizer):
         self,
         bounds,
         n_particles=200,
-        iter=100,
+        iter=1000,
         dt=0.01,
-        k=10_000,
-        sigma=0.1,
+        omega=0.7,
+        c2=2,
+        beta=1e70,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, batch_size)
+        super().__init__("PSO", bounds)
+        self.c_opt = C_PSO(bounds, n_particles, iter, dt, omega, c2, beta, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):

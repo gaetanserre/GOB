@@ -2,7 +2,7 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "Adam.hh"
+#include "optimizers/particles/Adam.hh"
 
 Eigen::MatrixXd Adam::step(Eigen::MatrixXd grads, Eigen::MatrixXd params)
 {

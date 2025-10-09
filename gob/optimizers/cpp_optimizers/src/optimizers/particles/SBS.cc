@@ -2,8 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "SBS.hh"
-#include "noise.hh"
+#include "optimizers/particles/SBS.hh"
+#include "optimizers/particles/noise.hh"
 
 dyn_vector gradient(dyn_vector x, const function<double(dyn_vector x)> &f, double *f_x, double tol = 1e-9)
 {

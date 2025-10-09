@@ -2,8 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "ECP.hh"
-#include "trust_regions.hh"
+#include "optimizers/decision/ECP.hh"
+#include "optimizers/decision/trust_regions.hh"
 
 namespace ECP_trust
 {

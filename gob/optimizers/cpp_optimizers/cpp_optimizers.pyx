@@ -12,13 +12,13 @@ cdef extern from "include/utils.hh":
 cdef extern from "include/utils.hh":
   void py_finalize()
 
-cdef extern from "include/PRS.hh":
+cdef extern from "include/optimizers/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/AdaLIPO_P.hh":
+cdef extern from "include/optimizers/decision/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
     CAdaLIPO_P(
       vector[vector[double]] bounds,
@@ -30,27 +30,27 @@ cdef extern from "include/AdaLIPO_P.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/CMA_ES.hh":
+cdef extern from "include/optimizers/CMA_ES.hh":
   cdef cppclass CCMA_ES "CMA_ES":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/SBS.hh":
+cdef extern from "include/optimizers/particles/SBS.hh":
   cdef cppclass CSBS "SBS":
     CSBS(
       vector[vector[double]] bounds,
       int n_particles,
       int iter,
+      double dt,
       int k,
       double sigma,
-      double dt,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/CBO.hh":
+cdef extern from "include/optimizers/particles/CBO.hh":
   cdef cppclass CCBO "CBO":
     CCBO(
       vector[vector[double]] bounds,
@@ -66,7 +66,7 @@ cdef extern from "include/CBO.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/AdaRankOpt.hh":
+cdef extern from "include/optimizers/decision/AdaRankOpt.hh":
   cdef cppclass CAdaRankOpt "AdaRankOpt":
     CAdaRankOpt(
       vector[vector[double]] bounds,
@@ -79,7 +79,7 @@ cdef extern from "include/AdaRankOpt.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/ECP.hh":
+cdef extern from "include/optimizers/decision/ECP.hh":
   cdef cppclass CECP "ECP":
     CECP(
       vector[vector[double]] bounds,
@@ -90,6 +90,21 @@ cdef extern from "include/ECP.hh":
       int max_trials,
       double trust_region_radius,
       int bobyqa_eval
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/PSO.hh":
+  cdef cppclass CPSO "PSO":
+    CPSO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double omega,
+      double c2,
+      double beta,
+      int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -162,13 +177,13 @@ cdef class SBS:
     self,
     bounds,
     int n_particles=200,
-    int iter=100,
+    int iter=1000,
+    double dt=0.01,
     int k=10_000,
     double sigma=0.01,
-    double dt=0.01,
     int batch_size=0
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, k, sigma, dt, batch_size)
+    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -187,7 +202,7 @@ cdef class CBO:
     self,
     bounds,
     int n_particles=200,
-    int iter=100,
+    int iter=1000,
     double dt=0.01,
     double lam=1,
     double epsilon=1e-2,
@@ -277,3 +292,29 @@ cdef class ECP:
 
 def create_rect_bounds(lb, ub, n):
     return create_rect_bounds_(lb, ub, n)
+
+cdef class PSO:
+  cdef CPSO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles=200,
+    int iter=1000,
+    double dt=0.01,
+    double omega=0.7,
+    double c2=2.0,
+    double beta=1e70,
+    int batch_size=0
+  ):
+    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, batch_size)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    return self.thisptr.py_minimize(pyob_ptr)
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+  
+  def __del__(self):
+    del self.thisptr

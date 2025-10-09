@@ -2,8 +2,8 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "AdaLIPO_P.hh"
-#include "trust_regions.hh"
+#include "optimizers/decision/AdaLIPO_P.hh"
+#include "optimizers/decision/trust_regions.hh"
 
 namespace AdaLIPO_P_trust
 {

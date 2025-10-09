@@ -2,7 +2,7 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "particles_optimizer.hh"
+#include "optimizers/particles/particles_optimizer.hh"
 
 class CBO : public Particles_Optimizer
 {
@@ -31,5 +31,4 @@ private:
   double epsilon;
   double beta;
   double sigma;
-  dyn_vector compute_consensus(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 };

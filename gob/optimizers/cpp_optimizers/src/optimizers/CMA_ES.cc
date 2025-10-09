@@ -2,7 +2,7 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "CMA_ES.hh"
+#include "optimizers/CMA_ES.hh"
 #include "libcmaes/cmaes.h"
 using namespace libcmaes;
 

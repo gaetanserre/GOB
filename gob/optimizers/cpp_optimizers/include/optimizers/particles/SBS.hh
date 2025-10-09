@@ -2,7 +2,7 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "particles_optimizer.hh"
+#include "optimizers/particles/particles_optimizer.hh"
 
 class SBS : public Particles_Optimizer
 {
@@ -11,9 +11,9 @@ public:
       vec_bounds bounds,
       int n_particles = 200,
       int iter = 100,
+      double dt = 0.01,
       int k = 10000,
       double sigma = 1e-2,
-      double dt = 0.01,
       int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, 0.99))
   {
     this->k = k;

@@ -17,7 +17,22 @@ class CBO(Optimizer):
     n_particles : int
         The number of particles.
     iter : int
-        The number of iterations for the SVGD algorithm.
+        The number of iterations.
+    dt : float
+        The time step.
+    lam : float
+        The attraction parameter.
+    epsilon : float
+        The smooth-heaviside parameter.
+    beta : float
+        The inverse temperature.
+    sigma : float
+        The standard deviation of the Gaussian noise.
+    batch_size : int
+        The batch size for the mini-batch optimization. If 0, no mini-batch
+        optimization is used.
+    verbose : bool
+        Whether to print information about the optimization process.
     """
 
     def __init__(

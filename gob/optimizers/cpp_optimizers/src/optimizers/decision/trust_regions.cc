@@ -2,8 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "trust_regions.hh"
-#include "bobyqa.hh"
+#include "optimizers/decision/trust_regions.hh"
+#include "optimizers/decision/bobyqa.hh"
 
 bool check_in_ball(const CoverTree<Point> &cTree, const dyn_vector &x, const double &radius)
 {

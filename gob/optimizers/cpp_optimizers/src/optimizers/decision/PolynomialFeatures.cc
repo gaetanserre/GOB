@@ -2,7 +2,7 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "PolynomialFeatures.hh"
+#include "optimizers/decision/PolynomialFeatures.hh"
 
 int comp(const int &n, const int &k)
 {

@@ -2,8 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "optimizer.hh"
-#include "schedulers.hh"
+#include "optimizers/optimizer.hh"
+#include "optimizers/particles/schedulers.hh"
 
 #pragma once
 

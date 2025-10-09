@@ -2,7 +2,7 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "particles_optimizer.hh"
+#include "optimizers/particles/particles_optimizer.hh"
 
 void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples)
 {

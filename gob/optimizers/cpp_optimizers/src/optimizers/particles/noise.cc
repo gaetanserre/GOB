@@ -2,7 +2,7 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "noise.hh"
+#include "optimizers/particles/noise.hh"
 
 Eigen::MatrixXd zero_noise(const int &rows, const int &cols)
 {
