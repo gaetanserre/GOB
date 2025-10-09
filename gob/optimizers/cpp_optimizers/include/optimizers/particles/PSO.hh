@@ -4,31 +4,30 @@
 
 #include "optimizers/particles/particles_optimizer.hh"
 
-class CBO : public Particles_Optimizer
+class PSO : public Particles_Optimizer
 {
 public:
-  CBO(
+  PSO(
       vec_bounds bounds,
       int n_particles = 200,
       int iter = 1000,
       double dt = 0.01,
-      double lambda = 1,
-      double epsilon = 1e-2,
-      double beta = 1,
-      double sigma = 5.1,
+      double omega = 0.7,
+      double c2 = 2.0,
+      double beta = 1e70,
       int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size)
   {
-    this->lambda = lambda;
-    this->epsilon = epsilon;
+    this->omega = omega;
+    this->c2 = c2;
     this->beta = beta;
-    this->sigma = sigma;
+    this->velocities = Eigen::MatrixXd::Zero(n_particles, bounds.size());
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 
 private:
-  double lambda;
-  double epsilon;
+  double omega;
+  double c2;
   double beta;
-  double sigma;
+  Eigen::MatrixXd velocities;
 };

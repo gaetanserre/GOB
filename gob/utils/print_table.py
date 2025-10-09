@@ -33,6 +33,20 @@ def print_blue(*text):
     print("\033[0m", end="")
 
 
+def print_dark_green(*text):
+    """
+    Print text in dark green.
+
+    Parameters
+    ----------
+    text : str
+        The text to print.
+    """
+    print("\033[32m", end="")
+    print(*text)
+    print("\033[0m", end="")
+
+
 def print_table_by_benchmark(res_dict):
     """
     Print the results of the optimization for each benchmark.

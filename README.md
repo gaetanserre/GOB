@@ -18,6 +18,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - [Multi-Level Single-Linkage](https://ageconsearch.umn.edu/record/272327)
 - [Stein Boltzmann Sampling](https://arxiv.org/abs/2402.04689)
 - [Consensus Based Optimization](https://arxiv.org/abs/1909.09249)
+- [*Social Only* Particle Swarm Optimization](https://ieeexplore.ieee.org/document/488968)
 - Gradient Descent
 - Pure Random Search
 
