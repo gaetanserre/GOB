@@ -18,6 +18,7 @@ This documentation includes:
 GOB as a Benchmark suite
 ------------------------
 .. code-block:: python
+  
   from gob import GOB
   from gob.benchmarks import PyGKLS, create_bounds
 
