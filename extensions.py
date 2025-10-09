@@ -104,7 +104,7 @@ class OptBuild(build_ext):
 
         # Copy GLPK files
         urllib.request.urlretrieve(
-            "http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz",
+            "https://mirrors.ocf.berkeley.edu/gnu/glpk/glpk-5.0.tar.gz",
             Path(cython_src_dir, "glpk-5.0.tar.gz"),
         )
         os.system(

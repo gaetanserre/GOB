@@ -57,7 +57,7 @@ if [ ! -f include/libcmaes/cmaes_export.h ]; then
 fi
 
 if [ ! -d glpk-5.0 ]; then
-curl http://ftp.gnu.org/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
+curl https://mirrors.ocf.berkeley.edu/gnu/glpk/glpk-5.0.tar.gz -o glpk-5.0.tar.gz
 tar -xzf glpk-5.0.tar.gz
 rm glpk-5.0.tar.gz
 fi
