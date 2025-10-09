@@ -2,7 +2,7 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "particles_optimizer.hh"
+#include "optimizers/particles/particles_optimizer.hh"
 
 class SBS : public Particles_Optimizer
 {

@@ -2,8 +2,8 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "optimizer.hh"
-#include "Simplex.hh"
+#include "optimizers/optimizer.hh"
+#include "optimizers/decision/Simplex.hh"
 
 class AdaRankOpt : public Optimizer
 {

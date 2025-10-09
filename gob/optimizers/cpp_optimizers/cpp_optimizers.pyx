@@ -12,13 +12,13 @@ cdef extern from "include/utils.hh":
 cdef extern from "include/utils.hh":
   void py_finalize()
 
-cdef extern from "include/PRS.hh":
+cdef extern from "include/optimizers/PRS.hh":
   cdef cppclass CPRS "PRS":
     CPRS(vector[vector[double]] bounds, int n_eval)
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/AdaLIPO_P.hh":
+cdef extern from "include/optimizers/decision/AdaLIPO_P.hh":
   cdef cppclass CAdaLIPO_P "AdaLIPO_P":
     CAdaLIPO_P(
       vector[vector[double]] bounds,
@@ -30,13 +30,13 @@ cdef extern from "include/AdaLIPO_P.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/CMA_ES.hh":
+cdef extern from "include/optimizers/CMA_ES.hh":
   cdef cppclass CCMA_ES "CMA_ES":
     CCMA_ES(vector[vector[double]] bounds, int n_eval, vector[double] m0, double sigma)
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/SBS.hh":
+cdef extern from "include/optimizers/particles/SBS.hh":
   cdef cppclass CSBS "SBS":
     CSBS(
       vector[vector[double]] bounds,
@@ -50,7 +50,7 @@ cdef extern from "include/SBS.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/CBO.hh":
+cdef extern from "include/optimizers/particles/CBO.hh":
   cdef cppclass CCBO "CBO":
     CCBO(
       vector[vector[double]] bounds,
@@ -66,7 +66,7 @@ cdef extern from "include/CBO.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/AdaRankOpt.hh":
+cdef extern from "include/optimizers/decision/AdaRankOpt.hh":
   cdef cppclass CAdaRankOpt "AdaRankOpt":
     CAdaRankOpt(
       vector[vector[double]] bounds,
@@ -79,7 +79,7 @@ cdef extern from "include/AdaRankOpt.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/ECP.hh":
+cdef extern from "include/optimizers/decision/ECP.hh":
   cdef cppclass CECP "ECP":
     CECP(
       vector[vector[double]] bounds,

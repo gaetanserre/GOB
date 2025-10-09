@@ -1,6 +1,6 @@
 #include "impl.hpp"
 
-#include <bobyqa.hh>
+#include <optimizers/decision/bobyqa.hh>
 
 double bobyqa(
     const BobyqaFunction function,

@@ -1,4 +1,4 @@
-#include "Simplex.hh"
+#include "optimizers/decision/Simplex.hh"
 
 int simplex(Eigen::MatrixXd M, glp_smcp *param)
 {

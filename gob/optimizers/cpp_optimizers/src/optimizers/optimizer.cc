@@ -2,7 +2,7 @@
  * Created in 2024 by Gaëtan Serré
  */
 
-#include "optimizer.hh"
+#include "optimizers/optimizer.hh"
 
 result Optimizer::py_minimize(PyObject *f)
 {

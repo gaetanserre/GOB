@@ -2,7 +2,7 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "optimizer.hh"
+#include "optimizers/optimizer.hh"
 #include "Cover_Tree.hh"
 
 class Point

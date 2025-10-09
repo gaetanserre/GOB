@@ -2,8 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "CBO.hh"
-#include "noise.hh"
+#include "optimizers/particles/CBO.hh"
+#include "optimizers/particles/noise.hh"
 
 double log_sum_exp(double *begin, double *end)
 {
