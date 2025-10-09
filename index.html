@@ -206,6 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.GD.html">GD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.PRS.html">PRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.PSO.html">PSO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.SBS.html">SBS</a></li>
 </ul>
 </li>
@@ -285,53 +286,47 @@
 </ul>
 <section id="gob-as-a-benchmark-suite">
 <h2>GOB as a Benchmark suite<a class="headerlink" href="#gob-as-a-benchmark-suite" title="Link to this heading">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">gob</span><span class="w"> </span><span class="kn">import</span> <span class="n">GOB</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">gob.benchmarks</span><span class="w"> </span><span class="kn">import</span> <span class="n">PyGKLS</span><span class="p">,</span> <span class="n">create_bounds</span>
-
-<span class="n">opt</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="s2">&quot;AdaRankOpt&quot;</span><span class="p">:</span> <span class="p">{</span>
-        <span class="s2">&quot;n_eval&quot;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="s2">&quot;max_trials&quot;</span><span class="p">:</span> <span class="mi">800</span><span class="p">,</span>
-        <span class="s2">&quot;max_degree&quot;</span><span class="p">:</span> <span class="mi">80</span><span class="p">,</span>
-    <span class="p">},</span>
-    <span class="s2">&quot;SBS&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;n_particles&quot;</span><span class="p">:</span> <span class="mi">200</span><span class="p">,</span> <span class="s2">&quot;svgd_iter&quot;</span><span class="p">:</span> <span class="mi">100</span><span class="p">},</span>
-    <span class="s2">&quot;Proportion&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;p&quot;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">},</span>
-<span class="p">}</span>
-<span class="n">pygkls</span> <span class="o">=</span> <span class="n">PyGKLS</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="s2">&quot;D&quot;</span><span class="p">,</span> <span class="n">gen</span><span class="o">=</span><span class="mi">42</span><span class="p">)</span>
-<span class="n">gob</span> <span class="o">=</span> <span class="n">GOB</span><span class="p">(</span>
-    <span class="p">[</span><span class="s2">&quot;AdaRankOpt&quot;</span><span class="p">,</span> <span class="s2">&quot;AdaLIPO+TR&quot;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s2">&quot;Levy&quot;</span><span class="p">],</span>
-    <span class="p">[</span><span class="s2">&quot;Proportion&quot;</span><span class="p">],</span>
-    <span class="n">bounds</span><span class="o">=</span><span class="n">create_bounds</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
-    <span class="n">options</span><span class="o">=</span><span class="n">opt</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="n">gob</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">n_runs</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
 <p>Example output:</p>
-<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Done for AdaRankOpt on Levy.</span>
-<span class="go">Done for AdaLIPO+TR on Levy.</span>
+<div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Done for CBO on Square.</span>
+<span class="go">Done for SBS on Square.</span>
+<span class="go">Done for AdaLIPO+TR on Square.</span>
+<span class="go">Done for CMA-ES on Square.</span>
+<span class="go">Done for PSO on Square.</span>
+<span class="go">Done for CBO on PyGKLS n°1.</span>
+<span class="go">Done for SBS on PyGKLS n°1.</span>
+<span class="go">Done for AdaLIPO+TR on PyGKLS n°1.</span>
+<span class="go">Done for CMA-ES on PyGKLS n°1.</span>
+<span class="go">Done for PSO on PyGKLS n°1.</span>
 
 <span class="go">Results for Approx:</span>
-<span class="go">+------------+-----------------+</span>
-<span class="go">| Optimizer  |       Levy      |</span>
-<span class="go">+------------+-----------------+</span>
-<span class="go">| AdaRankOpt | 0.0000 ± 0.0000 |</span>
-<span class="go">| AdaLIPO+TR | 0.0000 ± 0.0000 |</span>
-<span class="go">+------------+-----------------+</span>
+<span class="go">+------------+-----------------+--------------------+</span>
+<span class="go">| Optimizer  |      Square     |     PyGKLS n°1     |</span>
+<span class="go">+------------+-----------------+--------------------+</span>
+<span class="go">|    CBO     | 0.0000 ± 0.0000 | -100.0000 ± 0.0000 |</span>
+<span class="go">|    SBS     | 0.0000 ± 0.0000 | -72.3969 ± 31.7194 |</span>
+<span class="go">| AdaLIPO+TR | 0.0001 ± 0.0002 | -69.7298 ± 19.0801 |</span>
+<span class="go">|   CMA-ES   | 0.0000 ± 0.0000 | -13.7024 ± 23.1782 |</span>
+<span class="go">|    PSO     | 0.0000 ± 0.0000 | -23.6913 ± 30.3957 |</span>
+<span class="go">+------------+-----------------+--------------------+</span>
 <span class="go">Results for Proportion:</span>
-<span class="go">+------------+--------+</span>
-<span class="go">| Optimizer  |  Levy  |</span>
-<span class="go">+------------+--------+</span>
-<span class="go">| AdaRankOpt | 1.0000 |</span>
-<span class="go">| AdaLIPO+TR | 1.0000 |</span>
-<span class="go">+------------+--------+</span>
+<span class="go">+------------+--------+------------+</span>
+<span class="go">| Optimizer  | Square | PyGKLS n°1 |</span>
+<span class="go">+------------+--------+------------+</span>
+<span class="go">|    CBO     | 1.0000 |   1.0000   |</span>
+<span class="go">|    SBS     | 1.0000 |   1.0000   |</span>
+<span class="go">| AdaLIPO+TR | 1.0000 |   1.0000   |</span>
+<span class="go">|   CMA-ES   | 1.0000 |   1.0000   |</span>
+<span class="go">|    PSO     | 1.0000 |   1.0000   |</span>
+<span class="go">+------------+--------+------------+</span>
 <span class="go">Competitive ratios:</span>
 <span class="go">+------------+-------------------+</span>
 <span class="go">| Optimizer  | Competitive ratio |</span>
 <span class="go">+------------+-------------------+</span>
-<span class="go">| AdaRankOpt |      100.0000     |</span>
-<span class="go">| AdaLIPO+TR |       1.0000      |</span>
+<span class="go">|    CBO     |      14.5121      |</span>
+<span class="go">|    SBS     |      50.5225      |</span>
+<span class="go">| AdaLIPO+TR |      100.0000     |</span>
+<span class="go">|   CMA-ES   |      50.5000      |</span>
+<span class="go">|    PSO     |      50.5000      |</span>
 <span class="go">+------------+-------------------+</span>
 </pre></div>
 </div>

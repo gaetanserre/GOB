@@ -15,4 +15,5 @@ Optimizers
    gob.GD
    gob.MLSL
    gob.PRS
+   gob.PSO
    gob.SBS

@@ -206,6 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.GD.html">GD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.PSO.html">PSO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.SBS.html">SBS</a></li>
 </ul>
 </li>
@@ -286,7 +287,15 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bounds</strong> (<em>ndarray</em>) – The bounds of the search space.</p></li>
 <li><p><strong>n_particles</strong> (<em>int</em>) – The number of particles.</p></li>
-<li><p><strong>iter</strong> (<em>int</em>) – The number of iterations for the SVGD algorithm.</p></li>
+<li><p><strong>iter</strong> (<em>int</em>) – The number of iterations.</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – The time step.</p></li>
+<li><p><strong>lam</strong> (<em>float</em>) – The attraction parameter.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – The smooth-heaviside parameter.</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – The inverse temperature.</p></li>
+<li><p><strong>sigma</strong> (<em>float</em>) – The standard deviation of the Gaussian noise.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The batch size for the mini-batch optimization. If 0, no mini-batch
+optimization is used.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print information about the optimization process.</p></li>
 </ul>
 </dd>
 </dl>

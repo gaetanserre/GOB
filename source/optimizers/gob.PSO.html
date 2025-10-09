@@ -3,10 +3,10 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="CRS" href="gob.CRS.html"><link rel="prev" title="CBO" href="gob.CBO.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="SBS" href="gob.SBS.html"><link rel="prev" title="PRS" href="gob.PRS.html">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>CMA-ES - GOB 0.0.1 documentation</title>
+        <title>PSO - GOB 0.0.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -199,14 +199,14 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.AdaRankOpt.html">AdaRankOpt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.BayesOpt.html">BayesOpt</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.CBO.html">CBO</a></li>
-<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">CMA-ES</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.CMA_ES.html">CMA-ES</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.CRS.html">CRS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.GD.html">GD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
-<li class="toctree-l2"><a class="reference internal" href="gob.PSO.html">PSO</a></li>
+<li class="toctree-l2 current current-page"><a class="current reference internal" href="#">PSO</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.SBS.html">SBS</a></li>
 </ul>
 </li>
@@ -257,7 +257,7 @@
         </a>
         <div class="content-icon-container">
           <div class="view-this-page">
-  <a class="muted-link" href="../../_sources/source/optimizers/gob.CMA_ES.rst.txt" title="View this page">
+  <a class="muted-link" href="../../_sources/source/optimizers/gob.PSO.rst.txt" title="View this page">
     <svg><use href="#svg-eye"></use></svg>
     <span class="visually-hidden">View this page</span>
   </a>
@@ -275,27 +275,32 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-gob.optimizers.CMA_ES">
-<span id="cma-es"></span><h1>CMA-ES<a class="headerlink" href="#module-gob.optimizers.CMA_ES" title="Link to this heading">¶</a></h1>
+          <section id="module-gob.optimizers.PSO">
+<span id="pso"></span><h1>PSO<a class="headerlink" href="#module-gob.optimizers.PSO" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="gob.optimizers.CMA_ES.CMA_ES">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.CMA_ES.</span></span><span class="sig-name descname"><span class="pre">CMA_ES</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m_0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.CMA_ES.CMA_ES" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.PSO.PSO">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.PSO.</span></span><span class="sig-name descname"><span class="pre">PSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_particles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e+70</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.PSO.PSO" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
-<p>Interface for the CMA-ES optimizer.</p>
+<p>Interface for the <em>social only</em> PSO optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bounds</strong> (<em>ndarray</em>) – The bounds of the search space.</p></li>
-<li><p><strong>n_eval</strong> (<em>int</em>) – The maximum number of function evaluations.</p></li>
-<li><p><strong>m_0</strong> (<em>ndarray</em>) – The initial mean of the search distribution.</p></li>
-<li><p><strong>sigma0</strong> (<em>float</em>) – The initial standard deviation of the search distribution.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print information about the optimization</p></li>
+<li><p><strong>n_particles</strong> (<em>int</em>) – The number of particles.</p></li>
+<li><p><strong>iter</strong> (<em>int</em>) – The number of iterations.</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – The time step.</p></li>
+<li><p><strong>omega</strong> (<em>float</em>) – The inertia weight.</p></li>
+<li><p><strong>c2</strong> (<em>float</em>) – The cognitive coefficient.</p></li>
+<li><p><strong>beta</strong> (<em>float</em>) – The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The batch size for the mini-batch optimization. If 0, no mini-batch
+optimization is used.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print information about the optimization process.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.CMA_ES.CMA_ES.minimize">
-<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.CMA_ES.CMA_ES.minimize" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.PSO.PSO.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.PSO.PSO.minimize" title="Link to this definition">¶</a></dt>
 <dd><p>Minimize a function using the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -311,8 +316,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.CMA_ES.CMA_ES.set_stop_criterion">
-<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.CMA_ES.CMA_ES.set_stop_criterion" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.PSO.PSO.set_stop_criterion">
+<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.PSO.PSO.set_stop_criterion" title="Link to this definition">¶</a></dt>
 <dd><p>Set a stop criterion for the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -330,23 +335,23 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="gob.CRS.html">
+          <a class="next-page" href="gob.SBS.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">CRS</div>
+                <div class="title">SBS</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="gob.CBO.html">
+          <a class="prev-page" href="gob.PRS.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">CBO</div>
+                <div class="title">PRS</div>
                 
               </div>
             </a>
@@ -387,10 +392,10 @@
         <div class="toc-tree-container">
           <div class="toc-tree">
             <ul>
-<li><a class="reference internal" href="#">CMA-ES</a><ul>
-<li><a class="reference internal" href="#gob.optimizers.CMA_ES.CMA_ES"><code class="docutils literal notranslate"><span class="pre">CMA_ES</span></code></a><ul>
-<li><a class="reference internal" href="#gob.optimizers.CMA_ES.CMA_ES.minimize"><code class="docutils literal notranslate"><span class="pre">CMA_ES.minimize()</span></code></a></li>
-<li><a class="reference internal" href="#gob.optimizers.CMA_ES.CMA_ES.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">CMA_ES.set_stop_criterion()</span></code></a></li>
+<li><a class="reference internal" href="#">PSO</a><ul>
+<li><a class="reference internal" href="#gob.optimizers.PSO.PSO"><code class="docutils literal notranslate"><span class="pre">PSO</span></code></a><ul>
+<li><a class="reference internal" href="#gob.optimizers.PSO.PSO.minimize"><code class="docutils literal notranslate"><span class="pre">PSO.minimize()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.PSO.PSO.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">PSO.set_stop_criterion()</span></code></a></li>
 </ul>
 </li>
 </ul>

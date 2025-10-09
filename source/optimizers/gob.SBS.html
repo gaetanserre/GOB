@@ -3,7 +3,7 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Benchmarks" href="../benchmarks/index.html"><link rel="prev" title="PRS" href="gob.PRS.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Benchmarks" href="../benchmarks/index.html"><link rel="prev" title="PSO" href="gob.PSO.html">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>SBS - GOB 0.0.1 documentation</title>
@@ -206,6 +206,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.GD.html">GD</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.PSO.html">PSO</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">SBS</a></li>
 </ul>
 </li>
@@ -278,7 +279,7 @@
 <span id="sbs"></span><h1>SBS<a class="headerlink" href="#module-gob.optimizers.SBS" title="Link to this heading">¶</a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="gob.optimizers.SBS.SBS">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.SBS.</span></span><span class="sig-name descname"><span class="pre">SBS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_particles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.SBS.SBS" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.SBS.</span></span><span class="sig-name descname"><span class="pre">SBS</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_particles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sigma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.SBS.SBS" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
 <p>Interface for the SBS optimizer.</p>
 <dl class="field-list simple">
@@ -286,10 +287,12 @@
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>bounds</strong> (<em>ndarray</em>) – The bounds of the search space.</p></li>
 <li><p><strong>n_particles</strong> (<em>int</em>) – The number of particles.</p></li>
-<li><p><strong>iter</strong> (<em>int</em>) – The number of iterations for the SVGD algorithm.</p></li>
+<li><p><strong>iter</strong> (<em>int</em>) – The number of iterations.</p></li>
+<li><p><strong>dt</strong> (<em>float</em>) – The time step.</p></li>
 <li><p><strong>k</strong> (<em>list</em>) – The kappa exponent.</p></li>
 <li><p><strong>sigma</strong> (<em>float</em>) – The kernel bandwidth.</p></li>
-<li><p><strong>dt</strong> (<em>float</em>) – The time step for the SVGD algorithm.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – The batch size for the mini-batch optimization. If 0, no mini-batch
+optimization is used.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print information about the optimization process.</p></li>
 </ul>
 </dd>
@@ -340,14 +343,14 @@
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
-          <a class="prev-page" href="gob.PRS.html">
+          <a class="prev-page" href="gob.PSO.html">
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
               <div class="page-info">
                 <div class="context">
                   <span>Previous</span>
                 </div>
                 
-                <div class="title">PRS</div>
+                <div class="title">PSO</div>
                 
               </div>
             </a>

@@ -18,56 +18,63 @@ This documentation includes:
 GOB as a Benchmark suite
 ------------------------
 .. code-block:: python
-
   from gob import GOB
   from gob.benchmarks import PyGKLS, create_bounds
 
-  opt = {
-      "AdaRankOpt": {
-          "n_eval": 1000,
-          "max_trials": 800,
-          "max_degree": 80,
-      },
-      "SBS": {"n_particles": 200, "svgd_iter": 100},
-      "Proportion": {"p": 0.9},
-  }
-  pygkls = PyGKLS(2, 5, [-5, 5], -20, smoothness="D", gen=42)
-  gob = GOB(
-      ["AdaRankOpt", "AdaLIPO+TR"],
-      ["Levy"],
-      ["Proportion"],
-      bounds=create_bounds(2, -10, 10, 2),
-      options=opt,
-  )
-  gob.run(n_runs=5, verbose=True)
+  if __name__ == "__main__":
+      pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND")
+      gob = GOB(
+          ["CBO", "SBS", "AdaLIPO+TR", "CMA-ES", "PSO"],
+          ["Square", pygkls],
+          ["Proportion"],
+          bounds=create_bounds(2, -99, 99, 2),
+      )
+      gob.run(n_runs=10, verbose=1)
 
 Example output:
 
 .. code-block:: console
 
-  Done for AdaRankOpt on Levy.
-  Done for AdaLIPO+TR on Levy.
+  Done for CBO on Square.
+  Done for SBS on Square.
+  Done for AdaLIPO+TR on Square.
+  Done for CMA-ES on Square.
+  Done for PSO on Square.
+  Done for CBO on PyGKLS n°1.
+  Done for SBS on PyGKLS n°1.
+  Done for AdaLIPO+TR on PyGKLS n°1.
+  Done for CMA-ES on PyGKLS n°1.
+  Done for PSO on PyGKLS n°1.
 
   Results for Approx:
-  +------------+-----------------+
-  | Optimizer  |       Levy      |
-  +------------+-----------------+
-  | AdaRankOpt | 0.0000 ± 0.0000 |
-  | AdaLIPO+TR | 0.0000 ± 0.0000 |
-  +------------+-----------------+
+  +------------+-----------------+--------------------+
+  | Optimizer  |      Square     |     PyGKLS n°1     |
+  +------------+-----------------+--------------------+
+  |    CBO     | 0.0000 ± 0.0000 | -100.0000 ± 0.0000 |
+  |    SBS     | 0.0000 ± 0.0000 | -72.3969 ± 31.7194 |
+  | AdaLIPO+TR | 0.0001 ± 0.0002 | -69.7298 ± 19.0801 |
+  |   CMA-ES   | 0.0000 ± 0.0000 | -13.7024 ± 23.1782 |
+  |    PSO     | 0.0000 ± 0.0000 | -23.6913 ± 30.3957 |
+  +------------+-----------------+--------------------+
   Results for Proportion:
-  +------------+--------+
-  | Optimizer  |  Levy  |
-  +------------+--------+
-  | AdaRankOpt | 1.0000 |
-  | AdaLIPO+TR | 1.0000 |
-  +------------+--------+
+  +------------+--------+------------+
+  | Optimizer  | Square | PyGKLS n°1 |
+  +------------+--------+------------+
+  |    CBO     | 1.0000 |   1.0000   |
+  |    SBS     | 1.0000 |   1.0000   |
+  | AdaLIPO+TR | 1.0000 |   1.0000   |
+  |   CMA-ES   | 1.0000 |   1.0000   |
+  |    PSO     | 1.0000 |   1.0000   |
+  +------------+--------+------------+
   Competitive ratios:
   +------------+-------------------+
   | Optimizer  | Competitive ratio |
   +------------+-------------------+
-  | AdaRankOpt |      100.0000     |
-  | AdaLIPO+TR |       1.0000      |
+  |    CBO     |      14.5121      |
+  |    SBS     |      50.5225      |
+  | AdaLIPO+TR |      100.0000     |
+  |   CMA-ES   |      50.5000      |
+  |    PSO     |      50.5000      |
   +------------+-------------------+
 
 GOB as a library of optimizers

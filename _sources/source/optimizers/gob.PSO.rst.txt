@@ -1,0 +1,7 @@
+PSO
+===
+
+.. automodule:: gob.optimizers.PSO
+   :members:
+   :show-inheritance:
+   :undoc-members:
