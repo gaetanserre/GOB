@@ -12,7 +12,7 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
   {
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
-    particles->row(j) += dyn.drift.row(j) * this->dt + dyn.stddev[j] * sqrt(2 * this->dt) * dyn.noise.row(j);
+    particles->row(j) += dyn.drift.row(j) * this->dt + dyn.stddev[j] * sqrt(this->dt) * dyn.noise.row(j);
     particles->row(j) = clip_vector(particles->row(j), this->bounds);
   }
 }

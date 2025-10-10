@@ -62,6 +62,7 @@ cdef extern from "include/optimizers/particles/CBO.hh":
       double epsilon,
       double beta,
       double sigma,
+      double sigma_2,
       double alpha,
       int batch_size
     )
@@ -215,10 +216,11 @@ cdef class CBO:
     double epsilon=1e-2,
     double beta=1,
     double sigma=5.1,
+    double sigma_2=3,
     double alpha=1,
     int batch_size=0
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, batch_size)
+    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, sigma_2, alpha, batch_size)
 
   def minimize(self, f):
     py_init()

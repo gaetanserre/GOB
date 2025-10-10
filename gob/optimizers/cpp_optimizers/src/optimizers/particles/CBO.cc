@@ -25,7 +25,16 @@ dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
     stddev[i] = diff.norm() * this->sigma;
     drift.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf));
   }
-  this->beta = min(this->beta * 1.05, 100000.0);
+
   Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
-  return {drift, stddev, noise};
+  dyn_vector common_noise = normal_random_vector(this->re, particles.cols(), 0, this->sigma_2);
+  Eigen::MatrixXd common_noise_matrix(particles.rows(), particles.cols());
+  for (int i = 0; i < particles.rows(); i++)
+  {
+    common_noise_matrix.row(i) = common_noise / stddev[i];
+  }
+
+  this->beta = min(this->beta * 1.05, 100000.0);
+
+  return {drift, stddev, noise + common_noise_matrix};
 }

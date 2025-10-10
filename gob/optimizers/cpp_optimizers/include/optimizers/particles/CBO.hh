@@ -16,6 +16,7 @@ public:
       double epsilon = 1e-2,
       double beta = 1,
       double sigma = 5.1,
+      double sigma_2 = 3,
       double alpha = 1,
       int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
@@ -23,6 +24,7 @@ public:
     this->epsilon = epsilon;
     this->beta = beta;
     this->sigma = sigma;
+    this->sigma_2 = sigma_2;
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
@@ -32,4 +34,5 @@ private:
   double epsilon;
   double beta;
   double sigma;
+  double sigma_2;
 };
