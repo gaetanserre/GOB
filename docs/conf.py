@@ -20,9 +20,9 @@ release = "0.0.1"
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
 extensions = [
-    "sphinx.ext.autodoc",  # <-- nécessaire pour .. automodule::
-    "sphinx.ext.napoleon",  # <-- si tu utilises Google/NumPy style docstrings
-    "sphinx_autodoc_typehints",  # <-- affiche les hints de type
+    "sphinx.ext.autodoc",
+    "sphinx.ext.napoleon",
+    "sphinx_autodoc_typehints",
     "myst_parser",
     "sphinx.ext.mathjax",
 ]
