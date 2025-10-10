@@ -28,6 +28,8 @@ class CBO(Optimizer):
         The inverse temperature.
     sigma : float
         The standard deviation of the Gaussian noise.
+    alpha : float
+        The coefficient to decrease the step size.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -45,12 +47,13 @@ class CBO(Optimizer):
         epsilon=1e-2,
         beta=1,
         sigma=5.1,
+        alpha=1,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("CBO", bounds)
         self.c_opt = C_CBO(
-            bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, batch_size
+            bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, batch_size
         )
         self.verbose = verbose
 

@@ -14,8 +14,9 @@ public:
       double dt = 0.01,
       double omega = 0.7,
       double c2 = 2.0,
-      double beta = 1e70,
-      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size)
+      double beta = 1e5,
+      double alpha = 1,
+      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
     this->omega = omega;
     this->c2 = c2;

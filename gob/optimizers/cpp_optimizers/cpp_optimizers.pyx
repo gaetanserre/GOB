@@ -45,6 +45,7 @@ cdef extern from "include/optimizers/particles/SBS.hh":
       double dt,
       int k,
       double sigma,
+      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -61,6 +62,7 @@ cdef extern from "include/optimizers/particles/CBO.hh":
       double epsilon,
       double beta,
       double sigma,
+      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -104,6 +106,7 @@ cdef extern from "include/optimizers/particles/PSO.hh":
       double omega,
       double c2,
       double beta,
+      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -181,9 +184,10 @@ cdef class SBS:
     double dt=0.01,
     int k=10_000,
     double sigma=0.01,
+    double alpha=0.99,
     int batch_size=0
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, batch_size)
+    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -208,9 +212,10 @@ cdef class CBO:
     double epsilon=1e-2,
     double beta=1,
     double sigma=5.1,
+    double alpha=1,
     int batch_size=0
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, batch_size)
+    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -303,10 +308,11 @@ cdef class PSO:
     double dt=0.01,
     double omega=0.7,
     double c2=2.0,
-    double beta=1e70,
+    double beta=1e5,
+    double alpha=1,
     int batch_size=0
   ):
-    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, batch_size)
+    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size)
 
   def minimize(self, f):
     py_init()

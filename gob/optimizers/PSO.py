@@ -26,6 +26,8 @@ class PSO(Optimizer):
         The cognitive coefficient.
     beta : float
         The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).
+    alpha : float
+        The coefficient to decrease the step size.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -41,12 +43,15 @@ class PSO(Optimizer):
         dt=0.01,
         omega=0.7,
         c2=2,
-        beta=1e70,
+        beta=1e5,
+        alpha=1,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("PSO", bounds)
-        self.c_opt = C_PSO(bounds, n_particles, iter, dt, omega, c2, beta, batch_size)
+        self.c_opt = C_PSO(
+            bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size
+        )
         self.verbose = verbose
 
     def minimize(self, f):

@@ -24,6 +24,8 @@ class SBS(Optimizer):
         The kappa exponent.
     sigma : float
         The kernel bandwidth.
+    alpha : float
+        The coefficient to decrease the step size.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -39,11 +41,12 @@ class SBS(Optimizer):
         dt=0.01,
         k=10_000,
         sigma=0.1,
+        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, batch_size)
+        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):
