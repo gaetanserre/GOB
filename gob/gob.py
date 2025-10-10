@@ -224,14 +224,14 @@ class GOB:
             for optimizer in self.optimizers:
                 opt_dict = {}
                 sols = []
+                optimizer = self.parse_optimizer(
+                    optimizer, self.bounds[i], self.options.get(optimizer, {})
+                )
                 for nr in range(n_runs):
-                    optimizer_ = self.parse_optimizer(
-                        optimizer, self.bounds[i], self.options.get(optimizer, {})
-                    )
-                    sol = optimizer_.minimize(benchmark)[1]
+                    sol = optimizer.minimize(benchmark)[1]
                     if verbose > 1:
                         print_blue(
-                            f"Run {nr + 1} done for {optimizer_} on {benchmark}. Result: {sol}"
+                            f"Run {nr + 1} done for {optimizer} on {benchmark}. Result: {sol}"
                         )
                     sols.append(sol)
                 opt_dict["Approx"] = {"mean": np.mean(sols), "std": np.std(sols)}
@@ -241,9 +241,9 @@ class GOB:
                     )
                     m = metric(sols)
                     opt_dict[str(metric)] = m
-                bench_dict[str(optimizer_)] = opt_dict
+                bench_dict[str(optimizer)] = opt_dict
                 if verbose:
-                    print_dark_green(f"Done for {optimizer_} on {benchmark}.")
+                    print_dark_green(f"Done for {optimizer} on {benchmark}.")
             res_dict[str(benchmark)] = bench_dict
             min_dict[str(benchmark)] = benchmark.min
         if verbose:

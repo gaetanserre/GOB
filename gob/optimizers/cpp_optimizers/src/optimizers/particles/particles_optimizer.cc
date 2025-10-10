@@ -69,5 +69,6 @@ result_eigen Particles_Optimizer::minimize(function<double(dyn_vector x)> f)
     this->sched->step();
   }
   int argmin = argmin_vec(all_evals);
+  this->sched->reset();
   return {samples[argmin], all_evals[argmin]};
 }
