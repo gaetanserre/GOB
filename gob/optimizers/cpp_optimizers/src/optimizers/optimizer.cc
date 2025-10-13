@@ -12,7 +12,18 @@ result Optimizer::py_minimize(PyObject *f)
     PyObject *args = PyTuple_New(1);
     PyTuple_SetItem(args, 0, my_list);
     PyObject *result = PyObject_CallObject(f, args);
-    return PyFloat_AsDouble(result);
+    double value = 0.0;
+    if (result)
+    {
+      value = PyFloat_AsDouble(result);
+      Py_DECREF(result);
+    }
+    else
+    {
+      PyErr_Print();
+    }
+    Py_DECREF(args);
+    return value;
   };
   result_eigen res = this->minimize(f_cpp);
   vector<double> x(res.first.data(), res.first.data() + res.first.size());

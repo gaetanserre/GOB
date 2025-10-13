@@ -123,7 +123,8 @@ cdef class PRS:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -151,7 +152,8 @@ cdef class AdaLIPO_P:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
   
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -167,7 +169,8 @@ cdef class CMA_ES:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
   
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -193,7 +196,8 @@ cdef class SBS:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -222,7 +226,8 @@ cdef class CBO:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -252,7 +257,8 @@ cdef class AdaRankOpt:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
   
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -289,7 +295,8 @@ cdef class ECP:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
   
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
@@ -319,7 +326,8 @@ cdef class PSO:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
