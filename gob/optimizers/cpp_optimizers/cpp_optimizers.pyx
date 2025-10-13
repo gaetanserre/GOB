@@ -46,6 +46,7 @@ cdef extern from "include/optimizers/particles/SBS.hh":
       int k,
       double sigma,
       double alpha,
+      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -62,8 +63,8 @@ cdef extern from "include/optimizers/particles/CBO.hh":
       double epsilon,
       double beta,
       double sigma,
-      double sigma_2,
       double alpha,
+      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -108,6 +109,7 @@ cdef extern from "include/optimizers/particles/PSO.hh":
       double c2,
       double beta,
       double alpha,
+      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -189,9 +191,10 @@ cdef class SBS:
     int k=10_000,
     double sigma=0.1,
     double alpha=0.99,
+    double common_noise_sigma=0,
     int batch_size=0
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
+    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, common_noise_sigma, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -217,11 +220,11 @@ cdef class CBO:
     double epsilon=1e-2,
     double beta=1,
     double sigma=5.1,
-    double sigma_2=3,
     double alpha=1,
+    double common_noise_sigma = 0,
     int batch_size=0
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, sigma_2, alpha, batch_size)
+    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, common_noise_sigma, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -319,9 +322,10 @@ cdef class PSO:
     double c2=2.0,
     double beta=1e5,
     double alpha=1,
+    double common_noise_sigma=0,
     int batch_size=0
   ):
-    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size)
+    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, common_noise_sigma, batch_size)
 
   def minimize(self, f):
     py_init()

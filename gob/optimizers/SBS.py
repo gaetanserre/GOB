@@ -42,11 +42,12 @@ class SBS(Optimizer):
         k=10_000,
         sigma=0.1,
         alpha=0.99,
+        common_noise_sigma=0,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
+        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, alpha, common_noise_sigma, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):

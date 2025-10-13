@@ -45,12 +45,13 @@ class PSO(Optimizer):
         c2=2,
         beta=1e5,
         alpha=1,
+        common_noise_sigma=0,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("PSO", bounds)
         self.c_opt = C_PSO(
-            bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size
+            bounds, n_particles, iter, dt, omega, c2, beta, alpha, common_noise_sigma, batch_size
         )
         self.verbose = verbose
 
