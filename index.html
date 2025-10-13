@@ -6,10 +6,11 @@
 <link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html"><link rel="next" title="Quickstart" href="quickstart.html">
 
     <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>GOB 0.0.2 documentation</title>
+        <title>GOB 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
+    <link rel="stylesheet" type="text/css" href="_static/style.css?v=85ea398f" />
     
     
 
@@ -161,7 +162,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="#"><div class="brand">GOB 0.0.2 documentation</div></a>
+      <a href="#"><div class="brand">GOB 0.0.3 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -182,7 +183,7 @@
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="#">
   
-  <span class="sidebar-brand-text">GOB 0.0.2 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -292,7 +293,7 @@
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
     <span class="n">pygkls</span> <span class="o">=</span> <span class="n">PyGKLS</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="p">[</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">],</span> <span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="n">smoothness</span><span class="o">=</span><span class="s2">&quot;ND&quot;</span><span class="p">)</span>
     <span class="n">gob</span> <span class="o">=</span> <span class="n">GOB</span><span class="p">(</span>
-        <span class="p">[</span><span class="s2">&quot;CBO&quot;</span><span class="p">,</span> <span class="s2">&quot;SBS&quot;</span><span class="p">,</span> <span class="s2">&quot;AdaLIPO+TR&quot;</span><span class="p">,</span> <span class="s2">&quot;CMA-ES&quot;</span><span class="p">,</span> <span class="s2">&quot;PSO&quot;</span><span class="p">],</span>
+        <span class="p">[</span><span class="s2">&quot;CBO&quot;</span><span class="p">,</span> <span class="p">(</span><span class="s2">&quot;SBS&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;iter&quot;</span><span class="p">:</span> <span class="mi">10</span><span class="p">}),</span> <span class="s2">&quot;SBS&quot;</span><span class="p">,</span> <span class="s2">&quot;AdaLIPO+TR&quot;</span><span class="p">,</span> <span class="s2">&quot;CMA-ES&quot;</span><span class="p">,</span> <span class="s2">&quot;PSO&quot;</span><span class="p">],</span>
         <span class="p">[</span><span class="s2">&quot;Square&quot;</span><span class="p">,</span> <span class="n">pygkls</span><span class="p">],</span>
         <span class="p">[</span><span class="s2">&quot;Proportion&quot;</span><span class="p">],</span>
         <span class="n">bounds</span><span class="o">=</span><span class="n">create_bounds</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">99</span><span class="p">,</span> <span class="mi">99</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
@@ -303,44 +304,49 @@
 <p>Example output:</p>
 <div class="highlight-console notranslate"><div class="highlight"><pre><span></span><span class="go">Done for CBO on Square.</span>
 <span class="go">Done for SBS on Square.</span>
+<span class="go">Done for SBS (2) on Square.</span>
 <span class="go">Done for AdaLIPO+TR on Square.</span>
 <span class="go">Done for CMA-ES on Square.</span>
 <span class="go">Done for PSO on Square.</span>
 <span class="go">Done for CBO on PyGKLS n°1.</span>
 <span class="go">Done for SBS on PyGKLS n°1.</span>
+<span class="go">Done for SBS (2) on PyGKLS n°1.</span>
 <span class="go">Done for AdaLIPO+TR on PyGKLS n°1.</span>
 <span class="go">Done for CMA-ES on PyGKLS n°1.</span>
 <span class="go">Done for PSO on PyGKLS n°1.</span>
 
 <span class="go">Results for Approx:</span>
-<span class="go">+------------+-----------------+--------------------+</span>
-<span class="go">| Optimizer  |      Square     |     PyGKLS n°1     |</span>
-<span class="go">+------------+-----------------+--------------------+</span>
-<span class="go">|    CBO     | 0.0000 ± 0.0000 | -100.0000 ± 0.0000 |</span>
-<span class="go">|    SBS     | 0.0000 ± 0.0000 | -72.3969 ± 31.7194 |</span>
-<span class="go">| AdaLIPO+TR | 0.0001 ± 0.0002 | -69.7298 ± 19.0801 |</span>
-<span class="go">|   CMA-ES   | 0.0000 ± 0.0000 | -13.7024 ± 23.1782 |</span>
-<span class="go">|    PSO     | 0.0000 ± 0.0000 | -23.6913 ± 30.3957 |</span>
-<span class="go">+------------+-----------------+--------------------+</span>
+<span class="go">+------------+-----------------+-----------------------+</span>
+<span class="go">| Optimizer  |      Square     |       PyGKLS n°1      |</span>
+<span class="go">+------------+-----------------+-----------------------+</span>
+<span class="go">|    CBO     | 0.0000 ± 0.0000 |   -100.0000 ± 0.0000  |</span>
+<span class="go">|    SBS     | 0.0000 ± 0.0000 |   -89.5836 ± 8.3975   |</span>
+<span class="go">|  SBS (2)   | 0.0000 ± 0.0000 |   -96.4728 ± 4.2577   |</span>
+<span class="go">| AdaLIPO+TR | 0.0000 ± 0.0000 |   -46.3281 ± 37.4058  |</span>
+<span class="go">|   CMA-ES   | 0.0000 ± 0.0000 | 1712.5414 ± 3511.7282 |</span>
+<span class="go">|    PSO     | 0.0000 ± 0.0000 |   -99.9929 ± 0.0140   |</span>
+<span class="go">+------------+-----------------+-----------------------+</span>
 <span class="go">Results for Proportion:</span>
 <span class="go">+------------+--------+------------+</span>
 <span class="go">| Optimizer  | Square | PyGKLS n°1 |</span>
 <span class="go">+------------+--------+------------+</span>
 <span class="go">|    CBO     | 1.0000 |   1.0000   |</span>
 <span class="go">|    SBS     | 1.0000 |   1.0000   |</span>
-<span class="go">| AdaLIPO+TR | 1.0000 |   1.0000   |</span>
-<span class="go">|   CMA-ES   | 1.0000 |   1.0000   |</span>
+<span class="go">|  SBS (2)   | 1.0000 |   1.0000   |</span>
+<span class="go">| AdaLIPO+TR | 1.0000 |   0.7000   |</span>
+<span class="go">|   CMA-ES   | 1.0000 |   0.6000   |</span>
 <span class="go">|    PSO     | 1.0000 |   1.0000   |</span>
 <span class="go">+------------+--------+------------+</span>
 <span class="go">Competitive ratios:</span>
 <span class="go">+------------+-------------------+</span>
 <span class="go">| Optimizer  | Competitive ratio |</span>
 <span class="go">+------------+-------------------+</span>
-<span class="go">|    CBO     |      14.5121      |</span>
-<span class="go">|    SBS     |      50.5225      |</span>
+<span class="go">|    CBO     |      39.4351      |</span>
+<span class="go">|    SBS     |      50.5591      |</span>
+<span class="go">|  SBS (2)   |      50.5083      |</span>
 <span class="go">| AdaLIPO+TR |      100.0000     |</span>
 <span class="go">|   CMA-ES   |      50.5000      |</span>
-<span class="go">|    PSO     |      50.5000      |</span>
+<span class="go">|    PSO     |      100.0000     |</span>
 <span class="go">+------------+-------------------+</span>
 </pre></div>
 </div>
@@ -372,6 +378,8 @@
 </ul>
 </li>
 </ul>
+</div>
+<div class="toctree-wrapper compound">
 </div>
 <div class="toctree-wrapper compound">
 <ul>
@@ -459,7 +467,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=e3a6060d"></script>
+</div><script src="_static/documentation_options.js?v=47de8214"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
