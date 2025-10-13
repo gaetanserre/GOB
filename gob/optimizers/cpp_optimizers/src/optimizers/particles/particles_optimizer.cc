@@ -12,7 +12,6 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
   {
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
-    dyn_vector noise = normal_random_vector(this->re, particles->row(j).cols(), 0, 1);
     particles->row(j) += dyn.drift.row(j) * this->dt + dyn.stddev[j] * sqrt(this->dt) * dyn.noise.row(j);
     particles->row(j) = clip_vector(particles->row(j), this->bounds);
   }
