@@ -22,6 +22,7 @@ public:
       int n_particles = 200,
       int iter = 100,
       double dt = 0.01,
+      double common_noise_sigma = 0,
       int batch_size = 0,
       Scheduler *sched = new Scheduler()) : Optimizer(bounds, "Particles_Optimizer")
   {
@@ -29,6 +30,7 @@ public:
     this->iter = iter;
     this->dt = dt;
     this->sched = sched;
+    this->common_noise_sigma = common_noise_sigma;
     this->batch_size = batch_size;
   }
 
@@ -44,6 +46,7 @@ protected:
   int n_particles;
   int iter;
   double dt;
+  double common_noise_sigma;
   int batch_size;
   Scheduler *sched;
 
