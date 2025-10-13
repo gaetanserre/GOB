@@ -114,7 +114,7 @@ For more details, explore the modules below and refer to the examples for practi
 .. toctree::
    :maxdepth: 1
 
-   source/gob
+   gob
 
 .. toctree::
    :maxdepth: 1
