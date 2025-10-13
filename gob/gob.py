@@ -28,8 +28,8 @@ class GOB:
 
         Parameters
         ----------
-        optimizers : List str | Object
-            The optimizers to use.
+        optimizers : List tuple(str | class, dict) | List str | List Object
+            The optimizers to use. A tuple is (name | class, dict of keyword arguments).
 
         benchmarks : List str | Object
             The benchmarks to use.
@@ -40,8 +40,8 @@ class GOB:
         bounds : array-like of shape (n_benchmark, n_variables, 2)
             The bounds of the search space.
 
-        **kwargs : dict of keyword arguments for the optimizers or the metrics
-            {name_optimizer: dict of keyword arguments}
+        options : dict of keyword arguments for the metrics
+            {name: dict of keyword arguments}
         """
         if bounds is None:
             bounds = create_bounds(len(benchmarks), -1, 1, 2)
@@ -55,31 +55,38 @@ class GOB:
 
         self.count_gkls = 1
 
-    def parse_optimizer(self, optimizer, bounds, options={}):
+    def parse_optimizer(self, optimizer, bounds):
         """
         Parse the optimizer.
 
         Parameters
         ----------
-        optimizer : str | Object
+        optimizer : tuple(str | class, dict) | str | Object
             The optimizer to use.
         bounds : array-like of shape (n_variables, 2)
             The bounds of the search space.
-
-        **kwargs : dict of keyword arguments
-            {name_optimizer: dict of keyword arguments}
 
         Returns
         -------
         Optimizer
             Instance of the optimizer.
         """
-        if isinstance(optimizer, str):
+
+        def get_class_by_name(name):
             optimizers = inspect.getmembers(go, inspect.isclass)
             for _, opt in optimizers:
-                if str(opt([])) == optimizer:
-                    return opt(bounds=bounds, **options)
-            raise ValueError(f"Unknown optimizer: {optimizer}")
+                if str(opt([])) == name:
+                    return opt
+            raise ValueError(f"Unknown optimizer: {name}")
+
+        if isinstance(optimizer, tuple):
+            name, options = optimizer
+            if isinstance(name, str):
+                return get_class_by_name(name)(bounds=bounds, **options)
+            else:
+                return name(bounds=bounds, **options)
+        elif isinstance(optimizer, str):
+            return get_class_by_name(optimizer)(bounds=bounds)
         else:
             return optimizer
 
@@ -125,6 +132,8 @@ class GOB:
             The benchmark function.
         bounds : array-like of shape (n_variables, 2)
             The bounds of the search space.
+        options : dict of keyword arguments
+            The options for the metric.
 
         Returns
         -------
@@ -141,7 +150,7 @@ class GOB:
             return metric
 
     @staticmethod
-    def print_approx(sols, f, n_runs):
+    def _print_approx(sols, f, n_runs):
         """
         Print the approximate minimum.
 
@@ -162,7 +171,7 @@ class GOB:
 
     def competitive_ratio(self, res_dict, min_dict):
         """
-        Compute the competitive ratio: :math: `1 / |F| * sum_{f in F} (approx(f) / min(f))`.
+        Compute the competitive ratio: :math:`\\frac{1}{|F|}\\sum\\limits_{f \\in F} \\frac{\\text{approx}(f)}{\\min_x f(x)}`.
 
         Parameters
         ----------
@@ -202,6 +211,17 @@ class GOB:
             ratios[optimizer_name] = ratio / len(self.benchmarks)
         return ratios
 
+    @staticmethod
+    def _get_duplicate_name(bench_dict, name, duplicates_name):
+        if name in bench_dict:
+            if name not in duplicates_name:
+                duplicates_name[name] = 2
+            else:
+                duplicates_name[name] += 1
+            return f"{name} ({duplicates_name[name]})"
+        else:
+            return name
+
     def run(self, n_runs=1, verbose=0):
         """
         Run the benchmark.
@@ -218,19 +238,23 @@ class GOB:
         for i, benchmark in enumerate(self.benchmarks):
             bench_dict = {}
             benchmark = self.parse_benchmark(benchmark)
+            duplicates_name = {}
             for optimizer in self.optimizers:
                 opt_dict = {}
                 sols = []
-                optimizer = self.parse_optimizer(
-                    optimizer, self.bounds[i], self.options.get(optimizer, {})
+                optimizer_ = self.parse_optimizer(optimizer, self.bounds[i])
+                name_optimizer_ = self._get_duplicate_name(
+                    bench_dict, str(optimizer_), duplicates_name
                 )
                 for nr in range(n_runs):
-                    sol = optimizer.minimize(benchmark)[1]
+                    sol = optimizer_.minimize(benchmark)[1]
                     if verbose > 1:
                         print_blue(
-                            f"Run {nr + 1} done for {optimizer} on {benchmark}. Result: {sol}"
+                            f"Run {nr + 1} done for {name_optimizer_} on {benchmark}. Result: {sol}"
                         )
                     sols.append(sol)
+                    if nr < n_runs - 1:
+                        optimizer_ = self.parse_optimizer(optimizer, self.bounds[i])
                 opt_dict["Approx"] = {"mean": np.mean(sols), "std": np.std(sols)}
                 for metric in self.metrics:
                     metric = self.parse_metric(
@@ -238,9 +262,9 @@ class GOB:
                     )
                     m = metric(sols)
                     opt_dict[str(metric)] = m
-                bench_dict[str(optimizer)] = opt_dict
+                bench_dict[name_optimizer_] = opt_dict
                 if verbose:
-                    print_dark_green(f"Done for {optimizer} on {benchmark}.")
+                    print_dark_green(f"Done for {name_optimizer_} on {benchmark}.")
             res_dict[str(benchmark)] = bench_dict
             min_dict[str(benchmark)] = benchmark.min
         if verbose:
