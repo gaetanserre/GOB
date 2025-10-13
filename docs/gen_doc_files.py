@@ -34,8 +34,6 @@ def generate_index(path: Path, name: str, files: list[Path]):
 
 if __name__ == "__main__":
 
-    create_dir(Path("./source"))
-
     wd = Path("./source")
 
     # Optimizers

@@ -4,3 +4,4 @@ furo
 myst_parser
 numpy
 matplotlib
+toml
