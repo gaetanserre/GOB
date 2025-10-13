@@ -123,7 +123,8 @@ cdef class PRS:
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f
-    return self.thisptr.py_minimize(pyob_ptr)
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
