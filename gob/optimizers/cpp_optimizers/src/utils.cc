@@ -146,13 +146,3 @@ dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds)
   }
   return res;
 }
-
-bool contains_nan(const dyn_vector &x)
-{
-  for (int i = 0; i < x.size(); i++)
-  {
-    if (isnan(x(i)))
-      return true;
-  }
-  return false;
-}
