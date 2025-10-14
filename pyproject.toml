@@ -13,7 +13,8 @@ dependencies = [
   "nlopt>=2.9.1",
   "prettytable>=3.16.0",
   "bayesian-optimization>=3.1.0",
-  "gkls",
+  "packaging>=25",
+  "gkls>=1.0.2",
 ]
 description = "A collection of global optimization algorithms implemented in C++ and linked with Python."
 readme = "README.md"
