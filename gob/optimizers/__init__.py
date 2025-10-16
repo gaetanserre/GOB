@@ -15,3 +15,4 @@ from .MLSL import MLSL
 from .BayesOpt import BayesOpt
 from .ECP import ECP
 from .PSO import PSO
+from .RKHS import RKHS

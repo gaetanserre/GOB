@@ -4,6 +4,7 @@
 
 #include "optimizers/particles/SBS.hh"
 #include "optimizers/particles/noise.hh"
+#include "optimizers/particles/particles_utils.hh"
 
 dyn_vector gradient(dyn_vector x, const function<double(dyn_vector x)> &f, double *f_x, double tol = 1e-9)
 {
@@ -16,23 +17,6 @@ dyn_vector gradient(dyn_vector x, const function<double(dyn_vector x)> &f, doubl
     grad(i) = ((f(x_plus) - *f_x) / tol);
   }
   return grad;
-}
-
-Eigen::MatrixXd pairwise_dist(const Eigen::MatrixXd &particles)
-{
-  // Create 0 square matrix
-  Eigen::MatrixXd dists(particles.rows(), particles.rows());
-  dists.setZero();
-  for (int i = 0; i < particles.rows(); i++)
-  {
-    for (int j = i + 1; j < particles.rows(); j++)
-    {
-      double d = (particles.row(i) - particles.row(j)).norm();
-      dists(i, j) = d;
-      dists(j, i) = d;
-    }
-  }
-  return dists;
 }
 
 Eigen::MatrixXd SBS::rbf(const Eigen::MatrixXd &particles)

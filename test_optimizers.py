@@ -12,7 +12,7 @@ bounds = create_bounds(2, -99, 99)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-opt = CBO(bounds)
+opt = RKHS(bounds, iter=1, n_particles=2, sigma=1000)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 

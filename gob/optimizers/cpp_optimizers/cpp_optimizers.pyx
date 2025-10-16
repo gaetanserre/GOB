@@ -115,6 +115,21 @@ cdef extern from "include/optimizers/particles/PSO.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
+cdef extern from "include/optimizers/particles/RKHS.hh":
+  cdef cppclass CRKHS "RKHS":
+    CRKHS(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double beta,
+      double sigma,
+      double alpha,
+      int batch_size
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
 # Python interface
 
 cdef class PRS:
@@ -326,6 +341,33 @@ cdef class PSO:
     int batch_size=0
   ):
     self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, common_noise_sigma, batch_size)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+  
+  def __del__(self):
+    del self.thisptr
+
+cdef class RKHS:
+  cdef CRKHS *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles=200,
+    int iter=1000,
+    double dt=0.01,
+    double beta=1e5,
+    double sigma=1,
+    alpha=1,
+    int batch_size=0
+  ):
+    self.thisptr = new CRKHS(bounds, n_particles, iter, dt, beta, sigma, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
