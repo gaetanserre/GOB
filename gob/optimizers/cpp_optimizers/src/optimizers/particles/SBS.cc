@@ -20,7 +20,6 @@ dyn_vector gradient(dyn_vector x, const function<double(dyn_vector x)> &f, doubl
 
 Eigen::MatrixXd pairwise_dist(const Eigen::MatrixXd &particles)
 {
-  // Create 0 square matrix
   Eigen::MatrixXd dists(particles.rows(), particles.rows());
   dists.setZero();
   for (int i = 0; i < particles.rows(); i++)
