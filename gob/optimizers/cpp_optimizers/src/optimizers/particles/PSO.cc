@@ -8,19 +8,6 @@
 
 dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
 {
-  double min_eval = INFINITY;
-  int argmin = -1;
-  for (int i = 0; i < particles.rows(); i++)
-  {
-    double f_x = f(particles.row(i));
-    (*evals)[i] = f_x;
-    if (f_x < min_eval)
-    {
-      min_eval = f_x;
-      argmin = i;
-    }
-  }
-
   dyn_vector vf;
   if (this->beta > 0)
     vf = compute_consensus(particles, f, evals, this->beta);
