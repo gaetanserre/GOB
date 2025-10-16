@@ -26,10 +26,14 @@ result_eigen Particles_Optimizer::minimize(function<double(dyn_vector x)> f)
   vector<double> all_evals;
   vector<dyn_vector> samples;
   Eigen::MatrixXd particles(this->n_particles, this->bounds.size());
-  for (int i = 0; i < this->n_particles; i++)
+  particles.row(0) << 13.8462, 73.1265;
+  particles.row(1) << -4.14494, -22.7931;
+
+  /* for (int i = 0; i < this->n_particles; i++)
   {
     particles.row(i) = unif_random_vector(this->re, this->bounds);
-  }
+  } */
+  print_matrix(particles);
   for (int i = 0; i < this->iter; i++)
   {
     if (this->batch_size > 0)

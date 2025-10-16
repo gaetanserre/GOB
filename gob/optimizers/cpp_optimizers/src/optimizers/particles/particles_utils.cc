@@ -33,3 +33,19 @@ dyn_vector compute_consensus(const Eigen::MatrixXd &particles, const function<do
   }
   return vf;
 }
+
+Eigen::MatrixXd pairwise_dist(const Eigen::MatrixXd &particles)
+{
+  Eigen::MatrixXd dists(particles.rows(), particles.rows());
+  dists.setZero();
+  for (int i = 0; i < particles.rows(); i++)
+  {
+    for (int j = i + 1; j < particles.rows(); j++)
+    {
+      double d = (particles.row(i) - particles.row(j)).norm();
+      dists(i, j) = d;
+      dists(j, i) = d;
+    }
+  }
+  return dists;
+}
