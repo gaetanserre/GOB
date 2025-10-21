@@ -12,8 +12,8 @@ Eigen::MatrixXd RKHS::compute_noise(const Eigen::MatrixXd &particles)
 {
   Eigen::MatrixXd K = rbf(particles, this->sigma);
   int d = particles.cols();
-  Eigen::MatrixXd K_kron = Eigen::kroneckerProduct(K, Eigen::MatrixXd::Identity(d, d));
-  Eigen::MatrixXd K_inv = K_kron.llt().solve(Eigen::MatrixXd::Identity(K_kron.rows(), K_kron.cols()));
+  Eigen::MatrixXd K_tmp = K.llt().solve(Eigen::MatrixXd::Identity(K.rows(), K.cols()));
+  Eigen::MatrixXd K_inv = Eigen::kroneckerProduct(K_tmp, Eigen::MatrixXd::Identity(d, d)) / particles.rows();
   dyn_vector alphas_tmp = normal_random_variable(K_inv, &this->re)();
   Eigen::MatrixXd alphas = alphas_tmp.reshaped(particles.rows(), d);
   return K * alphas;
