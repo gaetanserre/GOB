@@ -12,7 +12,7 @@ bounds = create_bounds(2, -99, 99)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-opt = RKHS(bounds, epsilon=1e4)
+opt = RKHS(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
