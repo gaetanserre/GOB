@@ -19,16 +19,10 @@ dyn_vector gradient(dyn_vector x, const function<double(dyn_vector x)> &f, doubl
   return grad;
 }
 
-Eigen::MatrixXd SBS::rbf(const Eigen::MatrixXd &particles)
+Eigen::MatrixXd SBS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf_matrix)
 {
-  Eigen::MatrixXd pdists = pairwise_dist(particles);
-  return (-pdists / (2 * this->sigma * this->sigma)).array().exp();
-}
-
-Eigen::MatrixXd SBS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf)
-{
-  *rbf = this->rbf(particles);
-  Eigen::MatrixXd dxkxy = (particles.array().colwise() * rbf->colwise().sum().transpose().array()) - (*rbf * particles).array();
+  *rbf_matrix = rbf(particles, this->sigma);
+  Eigen::MatrixXd dxkxy = (particles.array().colwise() * rbf_matrix->colwise().sum().transpose().array()) - (*rbf_matrix * particles).array();
   return dxkxy;
 }
 

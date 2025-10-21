@@ -124,6 +124,7 @@ cdef extern from "include/optimizers/particles/RKHS.hh":
       double dt,
       double beta,
       double sigma,
+      double epsilon,
       double alpha,
       int batch_size
     )
@@ -364,10 +365,11 @@ cdef class RKHS:
     double dt=0.01,
     double beta=1e5,
     double sigma=1,
+    double epsilon=0.5,
     alpha=1,
     int batch_size=0
   ):
-    self.thisptr = new CRKHS(bounds, n_particles, iter, dt, beta, sigma, alpha, batch_size)
+    self.thisptr = new CRKHS(bounds, n_particles, iter, dt, beta, sigma, epsilon, alpha, batch_size)
 
   def minimize(self, f):
     py_init()

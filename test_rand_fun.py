@@ -24,14 +24,17 @@ def sample_multivariate_normal(mean, cov, size=1):
 def compute_noise_function(X):
     K = kernel_matrix(X)
     print(K)
-    K_inv = np.linalg.inv(np.kron(K, np.eye(X.shape[1])))
+    K_kron = np.kron(K, np.eye(X.shape[1]))
+    K_inv = np.linalg.inv(K_kron)
     print(np.kron(K, np.eye(X.shape[1])))
     print(K_inv)
-    print(np.kron(K, np.eye(X.shape[1])) @ K_inv)
+    print(K_kron @ K_inv)
     d = X.shape[1]
     m = X.shape[0]
-    alphas = sample_multivariate_normal(np.zeros((m * d)), K_inv).reshape(m, d)
-    return X + K @ alphas
+    alphas_tmp = sample_multivariate_normal(np.zeros((m * d)), K_kron)
+    print(alphas_tmp)
+    alphas = alphas_tmp.reshape(m, d)
+    return K @ alphas
 
 
 if __name__ == "__main__":

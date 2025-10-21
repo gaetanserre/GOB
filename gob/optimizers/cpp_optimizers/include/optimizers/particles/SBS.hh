@@ -27,6 +27,5 @@ public:
 private:
   int k;
   double sigma;
-  Eigen::MatrixXd rbf(const Eigen::MatrixXd &particles);
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
 };

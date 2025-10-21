@@ -21,9 +21,11 @@ class RKHS(Optimizer):
     dt : float
         The time step.
     beta : float
-        The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).
+        The inverse temperature for using a Gibbs measure to select the consensus point.
     sigma : float
         The bandwidth of the RBF kernel.
+    epsilon : float
+        The noise coefficient.
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -36,13 +38,14 @@ class RKHS(Optimizer):
         dt=0.01,
         beta=1e5,
         sigma=1,
+        epsilon=0.5,
         alpha=1,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("RKHS", bounds)
         self.c_opt = C_RKHS(
-            bounds, n_particles, iter, dt, beta, sigma, alpha, batch_size
+            bounds, n_particles, iter, dt, beta, sigma, epsilon, alpha, batch_size
         )
         self.verbose = verbose
 
