@@ -146,3 +146,26 @@ dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds)
   }
   return res;
 }
+
+normal_random_variable::normal_random_variable(const Eigen::MatrixXd &covar,
+                                               std::mt19937_64 *re_ptr)
+    : normal_random_variable(Eigen::VectorXd::Zero(covar.rows()), covar, re_ptr)
+{
+}
+
+normal_random_variable::normal_random_variable(const Eigen::VectorXd &mean,
+                                               const Eigen::MatrixXd &covar,
+                                               std::mt19937_64 *re_ptr)
+    : mean(mean), re_ptr(re_ptr)
+{
+  Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> eigenSolver(covar);
+  transform = eigenSolver.eigenvectors() *
+              eigenSolver.eigenvalues().cwiseSqrt().asDiagonal();
+}
+
+dyn_vector normal_random_variable::operator()() const
+{
+  static thread_local std::normal_distribution<> dist;
+  dyn_vector noise = normal_random_vector(*re_ptr, mean.size(), 0.0, 1.0);
+  return mean + transform * noise;
+}

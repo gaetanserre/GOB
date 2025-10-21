@@ -49,3 +49,9 @@ Eigen::MatrixXd pairwise_dist(const Eigen::MatrixXd &particles)
   }
   return dists;
 }
+
+Eigen::MatrixXd rbf(const Eigen::MatrixXd &particles, const double &sigma)
+{
+  Eigen::MatrixXd pdists = pairwise_dist(particles);
+  return (-pdists / (2 * sigma * sigma)).array().exp();
+}

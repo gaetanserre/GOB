@@ -8,23 +8,15 @@
 #include <unsupported/Eigen/KroneckerProduct>
 #include <Eigen/Dense>
 
-Eigen::MatrixXd RKHS::rbf(const Eigen::MatrixXd &particles)
-{
-  Eigen::MatrixXd pdists = pairwise_dist(particles);
-  return (-pdists / (2 * this->sigma * this->sigma)).array().exp();
-}
-
 Eigen::MatrixXd RKHS::compute_noise(const Eigen::MatrixXd &particles)
 {
-  Eigen::MatrixXd K = rbf(particles);
-  print_matrix(K);
-  int d = this->bounds.size();
+  Eigen::MatrixXd K = rbf(particles, this->sigma);
+  int d = particles.cols();
   Eigen::MatrixXd K_kron = Eigen::kroneckerProduct(K, Eigen::MatrixXd::Identity(d, d));
-  print_matrix(K_kron);
-  Eigen::MatrixXd K_inv = K_kron.inverse();
-  print_matrix(K_inv);
-  print_matrix(K_kron * K_inv);
-  return Eigen::MatrixXd::Zero(n_particles, d);
+  Eigen::MatrixXd K_inv = K_kron.llt().solve(Eigen::MatrixXd::Identity(K_kron.rows(), K_kron.cols()));
+  dyn_vector alphas_tmp = normal_random_variable(K_inv, &this->re)();
+  Eigen::MatrixXd alphas = alphas_tmp.reshaped(particles.rows(), d);
+  return K * alphas;
 }
 
 dynamic RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
@@ -39,7 +31,7 @@ dynamic RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const function<
     drift.row(i) = -(particles.row(i) - vf.transpose());
   }
 
-  dyn_vector stddev = Eigen::VectorXd::Zero(particles.rows());
+  dyn_vector stddev = Eigen::VectorXd::Ones(particles.rows());
   Eigen::MatrixXd noise = zero_noise(particles.rows(), this->bounds.size());
-  return {drift, stddev, this->compute_noise(particles)};
+  return {drift + this->epsilon * this->compute_noise(particles), stddev, noise};
 }
