@@ -13,7 +13,7 @@ public:
       int iter = 100,
       double dt = 0.01,
       int k = 10000,
-      double sigma = 1e-2,
+      double sigma = 0.1,
       double alpha = 0.99,
       int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {

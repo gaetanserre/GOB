@@ -185,7 +185,7 @@ cdef class SBS:
     int iter=1000,
     double dt=0.01,
     int k=10_000,
-    double sigma=0.01,
+    double sigma=0.1,
     double alpha=0.99,
     int batch_size=0
   ):
