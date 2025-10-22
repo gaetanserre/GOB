@@ -43,7 +43,7 @@ cython --cplus -3 $pkg_name.pyx -o $pkg_name.cc
 
 
 if [ ! -f include/libcmaes/cmaes_export.h ]; then
-  git clone https://github.com/CMA-ES/libcmaes
+  git clone https://github.com/gaetanserre/libcmaes.git
   cd libcmaes
   mkdir build
   cd build

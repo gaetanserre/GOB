@@ -89,7 +89,7 @@ class OptBuild(build_ext):
         os.system(
             f"cd {cython_src_dir} "
             "&& rm -rf libcmaes "
-            "&& git clone https://github.com/CMA-ES/libcmaes "
+            "&& git clone https://github.com/gaetanserre/libcmaes.git "
             "&& cd libcmaes "
             f"&& {mkdir('build')} "
             "&& cd build "
