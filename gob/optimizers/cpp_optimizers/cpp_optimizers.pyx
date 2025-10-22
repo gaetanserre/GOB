@@ -124,6 +124,7 @@ cdef extern from "include/optimizers/particles/SBS_RKHS.hh":
       double dt,
       int k,
       double sigma,
+      double sigma2,
       double alpha,
       double theta,
       double common_noise_sigma,
@@ -362,13 +363,14 @@ cdef class SBS_RKHS:
     int iter=100,
     double dt=0.01,
     int k=10_000,
-    double sigma=1,
+    double sigma=0.1,
+    double sigma2=1,
     double alpha=0.99,
     double theta=1,
     double common_noise_sigma=0,
     int batch_size=0
   ):
-    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma, alpha, theta, common_noise_sigma, batch_size)
+    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma, sigma2, alpha, theta, common_noise_sigma, batch_size)
   
   def minimize(self, f):
     py_init()

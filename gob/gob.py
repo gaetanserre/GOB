@@ -10,7 +10,7 @@ import gob.metrics as gm
 
 from .benchmarks.create_bounds import create_bounds
 
-from .utils import print_table_by_metric
+from .utils import print_table_by_metric_latex, print_table_by_metric
 from .utils import print_competitive_ratios
 from .utils import print_blue, print_dark_green
 
@@ -19,30 +19,28 @@ from .benchmarks import PyGKLS
 
 class GOB:
     """
-    Global Optimization Benchmarks.
+    Global Optimization Benchmark.
+
+    Parameters
+    ----------
+    optimizers : List tuple(str | class, dict) | List str | List Object
+        The optimizers to use. A tuple is (name | class, dict of keyword arguments).
+
+    benchmarks : List str | Object
+        The benchmarks to use.
+
+    metrics : List str | Object
+        The metrics to use.
+
+    bounds : array-like of shape (n_benchmark, n_variables, 2)
+        The bounds of the search space.
+
+    options : dict of keyword arguments for the metrics
+        {name: dict of keyword arguments}
     """
 
     def __init__(self, optimizers, benchmarks, metrics, bounds=None, options={}):
-        """
-        Initialize the benchmarking tool.
 
-        Parameters
-        ----------
-        optimizers : List tuple(str | class, dict) | List str | List Object
-            The optimizers to use. A tuple is (name | class, dict of keyword arguments).
-
-        benchmarks : List str | Object
-            The benchmarks to use.
-
-        metrics : List str | Object
-            The metrics to use.
-
-        bounds : array-like of shape (n_benchmark, n_variables, 2)
-            The bounds of the search space.
-
-        options : dict of keyword arguments for the metrics
-            {name: dict of keyword arguments}
-        """
         if bounds is None:
             bounds = create_bounds(len(benchmarks), -1, 1, 2)
 
@@ -222,7 +220,7 @@ class GOB:
         else:
             return name
 
-    def run(self, n_runs=1, verbose=0):
+    def run(self, n_runs=1, verbose=0, latex_table=False):
         """
         Run the benchmark.
 
@@ -232,6 +230,8 @@ class GOB:
             The number of runs to perform.
         verbose : int
             The verbosity level.
+        latex_table : bool
+            Whether to print the results in LaTeX table format.
         """
         res_dict = {}
         min_dict = {}
@@ -268,6 +268,9 @@ class GOB:
             res_dict[str(benchmark)] = bench_dict
             min_dict[str(benchmark)] = benchmark.min
         if verbose:
-            print_table_by_metric(res_dict)
+            if latex_table:
+                print_table_by_metric_latex(res_dict)
+            else:
+                print_table_by_metric(res_dict)
             print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
         return res_dict
