@@ -43,6 +43,7 @@ class SBS_RKHS(Optimizer):
         dt=0.01,
         k=10_000,
         sigma=0.1,
+        sigma2=0.1,
         alpha=0.99,
         theta=1,
         common_noise_sigma=0,
@@ -50,6 +51,8 @@ class SBS_RKHS(Optimizer):
         verbose=False,
     ):
         super().__init__("SBS-RKHS", bounds)
+        if callable(sigma2):
+            sigma2 = sigma2()
         self.c_opt = C_SBS_RKHS(
             bounds,
             n_particles,
@@ -57,6 +60,7 @@ class SBS_RKHS(Optimizer):
             dt,
             k,
             sigma,
+            sigma2,
             alpha,
             theta,
             common_noise_sigma,

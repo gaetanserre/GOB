@@ -37,7 +37,15 @@ dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const funct
   }
   Eigen::MatrixXd kernel;
   Eigen::MatrixXd kernel_grad = this->rbf_grad(particles, &kernel);
-  Eigen::MatrixXd noise = this->compute_noise(particles, kernel);
+
+  Eigen::MatrixXd noise;
+  if (this->sigma == this->sigma2)
+    noise = this->compute_noise(particles, kernel);
+  else
+  {
+    Eigen::MatrixXd kernel2 = rbf(particles, this->sigma2);
+    noise = this->compute_noise(particles, kernel2);
+  }
 
   for (int i = 0; i < particles.rows(); i++)
   {
