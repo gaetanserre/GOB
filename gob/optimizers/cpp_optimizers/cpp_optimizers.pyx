@@ -115,17 +115,18 @@ cdef extern from "include/optimizers/particles/PSO.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/optimizers/particles/RKHS.hh":
-  cdef cppclass CRKHS "RKHS":
-    CRKHS(
+cdef extern from "include/optimizers/particles/SBS_RKHS.hh":
+  cdef cppclass CSBS_RKHS "SBS_RKHS":
+    CSBS_RKHS(
       vector[vector[double]] bounds,
       int n_particles,
       int iter,
       double dt,
-      double beta,
+      int k,
       double sigma,
-      double epsilon,
       double alpha,
+      double theta,
+      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -202,7 +203,7 @@ cdef class SBS:
     self,
     bounds,
     int n_particles=200,
-    int iter=1000,
+    int iter=100,
     double dt=0.01,
     int k=10_000,
     double sigma=0.1,
@@ -230,7 +231,7 @@ cdef class CBO:
     self,
     bounds,
     int n_particles=200,
-    int iter=1000,
+    int iter=100,
     double dt=0.01,
     double lam=1,
     double epsilon=1e-2,
@@ -332,7 +333,7 @@ cdef class PSO:
     self,
     bounds,
     int n_particles=200,
-    int iter=1000,
+    int iter=100,
     double dt=0.01,
     double omega=0.7,
     double c2=2.0,
@@ -351,26 +352,24 @@ cdef class PSO:
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
-  
-  def __del__(self):
-    del self.thisptr
 
-cdef class RKHS:
-  cdef CRKHS *thisptr
+cdef class SBS_RKHS:
+  cdef CSBS_RKHS *thisptr
   def __cinit__(
     self,
     bounds,
     int n_particles=200,
-    int iter=1000,
+    int iter=100,
     double dt=0.01,
-    double beta=1e5,
+    int k=10_000,
     double sigma=1,
-    double epsilon=0.5,
-    alpha=1,
+    double alpha=0.99,
+    double theta=1,
+    double common_noise_sigma=0,
     int batch_size=0
   ):
-    self.thisptr = new CRKHS(bounds, n_particles, iter, dt, beta, sigma, epsilon, alpha, batch_size)
-
+    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma, alpha, theta, common_noise_sigma, batch_size)
+  
   def minimize(self, f):
     py_init()
     cdef PyObject* pyob_ptr = <PyObject*>f

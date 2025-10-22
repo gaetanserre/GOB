@@ -12,7 +12,15 @@ bounds = create_bounds(2, -99, 99)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-opt = RKHS(bounds)
+n_particles = 500
+iter = 300
+sigma = 1 / n_particles**2
+
+opt = SBS_RKHS(bounds, n_particles=n_particles, iter=iter, sigma=sigma)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = SBS(bounds, n_particles=n_particles, iter=iter, sigma=sigma)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
