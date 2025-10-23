@@ -11,7 +11,7 @@ if __name__ == "__main__":
             benchmarks.append(obj())
             bounds.append(benchmarks[-1].visual_bounds)
 
-    n_particles = 500
+    n_particles = 300
     iter = 300
     sigma = 1 / n_particles**2
     thetas = np.linspace(1 / 4, 2, 6)
@@ -28,8 +28,8 @@ if __name__ == "__main__":
 
     gob = GOB(
         optimizers,
-        ["Rastrigin"],
+        benchmarks,
         ["Proportion"],
-        bounds=[gb.create_bounds(2, -5.12, 5.12)],
+        bounds=bounds,
     )
-    print(gob.run(n_runs=10, verbose=1, latex_table=True))
+    print(gob.run(n_runs=20, verbose=1, latex_table=True))

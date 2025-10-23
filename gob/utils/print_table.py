@@ -131,7 +131,8 @@ def print_table_by_metric_latex(res_dict):
     print("")
     for metric_name in metric_names:
         print_purple(f"Results for {metric_name}:")
-        tab = ColorTable(["Optimizer"] + list(res_dict.keys()), theme=Themes.LAVENDER)
+        tab = ColorTable(theme=Themes.LAVENDER)
+        tab.add_column("Benchmark", list(res_dict.keys()))
         names_opt = list(list(res_dict.values())[0].keys())
         for name_opt in names_opt:
             score = []
@@ -158,7 +159,7 @@ def print_table_by_metric_latex(res_dict):
                     score.append(
                         f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
                     )
-            tab.add_row([name_opt] + score)
+            tab.add_column(name_opt, score)
         print(tab.get_formatted_string("latex"))
 
 
@@ -175,7 +176,8 @@ def print_table_by_metric(res_dict):
     print("")
     for metric_name in metric_names:
         print_purple(f"Results for {metric_name}:")
-        tab = ColorTable(["Optimizer"] + list(res_dict.keys()), theme=Themes.LAVENDER)
+        tab = ColorTable(theme=Themes.LAVENDER)
+        tab.add_column("Benchmark", list(res_dict.keys()))
         names_opt = list(list(res_dict.values())[0].keys())
         for name_opt in names_opt:
             score = []
@@ -192,7 +194,7 @@ def print_table_by_metric(res_dict):
                     score.append(
                         f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
                     )
-            tab.add_row([name_opt] + score)
+            tab.add_column(name_opt, score)
         print(tab)
 
 
