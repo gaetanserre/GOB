@@ -13,8 +13,7 @@ public:
       int iter = 100,
       double dt = 0.01,
       int k = 10000,
-      double sigma = 0.1,
-      double sigma2 = 0.1,
+      PyObject *sigma = nullptr,
       double alpha = 0.99,
       double theta = 1,
       double common_noise_sigma = 0,
@@ -22,7 +21,6 @@ public:
   {
     this->k = k;
     this->sigma = sigma;
-    this->sigma2 = sigma2;
     this->theta = theta;
   }
 
@@ -30,9 +28,9 @@ public:
 
 private:
   int k;
-  double sigma;
-  double sigma2;
+  PyObject *sigma;
   double theta;
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
   Eigen::MatrixXd compute_noise(const Eigen::MatrixXd &particles, const Eigen::MatrixXd &rbf_matrix);
+  double eval_sigma();
 };

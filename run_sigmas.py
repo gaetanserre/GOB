@@ -12,11 +12,10 @@ if __name__ == "__main__":
             benchmarks.append(obj())
             bounds.append(benchmarks[-1].visual_bounds)
 
-    n_particles = 500
+    n_particles = 300
     iter = 300
-    sigma = 1 / n_particles**2
     a = 50
-    sigma2 = lambda: invgamma.rvs(a=a, scale=a + 1)
+    sigma = lambda: invgamma.rvs(a=a, scale=a + 1)
     thetas = np.linspace(1 / 4, 2, 6)
     print(f"Thetas: {thetas}")
     optimizers = [
@@ -26,7 +25,6 @@ if __name__ == "__main__":
                 "n_particles": n_particles,
                 "iter": iter,
                 "sigma": sigma,
-                "sigma2": sigma2,
                 "theta": theta,
             },
         )

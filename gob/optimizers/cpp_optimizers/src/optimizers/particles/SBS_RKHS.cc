@@ -10,7 +10,7 @@
 
 Eigen::MatrixXd SBS_RKHS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf_matrix)
 {
-  *rbf_matrix = rbf(particles, this->sigma);
+  *rbf_matrix = rbf(particles, this->eval_sigma());
   Eigen::MatrixXd dxkxy = (particles.array().colwise() * rbf_matrix->colwise().sum().transpose().array()) - (*rbf_matrix * particles).array();
   return dxkxy;
 }
@@ -25,6 +25,28 @@ Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles, const 
   return rbf_matrix * alphas;
 }
 
+double SBS_RKHS::eval_sigma()
+{
+  if (this->sigma == nullptr)
+  {
+    throw runtime_error("Sigma function is not defined.");
+  }
+  PyObject *args = PyTuple_New(0);
+  PyObject *result = PyObject_CallObject(this->sigma, args);
+  double sigma_value = 0.0;
+  if (result)
+  {
+    sigma_value = PyFloat_AsDouble(result);
+    Py_DECREF(result);
+  }
+  else
+  {
+    PyErr_Print();
+  }
+  Py_DECREF(args);
+  return sigma_value;
+}
+
 dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
 {
 
@@ -37,15 +59,7 @@ dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const funct
   }
   Eigen::MatrixXd kernel;
   Eigen::MatrixXd kernel_grad = this->rbf_grad(particles, &kernel);
-
-  Eigen::MatrixXd noise;
-  if (this->sigma == this->sigma2)
-    noise = this->compute_noise(particles, kernel);
-  else
-  {
-    Eigen::MatrixXd kernel2 = rbf(particles, this->sigma2);
-    noise = this->compute_noise(particles, kernel2);
-  }
+  Eigen::MatrixXd noise = this->compute_noise(particles, kernel);
 
   for (int i = 0; i < particles.rows(); i++)
   {
