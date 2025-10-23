@@ -28,8 +28,8 @@ if __name__ == "__main__":
 
     gob = GOB(
         optimizers,
-        ["Square"],
+        ["Rastrigin"],
         ["Proportion"],
-        bounds=bounds,
+        bounds=[gb.create_bounds(2, -5.12, 5.12)],
     )
     print(gob.run(n_runs=10, verbose=1, latex_table=True))
