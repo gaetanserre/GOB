@@ -13,11 +13,11 @@ if __name__ == "__main__":
 
     n_particles = 300
     iter = 300
-    sigma = 1 / n_particles**2
+    sigma = lambda: 1 / n_particles**2
     thetas = np.linspace(1 / 4, 2, 6)
     print(f"Thetas: {thetas}")
     optimizers = [
-        ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma})
+        ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma()})
     ] + [
         (
             "SBS-RKHS",
