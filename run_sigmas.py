@@ -35,8 +35,8 @@ if __name__ == "__main__":
 
     gob = GOB(
         optimizers,
-        ["Rastrigin"],
+        benchmarks,
         ["Proportion"],
-        bounds=[gb.create_bounds(2, -5.12, 5.12)],
+        bounds=bounds,
     )
-    print(gob.run(n_runs=10, verbose=1, latex_table=True))
+    print(gob.run(n_runs=20, verbose=1, latex_table=True))
