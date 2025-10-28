@@ -91,33 +91,6 @@ def print_table_by_benchmark(res_dict):
         print(tab)
 
 
-def print_table_by_benchmark(res_dict):
-    """
-    Print the results of the optimization for each benchmark.
-
-    Parameters
-    ----------
-    res_dict : dict
-        The results of the optimization of the form {"Benchmark name": {"Optimizer name": {"Metric name": ...}}}
-    """
-    print("")
-    for benchmark_name, optim_res in res_dict.items():
-        print_purple(f"Results for {benchmark_name}:")
-        metric_names = list(list(optim_res.values())[0].keys())
-        tab = ColorTable(["Optimizer"] + metric_names, theme=Themes.LAVENDER)
-        for opt_name, metric_dict in optim_res.items():
-            score = []
-            for metric_name in metric_names:
-                if metric_name == "Approx":
-                    mean = transform_number(metric_dict[metric_name]["mean"])
-                    std = transform_number(metric_dict[metric_name]["std"])
-                    score.append(f"${mean} \\pm {std}$")
-                else:
-                    score.append(f"{metric_dict[metric_name]:.4f}")
-            tab.add_row([opt_name] + score)
-        print(tab)
-
-
 def print_table_by_metric_latex(res_dict):
     """
     Print the results of the optimization for each metric in LaTeX format.
