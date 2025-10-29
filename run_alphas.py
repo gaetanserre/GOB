@@ -83,6 +83,6 @@ if __name__ == "__main__":
         ["Proportion"],
         bounds=bounds,
     )
-    res_dict = gob.run(n_runs=20, verbose=1, latex_table=False)
+    res_dict = gob.run(n_runs=20, verbose=1, latex_table=True)
     print_avg_rank(res_dict)
     print(res_dict)
