@@ -60,9 +60,11 @@ if __name__ == "__main__":
 
     n_particles = 150
     iter = 300
+    dimension = 10
+    bounds = [augment_dimensions(b, dimension) for b in bounds]
     a = 50
     sigma = lambda: invgamma.rvs(a=a, scale=a + 1)
-    thetas = np.linspace(1 / 4, 2, 6)
+    thetas = sorted(list(np.linspace(1 / 4, 2, 6)) + [1])
     print(f"Thetas: {thetas}")
     optimizers = [
         ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": 1 / n_particles**2})

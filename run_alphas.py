@@ -59,6 +59,8 @@ if __name__ == "__main__":
 
     n_particles = 150
     iter = 300
+    dimension = 10
+    bounds = [augment_dimensions(b, dimension) for b in bounds]
     sigma = lambda: 1 / n_particles**2
     thetas = sorted(list(np.linspace(1 / 4, 2, 6)) + [1])
     print(f"Thetas: {thetas}")
