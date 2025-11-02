@@ -4,13 +4,14 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
 <link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="MLSL" href="gob.MLSL.html"><link rel="prev" title="ECP+TR" href="gob.ECP.html">
+        <link rel="prefetch" href="../../_static/logo.png" as="image">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
         <title>GD - GOB 0.0.3 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
-    <link rel="stylesheet" type="text/css" href="../../_static/style.css?v=85ea398f" />
+    <link rel="stylesheet" type="text/css" href="../../_static/style.css" />
     
     
 
@@ -182,6 +183,9 @@
     <div class="sidebar-container">
       
       <div class="sidebar-sticky"><a class="sidebar-brand" href="../../index.html">
+  <div class="sidebar-logo-container">
+    <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
+  </div>
   
   <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
   
@@ -284,7 +288,8 @@
 <p>The gradient descent optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">type bounds<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
+<dd class="field-odd"><p>ndarray</p>
+</dd>
 <dt class="field-even">param bounds<span class="colon">:</span></dt>
 <dd class="field-even"><p>The bounds of the search space.</p>
 </dd>
@@ -292,7 +297,8 @@
 <dd class="field-odd"><p>ndarray</p>
 </dd>
 <dt class="field-even">type n_step<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
+<dd class="field-even"><p>int</p>
+</dd>
 <dt class="field-odd">param n_step<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The number of steps to take.</p>
 </dd>
@@ -300,7 +306,8 @@
 <dd class="field-even"><p>int</p>
 </dd>
 <dt class="field-odd">type step_size<span class="colon">:</span></dt>
-<dd class="field-odd"><p></p></dd>
+<dd class="field-odd"><p>float</p>
+</dd>
 <dt class="field-even">param step_size<span class="colon">:</span></dt>
 <dd class="field-even"><p>The step size of the gradient</p>
 </dd>
@@ -308,7 +315,8 @@
 <dd class="field-odd"><p>float</p>
 </dd>
 <dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p></p></dd>
+<dd class="field-even"><p>bool</p>
+</dd>
 <dt class="field-odd">param verbose<span class="colon">:</span></dt>
 <dd class="field-odd"><p>Whether to print information about the optimization process.</p>
 </dd>
