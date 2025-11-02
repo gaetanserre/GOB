@@ -35,7 +35,8 @@ exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = "furo"
-html_favicon = "favicon.svg"
+html_favicon = "_static/favicon.svg"
+html_logo = "_static/logo.png"
 
 html_theme_options = {
     "footer_icons": [
@@ -52,7 +53,6 @@ html_theme_options = {
     ],
 }
 
-html_static_path = ["_static"]
 html_css_files = [
     "style.css",
 ]

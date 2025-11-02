@@ -5,6 +5,11 @@
 [![PyPI version](https://badge.fury.io/py/GOB.svg)](https://badge.fury.io/py/GOB)
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 
+<p align="center">
+  <img src="docs/_static/logo.png" alt="GOB Logo" width="250"/>
+</p>
+
+
 GOB is a collection of global optimization algorithms implemented in C++ and linked with Python. It also includes a set of analytical benchmark functions and a random function generator ([PyGKLS](https://github.com/gaetanserre/pyGKLS)) to test the performance of these algorithms.
 
 ### Algorithms
