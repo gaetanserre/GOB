@@ -45,11 +45,17 @@ class SBS_RKHS(Optimizer):
         sigma=lambda: 0.1,
         alpha=0.99,
         theta=1,
-        common_noise_sigma=0,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("SBS-RKHS", bounds)
+
+        if not callable(sigma):
+            sigma_value = sigma
+
+            def sigma():
+                return sigma_value
+
         self.c_opt = C_SBS_RKHS(
             bounds,
             n_particles,
@@ -59,7 +65,6 @@ class SBS_RKHS(Optimizer):
             sigma,
             alpha,
             theta,
-            common_noise_sigma,
             batch_size,
         )
         self.verbose = verbose

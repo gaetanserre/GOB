@@ -17,8 +17,7 @@ public:
       double beta = 1,
       double sigma = 5.1,
       double alpha = 1,
-      double common_noise_sigma = 0,
-      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, common_noise_sigma, batch_size, new LinearScheduler(&this->dt, alpha))
+      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
     this->lambda = lambda;
     this->epsilon = epsilon;

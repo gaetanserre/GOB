@@ -4,27 +4,26 @@
 
 #include "optimizers/particles/particles_optimizer.hh"
 
-class SBS : public Particles_Optimizer
+class Langevin : public Particles_Optimizer
 {
 public:
-  SBS(
+  Langevin(
       vec_bounds bounds,
       int n_particles = 200,
       int iter = 100,
-      double dt = 0.01,
+      double dt = 0.1,
       int k = 10000,
-      double sigma = 0.1,
-      double alpha = 0.99,
+      double beta = 0.5,
+      double alpha = 1,
       int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
     this->k = k;
-    this->sigma = sigma;
+    this->beta = beta;
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 
 private:
   int k;
-  double sigma;
-  Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
+  double beta;
 };

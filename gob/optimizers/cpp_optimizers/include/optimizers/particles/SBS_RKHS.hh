@@ -16,8 +16,7 @@ public:
       PyObject *sigma = nullptr,
       double alpha = 0.99,
       double theta = 1,
-      double common_noise_sigma = 0,
-      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, common_noise_sigma, batch_size, new LinearScheduler(&this->dt, alpha))
+      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
     this->k = k;
     this->sigma = sigma;

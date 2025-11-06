@@ -16,11 +16,15 @@ n_particles = 500
 iter = 300
 sigma = 1 / n_particles**2
 
-opt = SBS_RKHS(bounds, n_particles=n_particles, iter=iter, sigma=sigma)
+""" opt = SBS_RKHS(bounds=bounds)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}") """
+
+opt = SBS(bounds=bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
-opt = SBS(bounds, n_particles=n_particles, iter=iter, sigma=sigma)
+opt = Langevin(bounds=bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 

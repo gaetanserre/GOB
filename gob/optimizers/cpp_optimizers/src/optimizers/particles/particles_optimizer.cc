@@ -9,14 +9,11 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
   vector<double> evals((*particles).rows());
   dynamic dyn = this->compute_dynamics(*particles, f, &evals);
 
-  dyn_vector common_noise = dyn_vector::Zero(particles->cols());
-  if (this->common_noise_sigma > 0)
-    common_noise = normal_random_vector(this->re, particles->cols(), 0, this->common_noise_sigma);
   for (int j = 0; j < (*particles).rows(); j++)
   {
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
-    particles->row(j) += dyn.drift.row(j) * this->dt + sqrt(2 * this->dt) * (dyn.stddev[j] * dyn.noise.row(j) + common_noise.transpose());
+    particles->row(j) += dyn.drift.row(j) * this->dt + sqrt(2 * this->dt) * (dyn.stddev[j] * dyn.noise.row(j));
     particles->row(j) = clip_vector(particles->row(j), this->bounds);
   }
 }
