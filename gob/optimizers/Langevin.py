@@ -1,14 +1,14 @@
 #
-# Created in 2025 by Gaëtan Serré
+# Created in 2024 by Gaëtan Serré
 #
 
 from .optimizer import Optimizer
-from .cpp_optimizers import PSO as C_PSO
+from .cpp_optimizers import Langevin as C_Langevin
 
 
-class PSO(Optimizer):
+class Langevin(Optimizer):
     """
-    Interface for the *social only* PSO optimizer.
+    Interface for the Langevin optimizer.
 
     Parameters
     ----------
@@ -20,12 +20,10 @@ class PSO(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    omega : float
-        The inertia weight.
-    c2 : float
-        The cognitive coefficient.
+    k : list
+        The kappa exponent.
     beta : float
-        The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).
+        The inverse temperature.
     alpha : float
         The coefficient to decrease the step size.
     batch_size : int
@@ -39,18 +37,17 @@ class PSO(Optimizer):
         self,
         bounds,
         n_particles=200,
-        iter=1000,
-        dt=0.01,
-        omega=0.7,
-        c2=2,
-        beta=1e5,
+        iter=100,
+        dt=0.1,
+        k=10_000,
+        beta=0.5,
         alpha=1,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("PSO", bounds)
-        self.c_opt = C_PSO(
-            bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size
+        super().__init__("Langevin", bounds)
+        self.c_opt = C_Langevin(
+            bounds, n_particles, iter, dt, k, beta, alpha, batch_size
         )
         self.verbose = verbose
 

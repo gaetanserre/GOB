@@ -55,17 +55,3 @@ extern dyn_vector sub_vector(dyn_vector v, const unsigned int &start, const unsi
 extern bool Bernoulli(mt19937_64 &re, double p);
 
 extern dyn_vector clip_vector(dyn_vector x, vec_bounds &bounds);
-
-struct normal_random_variable
-{
-  // Constructeurs
-  normal_random_variable(const Eigen::MatrixXd &covar, std::mt19937_64 *re_ptr);
-  normal_random_variable(const dyn_vector &mean, const Eigen::MatrixXd &covar, std::mt19937_64 *re_ptr);
-
-  // Opérateur de génération
-  dyn_vector operator()() const;
-
-  dyn_vector mean;
-  Eigen::MatrixXd transform;
-  std::mt19937_64 *re_ptr;
-};

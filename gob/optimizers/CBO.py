@@ -48,7 +48,6 @@ class CBO(Optimizer):
         beta=1,
         sigma=5.1,
         alpha=1,
-        common_noise_sigma=0.0,
         batch_size=0,
         verbose=False,
     ):
@@ -63,7 +62,6 @@ class CBO(Optimizer):
             beta,
             sigma,
             alpha,
-            common_noise_sigma,
             batch_size,
         )
         self.verbose = verbose

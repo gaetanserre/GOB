@@ -6,6 +6,7 @@
 #include "optimizers/particles/noise.hh"
 #include "optimizers/particles/particles_utils.hh"
 #include <unsupported/Eigen/KroneckerProduct>
+#include <unsupported/Eigen/MatrixFunctions>
 #include <Eigen/Dense>
 
 Eigen::MatrixXd SBS_RKHS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf_matrix)
@@ -18,11 +19,11 @@ Eigen::MatrixXd SBS_RKHS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::Matr
 Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles, const Eigen::MatrixXd &rbf_matrix)
 {
   int d = particles.cols();
-  Eigen::MatrixXd K_tmp = rbf_matrix.llt().solve(Eigen::MatrixXd::Identity(rbf_matrix.rows(), rbf_matrix.cols()));
-  Eigen::MatrixXd K_inv = Eigen::kroneckerProduct(K_tmp, Eigen::MatrixXd::Identity(d, d)) / particles.rows();
-  dyn_vector alphas_tmp = normal_random_variable(K_inv, &this->re)();
+  Eigen::MatrixXd K = rbf_matrix.sqrt();
+  Eigen::MatrixXd K_kron = Eigen::kroneckerProduct(K, Eigen::MatrixXd::Identity(d, d)) / particles.rows();
+  dyn_vector alphas_tmp = normal_random_vector(this->re, K_kron.rows(), 0, 1);
   Eigen::MatrixXd alphas = Eigen::Map<Eigen::MatrixXd>(alphas_tmp.data(), particles.rows(), d);
-  return rbf_matrix * alphas;
+  return alphas;
 }
 
 double SBS_RKHS::eval_sigma()

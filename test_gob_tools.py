@@ -19,9 +19,8 @@ if __name__ == "__main__":
     benchmarks.append(pygkls)
     bounds.append(create_bounds(2, -99, 99))
 
-    common_noise_sigma = 300
     gob = GOB(
-        [("CBO", {"common_noise_sigma": common_noise_sigma}), "CBO"],
+        ["SBS", "CBO"],
         benchmarks[:3] + ["Square"],
         ["Proportion"],
         bounds=bounds,

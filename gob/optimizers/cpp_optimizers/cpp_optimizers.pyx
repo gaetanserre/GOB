@@ -46,7 +46,6 @@ cdef extern from "include/optimizers/particles/SBS.hh":
       int k,
       double sigma,
       double alpha,
-      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -64,7 +63,6 @@ cdef extern from "include/optimizers/particles/CBO.hh":
       double beta,
       double sigma,
       double alpha,
-      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -109,7 +107,6 @@ cdef extern from "include/optimizers/particles/PSO.hh":
       double c2,
       double beta,
       double alpha,
-      double common_noise_sigma,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -126,7 +123,21 @@ cdef extern from "include/optimizers/particles/SBS_RKHS.hh":
       PyObject* sigma,
       double alpha,
       double theta,
-      double common_noise_sigma,
+      int batch_size
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/Langevin.hh":
+  cdef cppclass CLangevin "Langevin":
+    CLangevin(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      int k,
+      double beta,
+      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -208,10 +219,9 @@ cdef class SBS:
     int k=10_000,
     double sigma=0.1,
     double alpha=0.99,
-    double common_noise_sigma=0,
     int batch_size=0
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, common_noise_sigma, batch_size)
+    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -238,10 +248,9 @@ cdef class CBO:
     double beta=1,
     double sigma=5.1,
     double alpha=1,
-    double common_noise_sigma = 0,
     int batch_size=0
   ):
-    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, common_noise_sigma, batch_size)
+    self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -339,10 +348,9 @@ cdef class PSO:
     double c2=2.0,
     double beta=1e5,
     double alpha=1,
-    double common_noise_sigma=0,
     int batch_size=0
   ):
-    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, common_noise_sigma, batch_size)
+    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -365,11 +373,37 @@ cdef class SBS_RKHS:
     sigma=lambda: 0.1,
     double alpha=0.99,
     double theta=1,
-    double common_noise_sigma=0,
     int batch_size=0
   ):
     cdef PyObject* sigma_pyobj = <PyObject*>sigma
-    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma_pyobj, alpha, theta, common_noise_sigma, batch_size)
+    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma_pyobj, alpha, theta, batch_size)
+  
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+  
+  def __del__(self):
+    del self.thisptr
+    
+cdef class Langevin:
+  cdef CLangevin *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles=200,
+    int iter=100,
+    double dt=0.1,
+    int k=10_000,
+    beta=0.5,
+    double alpha=1,
+    int batch_size=0
+  ):
+    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, k, beta, alpha, batch_size)
   
   def minimize(self, f):
     py_init()
