@@ -13,7 +13,7 @@ public:
       int iter = 100,
       double dt = 0.01,
       int k = 10000,
-      PyObject *sigma = nullptr,
+      double sigma = 0.1,
       double alpha = 0.99,
       double theta = 1,
       int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
@@ -27,9 +27,8 @@ public:
 
 private:
   int k;
-  PyObject *sigma;
+  double sigma;
   double theta;
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
   Eigen::MatrixXd compute_noise(const Eigen::MatrixXd &particles, const Eigen::MatrixXd &rbf_matrix);
-  double eval_sigma();
 };
