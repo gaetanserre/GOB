@@ -11,7 +11,7 @@
 
 Eigen::MatrixXd SBS_RKHS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf_matrix)
 {
-  *rbf_matrix = rbf(particles, this->eval_sigma());
+  *rbf_matrix = rbf(particles, this->sigma);
   Eigen::MatrixXd dxkxy = (particles.array().colwise() * rbf_matrix->colwise().sum().transpose().array()) - (*rbf_matrix * particles).array();
   return dxkxy;
 }
@@ -19,33 +19,18 @@ Eigen::MatrixXd SBS_RKHS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::Matr
 Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles, const Eigen::MatrixXd &rbf_matrix)
 {
   int d = particles.cols();
-  Eigen::MatrixXd K = rbf_matrix.sqrt();
-  Eigen::MatrixXd K_kron = Eigen::kroneckerProduct(K, Eigen::MatrixXd::Identity(d, d)) / particles.rows();
-  dyn_vector alphas_tmp = normal_random_vector(this->re, K_kron.rows(), 0, 1);
+
+  // Compute the square root of the RBF matrix
+  Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(rbf_matrix);
+
+  // Ensure positive semi-definiteness
+  auto D = es.eigenvalues().cwiseMax(0);
+  Eigen::MatrixXd K_sqrt = es.eigenvectors() * D.cwiseSqrt().asDiagonal() * es.eigenvectors().transpose();
+  Eigen::MatrixXd K_sqrt_kron = Eigen::kroneckerProduct(K_sqrt, Eigen::MatrixXd::Identity(d, d));
+
+  dyn_vector alphas_tmp = (K_sqrt_kron / particles.rows()) * normal_random_vector(this->re, K_sqrt_kron.rows(), 0, 1);
   Eigen::MatrixXd alphas = Eigen::Map<Eigen::MatrixXd>(alphas_tmp.data(), particles.rows(), d);
   return alphas;
-}
-
-double SBS_RKHS::eval_sigma()
-{
-  if (this->sigma == nullptr)
-  {
-    throw runtime_error("Sigma function is not defined.");
-  }
-  PyObject *args = PyTuple_New(0);
-  PyObject *result = PyObject_CallObject(this->sigma, args);
-  double sigma_value = 0.0;
-  if (result)
-  {
-    sigma_value = PyFloat_AsDouble(result);
-    Py_DECREF(result);
-  }
-  else
-  {
-    PyErr_Print();
-  }
-  Py_DECREF(args);
-  return sigma_value;
 }
 
 dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)

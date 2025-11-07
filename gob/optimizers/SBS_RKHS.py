@@ -42,19 +42,13 @@ class SBS_RKHS(Optimizer):
         iter=100,
         dt=0.01,
         k=10_000,
-        sigma=lambda: 0.1,
+        sigma=0.1,
         alpha=0.99,
         theta=1,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("SBS-RKHS", bounds)
-
-        if not callable(sigma):
-            sigma_value = sigma
-
-            def sigma():
-                return sigma_value
 
         self.c_opt = C_SBS_RKHS(
             bounds,
