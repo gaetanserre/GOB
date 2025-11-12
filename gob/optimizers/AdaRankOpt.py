@@ -24,6 +24,8 @@ class AdaRankOpt(Optimizer):
         The trust region radius.
     bobyqa_eval : int
         The number of evaluations for the BOBYQA optimizer.
+    it_lim : int
+        The iteration limit for the BOBYQA optimizer.
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -36,6 +38,7 @@ class AdaRankOpt(Optimizer):
         max_degree=15,
         trust_region_radius=0.1,
         bobyqa_eval=20,
+        it_lim=100,
         verbose=False,
     ):
         super().__init__("AdaRankOpt", bounds)
@@ -53,6 +56,7 @@ class AdaRankOpt(Optimizer):
             max_degree,
             trust_region_radius,
             bobyqa_eval,
+            it_lim,
         )
 
         self.verbose = verbose

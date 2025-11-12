@@ -143,6 +143,20 @@ cdef extern from "include/optimizers/particles/Langevin.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
+cdef extern from "include/optimizers/particles/common-noise/Langevin.hh":
+  cdef cppclass CCN_Langevin "CN_Langevin":
+    CCN_Langevin(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      int k,
+      double beta,
+      double alpha
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
 # Python interface
 
 cdef class PRS:
@@ -416,3 +430,26 @@ cdef class Langevin:
   
   def __del__(self):
     del self.thisptr
+
+cdef class CN_Langevin:
+  cdef CCN_Langevin *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    int k,
+    beta,
+    double alpha
+  ):
+    self.thisptr = new CCN_Langevin(bounds, n_particles, iter, dt, k, beta, alpha)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)

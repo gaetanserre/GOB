@@ -10,7 +10,6 @@
 struct dynamic
 {
   Eigen::MatrixXd drift;
-  dyn_vector stddev;
   Eigen::MatrixXd noise;
 };
 
@@ -19,11 +18,12 @@ class Particles_Optimizer : public Optimizer
 public:
   Particles_Optimizer(
       vec_bounds bounds,
-      int n_particles = 200,
-      int iter = 100,
-      double dt = 0.01,
-      int batch_size = 0,
-      Scheduler *sched = new Scheduler()) : Optimizer(bounds, "Particles_Optimizer")
+      int n_particles,
+      int iter,
+      double dt,
+      int batch_size,
+      Scheduler *sched = new Scheduler(),
+      std::string name = "Particles Optimizer") : Optimizer(bounds, name)
   {
     this->n_particles = n_particles;
     this->iter = iter;
@@ -39,7 +39,6 @@ public:
 
   virtual result_eigen minimize(function<double(dyn_vector x)> f);
 
-protected:
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals) = 0;
   int n_particles;
   int iter;

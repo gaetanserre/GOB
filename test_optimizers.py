@@ -21,19 +21,17 @@ verbose = False
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-opt = SBS(
+""" opt = SBS(
     bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=verbose
 )
 res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}")
-
-opt = SBS_RKHS(
-    bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=verbose
-)
-res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}")
+print(f"Results for {opt}: {res[1]}") """
 
 opt = Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CN_Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 

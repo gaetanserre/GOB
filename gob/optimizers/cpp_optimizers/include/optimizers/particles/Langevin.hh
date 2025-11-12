@@ -2,6 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/particles/particles_optimizer.hh"
 
 class Langevin : public Particles_Optimizer
@@ -15,7 +17,7 @@ public:
       int k,
       double beta,
       double alpha,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha), "Langevin")
   {
     this->k = k;
     this->beta = beta;

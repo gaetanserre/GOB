@@ -34,7 +34,6 @@ public:
     this->has_stop_criterion = true;
   }
 
-protected:
   vec_bounds bounds;
   string name;
   mt19937_64 re;
