@@ -68,7 +68,7 @@ if __name__ == "__main__":
     dimension = 2
     bounds = [augment_dimensions(b, dimension) for b in bounds]
     a = 50
-    betas = sorted(list(np.linspace(1e-4, 1, 10)))
+    betas = np.linspace(1e-4, 1, 10)
     print(f"Betas: {betas}")
     optimizers = [
         (
