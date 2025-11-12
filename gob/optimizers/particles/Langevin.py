@@ -38,7 +38,7 @@ class Langevin(Optimizer):
         iter=100,
         dt=0.1,
         beta=0.5,
-        alpha=0.99,
+        alpha=1,
         batch_size=0,
         verbose=False,
     ):
