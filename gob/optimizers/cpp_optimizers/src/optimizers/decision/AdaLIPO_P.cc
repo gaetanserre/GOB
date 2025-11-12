@@ -62,7 +62,7 @@ namespace AdaLIPO_P_trust
   }
 }
 
-result_eigen AdaLIPO_P::minimize(function<double(dyn_vector x)> f)
+result_eigen AdaLIPO_P::minimize(function<double(dyn_vector)> f)
 {
   double k_hat = 0;
   vector<double> ratios;

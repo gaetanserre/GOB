@@ -67,7 +67,7 @@ namespace AdaRankOpt_trust
   }
 }
 
-result_eigen AdaRankOpt::minimize(function<double(dyn_vector x)> f)
+result_eigen AdaRankOpt::minimize(function<double(dyn_vector)> f)
 {
   int degree = 1;
 

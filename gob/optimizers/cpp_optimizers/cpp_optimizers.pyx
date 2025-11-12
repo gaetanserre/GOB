@@ -152,7 +152,11 @@ cdef extern from "include/optimizers/particles/common-noise/Langevin.hh":
       double dt,
       int k,
       double beta,
-      double alpha
+      double alpha,
+      double gamma,
+      double lambda_,
+      double delta,
+      int moment
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -386,7 +390,7 @@ cdef class SBS_RKHS:
     int iter,
     double dt,
     int k,
-    sigma,
+    double sigma,
     double alpha,
     int batch_size
   ):
@@ -440,10 +444,14 @@ cdef class CN_Langevin:
     int iter,
     double dt,
     int k,
-    beta,
-    double alpha
+    double beta,
+    double alpha,
+    double gamma,
+    double lambda_,
+    double delta,
+    int moment
   ):
-    self.thisptr = new CCN_Langevin(bounds, n_particles, iter, dt, k, beta, alpha)
+    self.thisptr = new CCN_Langevin(bounds, n_particles, iter, dt, k, beta, alpha, gamma, lambda_, delta, moment)
 
   def minimize(self, f):
     py_init()

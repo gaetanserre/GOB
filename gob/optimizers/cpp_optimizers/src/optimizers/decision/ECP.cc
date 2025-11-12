@@ -53,7 +53,7 @@ namespace ECP_trust
   }
 };
 
-result_eigen ECP::minimize(function<double(dyn_vector x)> f)
+result_eigen ECP::minimize(function<double(dyn_vector)> f)
 {
   int h1 = 1, h2 = 0;
 

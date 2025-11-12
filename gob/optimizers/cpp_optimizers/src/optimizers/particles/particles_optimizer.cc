@@ -9,7 +9,7 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
   vector<double> evals((*particles).rows());
   dynamic dyn = this->compute_dynamics(*particles, f, &evals);
 
-  for (int j = 0; j < (*particles).rows(); j++)
+  for (int j = 0; j < particles->rows(); j++)
   {
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
@@ -18,7 +18,7 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
   }
 }
 
-result_eigen Particles_Optimizer::minimize(function<double(dyn_vector x)> f)
+result_eigen Particles_Optimizer::minimize(function<double(dyn_vector)> f)
 {
   vector<double> all_evals;
   vector<dyn_vector> samples;

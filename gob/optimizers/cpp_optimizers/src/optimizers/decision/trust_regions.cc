@@ -19,7 +19,7 @@ bool check_in_ball(const CoverTree<Point> &cTree, const dyn_vector &x, const dou
   }
 }
 
-result_eigen TrustRegions::minimize(function<double(dyn_vector x)> f)
+result_eigen TrustRegions::minimize(function<double(dyn_vector)> f)
 {
   CoverTree<Point> cTree;
   vector<pair<dyn_vector, double>> samples;
