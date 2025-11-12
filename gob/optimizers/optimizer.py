@@ -65,7 +65,7 @@ class Optimizer:
         def f_(x):
             nonlocal i
             r = f(x)
-            print(f"{self.name} eval #{i} : {r}")
+            print(f"{self.name} eval #{i} at {x} : {r}")
             i += 1
             return r
 
