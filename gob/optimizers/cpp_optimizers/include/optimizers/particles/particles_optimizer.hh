@@ -37,7 +37,7 @@ public:
     delete sched;
   }
 
-  virtual result_eigen minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector)> f);
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals) = 0;
   int n_particles;

@@ -20,7 +20,7 @@ public:
     this->bobyqa_eval = bobyqa_eval;
   }
 
-  virtual result_eigen minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector)> f);
 
 private:
   int n_eval;

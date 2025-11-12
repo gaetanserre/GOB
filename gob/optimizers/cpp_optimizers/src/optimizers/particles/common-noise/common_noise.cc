@@ -3,52 +3,73 @@
  */
 
 #include "optimizers/particles/common-noise/common_noise.hh"
+#include "optimizers/particles/common-noise/common_noise_utils.hh"
 
-dynamic Common_Noise::m1_dynamic(const Eigen::MatrixXd &particles)
+common_dynamic Common_Noise::m1_dynamic(const Eigen::MatrixXd &particles, const int &idx)
 {
   int d = particles.cols();
-  dyn_vector noise = normal_random_vector(this->re, d, 0, 1);
-  Eigen::MatrixXd common_noise = Eigen::MatrixXd::Zero(particles.rows(), d);
-  for (int i = 0; i < particles.rows(); i++)
-  {
-    common_noise.row(i) = noise.transpose();
-  }
-  return {Eigen::MatrixXd::Zero(particles.rows(), d), common_noise};
+  return {dyn_vector::Zero(d), Eigen::MatrixXd::Ones(d, d)};
 }
 
-dynamic Common_Noise::m2_dynamic(const Eigen::MatrixXd &particles)
+common_dynamic Common_Noise::square_dynamic(const Eigen::MatrixXd &particles, const int &idx, auto func)
 {
   int d = particles.cols();
-  dyn_vector noise = normal_random_vector(this->re, d, 0, 1);
-  Eigen::MatrixXd common_noise = Eigen::MatrixXd::Zero(particles.rows(), d);
-  return {Eigen::MatrixXd::Zero(particles.rows(), d), common_noise};
+  dyn_vector drift = dyn_vector::Zero(d);
+  dyn_vector noise = dyn_vector::Zero(d);
+  for (int dim = 0; dim < d; dim++)
+  {
+    double moment = func(particles, dim);
+    drift(dim) = (particles(idx, dim) * (moment - 3 / 2)) / (4 * pow(this->lambda + moment, 2));
+    noise(dim) = particles(idx, dim) / (2 * (this->lambda + moment));
+  }
+  return {drift, noise.asDiagonal()};
+}
+
+common_dynamic Common_Noise::m2_dynamic(const Eigen::MatrixXd &particles, const int &idx)
+{
+  auto moment_2 = [](const Eigen::MatrixXd &p, const int &dim)
+  { return compute_moment(p, 2, dim); };
+  return square_dynamic(particles, idx, moment_2);
+}
+
+common_dynamic Common_Noise::var_dynamic(const Eigen::MatrixXd &particles, const int &idx)
+{
+  return square_dynamic(particles, idx, compute_variance);
 }
 
 void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples)
 {
   vector<double> evals((*particles).rows());
   dynamic dyn = this->base_opt->compute_dynamics(*particles, f, &evals);
+  dyn_vector common_noise = normal_random_vector(this->base_opt->re, particles->cols(), 0, 1);
 
-  dynamic common_dynamic;
-  if (this->noise_type == NoiseType::M1)
+  for (int j = 0; j < particles->rows(); j++)
   {
-    common_dynamic = this->m1_dynamic(*particles);
-  }
-  else if (this->noise_type == NoiseType::M2)
-  {
-    common_dynamic = this->m2_dynamic(*particles);
-  }
+    common_dynamic common_dynamic;
+    if (this->noise_type == NoiseType::M1)
+    {
+      common_dynamic = this->m1_dynamic(*particles, j);
+    }
+    else if (this->noise_type == NoiseType::M2)
+    {
+      common_dynamic = this->m2_dynamic(*particles, j);
+    }
+    else if (this->noise_type == NoiseType::VAR)
+    {
+      common_dynamic = this->var_dynamic(*particles, j);
+    }
 
-  for (int j = 0; j < (*particles).rows(); j++)
-  {
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
-    particles->row(j) += (dyn.drift.row(j) + common_dynamic.drift.row(j)) * this->base_opt->dt + sqrt(this->base_opt->dt) * (dyn.noise.row(j) + this->gamma * common_dynamic.noise.row(j));
+    particles->row(j) += this->base_opt->dt *
+                             (dyn.drift.row(j) + common_dynamic.drift.transpose()) +
+                         sqrt(this->base_opt->dt) *
+                             (dyn.noise.row(j) + this->gamma * (common_dynamic.noise * common_noise).transpose());
     particles->row(j) = clip_vector(particles->row(j), this->base_opt->bounds);
   }
 }
 
-result_eigen Common_Noise::minimize(function<double(dyn_vector x)> f)
+result_eigen Common_Noise::minimize(function<double(dyn_vector)> f)
 {
   vector<double> all_evals;
   vector<dyn_vector> samples;

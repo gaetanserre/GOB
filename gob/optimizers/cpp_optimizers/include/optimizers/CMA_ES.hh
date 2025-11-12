@@ -26,7 +26,7 @@ public:
     delete[] ubounds;
   }
 
-  virtual result_eigen minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector)> f);
 
 private:
   virtual void transform_bounds(vec_bounds bounds);

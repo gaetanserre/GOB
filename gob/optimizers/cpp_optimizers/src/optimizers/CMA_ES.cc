@@ -18,7 +18,7 @@ void CMA_ES::transform_bounds(vec_bounds bounds)
   }
 }
 
-result_eigen CMA_ES::minimize(function<double(dyn_vector x)> f)
+result_eigen CMA_ES::minimize(function<double(dyn_vector)> f)
 {
   if (this->m0.size() == 0)
   {

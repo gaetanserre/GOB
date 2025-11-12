@@ -26,6 +26,14 @@ class CN_Langevin(Optimizer):
         The inverse temperature.
     alpha : float
         The coefficient to decrease the step size.
+    gamma : float
+        The coefficient for the common noise.
+    lambda_ : float
+        The regularization parameter for the common noise.
+    delta : float
+        The parameter for the Bessel process.
+    moment : str
+        The type of moment used for the common noise ("M1" | "M2" | "VAR").
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -39,10 +47,29 @@ class CN_Langevin(Optimizer):
         k=10_000,
         beta=0.5,
         alpha=1,
+        gamma=1,
+        lambda_=0,
+        delta=2.1,
+        moment="M2",
         verbose=False,
     ):
         super().__init__("CN_Langevin", bounds)
-        self.c_opt = CCN_Langevin(bounds, n_particles, iter, dt, k, beta, alpha)
+
+        match moment:
+            case "M1":
+                moment = 0
+            case "M2":
+                moment = 1
+            case "VAR":
+                moment = 2
+            case _:
+                raise ValueError(
+                    'Invalid moment type. Choose from "M1", "M2", or "VAR".'
+                )
+
+        self.c_opt = CCN_Langevin(
+            bounds, n_particles, iter, dt, k, beta, alpha, gamma, lambda_, delta, moment
+        )
         self.verbose = verbose
 
     def minimize(self, f):

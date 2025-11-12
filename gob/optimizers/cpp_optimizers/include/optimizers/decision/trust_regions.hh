@@ -66,7 +66,7 @@ public:
     this->callback = callback;
   }
 
-  virtual result_eigen minimize(function<double(dyn_vector x)> f);
+  virtual result_eigen minimize(function<double(dyn_vector)> f);
 
 private:
   int n_eval;

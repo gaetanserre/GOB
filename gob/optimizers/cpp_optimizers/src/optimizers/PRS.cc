@@ -4,7 +4,7 @@
 
 #include "optimizers/PRS.hh"
 
-result_eigen PRS::minimize(function<double(dyn_vector x)> f)
+result_eigen PRS::minimize(function<double(dyn_vector)> f)
 {
   int n = this->bounds.size();
   double min;

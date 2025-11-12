@@ -24,7 +24,7 @@ public:
     // Py_Finalize();
   }
 
-  virtual result_eigen minimize(function<double(dyn_vector x)> f) = 0;
+  virtual result_eigen minimize(function<double(dyn_vector)> f) = 0;
 
   result py_minimize(PyObject *f);
 
