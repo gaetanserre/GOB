@@ -15,22 +15,25 @@ print(f"Results for {opt}: {res[1]}") """
 n_particles = 150
 iter = 300
 sigma = 1 / n_particles**2
+verbose = False
 
 """ opt = SBS_RKHS(bounds=bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-opt = SBS(bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=True)
-res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}")
-
-opt = SBS_RKHS(
-    bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=True
+opt = SBS(
+    bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=verbose
 )
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
-opt = Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=True)
+opt = SBS_RKHS(
+    bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=verbose
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 

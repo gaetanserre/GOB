@@ -10,11 +10,12 @@ class AdaRankOpt : public Optimizer
 public:
   AdaRankOpt(
       vec_bounds bounds,
-      int n_eval = 1000,
-      int max_trials = 800,
-      int max_degree = 80,
-      double trust_region_radius = 0.1,
-      int bobyqa_eval = 10) : Optimizer(bounds, "AdaRankOpt")
+      int n_eval,
+      int max_trials,
+      int max_degree,
+      double trust_region_radius,
+      int bobyqa_eval,
+      int it_lim) : Optimizer(bounds, "AdaRankOpt")
   {
     this->n_eval = n_eval;
     this->max_trials = max_trials;
@@ -25,7 +26,7 @@ public:
     this->param = new glp_smcp();
     glp_init_smcp(param);
     param->msg_lev = GLP_MSG_OFF;
-    param->it_lim = 100;
+    param->it_lim = it_lim;
   }
 
   ~AdaRankOpt()

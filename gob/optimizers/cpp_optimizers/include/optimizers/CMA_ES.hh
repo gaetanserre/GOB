@@ -10,8 +10,8 @@ public:
   CMA_ES(
       vec_bounds bounds,
       int n_eval,
-      std::vector<double> m0 = empty_vector(),
-      double sigma = 0.1) : Optimizer(bounds, "CMA-ES")
+      std::vector<double> m0,
+      double sigma) : Optimizer(bounds, "CMA-ES")
   {
     this->n_eval = n_eval;
     this->m0 = m0;

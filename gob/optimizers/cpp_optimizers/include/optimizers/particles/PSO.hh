@@ -9,14 +9,14 @@ class PSO : public Particles_Optimizer
 public:
   PSO(
       vec_bounds bounds,
-      int n_particles = 200,
-      int iter = 1000,
-      double dt = 0.01,
-      double omega = 0.7,
-      double c2 = 2.0,
-      double beta = 1e5,
-      double alpha = 1,
-      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
+      int n_particles,
+      int iter,
+      double dt,
+      double omega,
+      double c2,
+      double beta,
+      double alpha,
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
     this->omega = omega;
     this->c2 = c2;

@@ -7,7 +7,7 @@
 class PRS : public Optimizer
 {
 public:
-  PRS(vec_bounds bounds, int n_eval = 1000) : Optimizer(bounds, "PRS")
+  PRS(vec_bounds bounds, int n_eval) : Optimizer(bounds, "PRS")
   {
     this->n_eval = n_eval;
   }
