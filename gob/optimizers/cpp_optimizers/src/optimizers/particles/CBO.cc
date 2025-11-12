@@ -17,18 +17,16 @@ dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
   double f_vf = f(vf);
 
   Eigen::MatrixXd drift(particles.rows(), particles.cols());
-  dyn_vector stddev(particles.rows());
+  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
   for (int i = 0; i < particles.rows(); i++)
   {
     dyn_vector diff = (particles.row(i) - vf.transpose());
 
-    stddev[i] = diff.norm() * this->sigma;
+    noise.row(i) *= diff.norm() * this->sigma;
     drift.row(i) = -this->lambda * diff * smooth_heaviside((1.0 / this->epsilon) * ((*evals)[i] - f_vf));
   }
 
-  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
-
   this->beta = min(this->beta * 1.05, 100000.0);
 
-  return {drift, stddev, noise};
+  return {drift, noise};
 }

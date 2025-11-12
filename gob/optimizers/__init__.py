@@ -17,3 +17,4 @@ from .ECP import ECP
 from .PSO import PSO
 from .SBS_RKHS import SBS_RKHS
 from .Langevin import Langevin
+from .CN_Langevin import CN_Langevin

@@ -7,6 +7,9 @@ from gob.benchmarks import PyGKLS, create_bounds
 import inspect
 import gob.benchmarks as gb
 
+n_particles = 150
+iter = 300
+
 if __name__ == "__main__":
     pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND")
 
@@ -20,9 +23,12 @@ if __name__ == "__main__":
     bounds.append(create_bounds(2, -99, 99))
 
     gob = GOB(
-        ["SBS", "CBO"],
-        benchmarks[:3] + ["Square"],
+        [
+            ("Langevin", {"n_particles": n_particles, "iter": iter}),
+            ("CN_Langevin", {"n_particles": n_particles, "iter": iter}),
+        ],
+        benchmarks,
         ["Proportion"],
         bounds=bounds,
     )
-    gob.run(n_runs=1, verbose=1)
+    gob.run(n_runs=5, verbose=1)

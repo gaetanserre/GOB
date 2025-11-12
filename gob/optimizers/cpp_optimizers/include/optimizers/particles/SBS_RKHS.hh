@@ -15,7 +15,7 @@ public:
       int k,
       double sigma,
       double alpha,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha), "SBS_RKHS")
   {
     this->k = k;
     this->sigma = sigma;
