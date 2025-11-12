@@ -3,7 +3,7 @@
 #
 
 from bayes_opt import BayesianOptimization
-from .optimizer import Optimizer
+from ..optimizer import Optimizer
 import numpy as np
 
 

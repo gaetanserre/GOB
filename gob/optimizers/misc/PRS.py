@@ -2,8 +2,8 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import PRS as C_PRS
+from ..optimizer import Optimizer
+from ..cpp_optimizers import PRS as C_PRS
 
 
 class PRS(Optimizer):

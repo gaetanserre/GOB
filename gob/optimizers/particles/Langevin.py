@@ -2,13 +2,13 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import SBS as C_SBS
+from ..optimizer import Optimizer
+from ..cpp_optimizers import Langevin as C_Langevin
 
 
-class SBS(Optimizer):
+class Langevin(Optimizer):
     """
-    Interface for the SBS optimizer.
+    Interface for the Langevin optimizer.
 
     Parameters
     ----------
@@ -20,10 +20,8 @@ class SBS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : int
-        The kappa exponent.
-    sigma : float
-        The kernel bandwidth.
+    beta : float
+        The inverse temperature.
     alpha : float
         The coefficient to decrease the step size.
     batch_size : int
@@ -38,15 +36,14 @@ class SBS(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.01,
-        k=10_000,
-        sigma=0.1,
+        dt=0.1,
+        beta=0.5,
         alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
+        super().__init__("Langevin", bounds)
+        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):

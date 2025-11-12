@@ -2,8 +2,8 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import CMA_ES as C_CMA_ES
+from ..optimizer import Optimizer
+from ..cpp_optimizers import CMA_ES as C_CMA_ES
 
 
 class CMA_ES(Optimizer):

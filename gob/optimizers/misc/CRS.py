@@ -2,7 +2,7 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
+from ..optimizer import Optimizer
 
 import numpy as np
 import nlopt

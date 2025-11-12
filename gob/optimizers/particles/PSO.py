@@ -1,14 +1,14 @@
 #
-# Created in 2024 by Gaëtan Serré
+# Created in 2025 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import CBO as C_CBO
+from ..optimizer import Optimizer
+from ..cpp_optimizers import PSO as C_PSO
 
 
-class CBO(Optimizer):
+class PSO(Optimizer):
     """
-    Interface for the CBO optimizer.
+    Interface for the *social only* PSO optimizer.
 
     Parameters
     ----------
@@ -20,14 +20,12 @@ class CBO(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    lam : float
-        The attraction parameter.
-    epsilon : float
-        The smooth-heaviside parameter.
+    omega : float
+        The inertia weight.
+    c2 : float
+        The cognitive coefficient.
     beta : float
-        The inverse temperature.
-    sigma : float
-        The standard deviation of the Gaussian noise.
+        The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).
     alpha : float
         The coefficient to decrease the step size.
     batch_size : int
@@ -43,26 +41,16 @@ class CBO(Optimizer):
         n_particles=200,
         iter=1000,
         dt=0.01,
-        lam=1,
-        epsilon=1e-2,
-        beta=1,
-        sigma=5.1,
+        omega=0.7,
+        c2=2,
+        beta=1e5,
         alpha=1,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("CBO", bounds)
-        self.c_opt = C_CBO(
-            bounds,
-            n_particles,
-            iter,
-            dt,
-            lam,
-            epsilon,
-            beta,
-            sigma,
-            alpha,
-            batch_size,
+        super().__init__("PSO", bounds)
+        self.c_opt = C_PSO(
+            bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size
         )
         self.verbose = verbose
 

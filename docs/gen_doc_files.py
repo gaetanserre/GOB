@@ -42,12 +42,13 @@ if __name__ == "__main__":
     optimizers = inspect.getmembers(go, inspect.isclass)
     files = []
     for name, opt in optimizers:
+        dir_opt = Path(inspect.getsourcefile(opt)).parent.stem
         opt = opt([])
 
         file_content = (
             f"{opt}\n"
             f"{''.join(['='] * len(str(opt)))}\n\n"
-            f".. automodule:: gob.optimizers.{name}\n"
+            f".. automodule:: gob.optimizers.{dir_opt}.{name}\n"
             "   :members:\n"
             "   :show-inheritance:\n"
             "   :undoc-members:\n"

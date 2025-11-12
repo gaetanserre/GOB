@@ -2,13 +2,13 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import SBS_RKHS as C_SBS_RKHS
+from ..optimizer import Optimizer
+from ..cpp_optimizers import CBO as C_CBO
 
 
-class SBS_RKHS(Optimizer):
+class CBO(Optimizer):
     """
-    Interface for the SBS RKHS optimizer.
+    Interface for the CBO optimizer.
 
     Parameters
     ----------
@@ -20,14 +20,16 @@ class SBS_RKHS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : int
-        The kappa exponent.
+    lam : float
+        The attraction parameter.
+    epsilon : float
+        The smooth-heaviside parameter.
+    beta : float
+        The inverse temperature.
     sigma : float
-        The kernel bandwidth.
+        The standard deviation of the Gaussian noise.
     alpha : float
         The coefficient to decrease the step size.
-    theta : float
-        The regularization parameter for the RKHS-based noise.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -39,22 +41,25 @@ class SBS_RKHS(Optimizer):
         self,
         bounds,
         n_particles=200,
-        iter=100,
+        iter=1000,
         dt=0.01,
-        k=10_000,
-        sigma=0.1,
-        alpha=0.99,
+        lam=1,
+        epsilon=1e-2,
+        beta=1,
+        sigma=5.1,
+        alpha=1,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("SBS-RKHS", bounds)
-
-        self.c_opt = C_SBS_RKHS(
+        super().__init__("CBO", bounds)
+        self.c_opt = C_CBO(
             bounds,
             n_particles,
             iter,
             dt,
-            k,
+            lam,
+            epsilon,
+            beta,
             sigma,
             alpha,
             batch_size,

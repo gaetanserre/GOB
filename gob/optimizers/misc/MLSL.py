@@ -2,15 +2,15 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
+from ..optimizer import Optimizer
 
 import numpy as np
 import nlopt
 
 
-class Direct(Optimizer):
+class MLSL(Optimizer):
     """
-    Interface for the Direct optimizer.
+    Interface for the MLSL optimizer.
 
     Parameters
     ----------
@@ -19,14 +19,14 @@ class Direct(Optimizer):
     n_eval : int
         The maximum number of function evaluations.
     verbose : bool
-        Whether to print information about the optimization
+        Whether to print information about the optimization process.
     """
 
     def __init__(self, bounds, n_eval=1000, verbose=False):
-        super().__init__("Direct", bounds)
+        super().__init__("MLSL", bounds)
         self.n_eval = n_eval
         self.verbose = verbose
-        self.opt = nlopt.opt(nlopt.GN_DIRECT, len(self.bounds))
+        self.opt = nlopt.opt(nlopt.GN_MLSL, len(self.bounds))
 
     def minimize(self, f):
         def f_(x, grad):
@@ -39,11 +39,11 @@ class Direct(Optimizer):
 
         lb = self.bounds[:, 0]
         ub = self.bounds[:, 1]
-
         self.opt.set_min_objective(f_)
         self.opt.set_lower_bounds(lb)
         self.opt.set_upper_bounds(ub)
         self.opt.set_maxeval(self.n_eval)
+        self.opt.set_local_optimizer(nlopt.opt(nlopt.LN_COBYLA, len(self.bounds)))
 
         x = np.random.uniform(lb, ub)
         best = self.opt.optimize(x)
