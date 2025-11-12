@@ -13,7 +13,7 @@ double smooth_heaviside(double x)
 
 dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
 {
-  dyn_vector vf = compute_consensus(particles, f, evals, this->beta);
+  dyn_vector vf = clip_vector(compute_consensus(particles, f, evals, this->beta), this->bounds);
   double f_vf = f(vf);
 
   Eigen::MatrixXd drift(particles.rows(), particles.cols());
