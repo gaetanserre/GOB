@@ -20,7 +20,7 @@ class SBS_RKHS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : list
+    k : int
         The kappa exponent.
     sigma : float
         The kernel bandwidth.

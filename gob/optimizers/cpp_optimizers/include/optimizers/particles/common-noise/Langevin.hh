@@ -12,14 +12,13 @@ public:
       int n_particles,
       int iter,
       double dt,
-      int k,
       double beta,
       double alpha,
       double gamma,
       double lambda,
       double delta,
       int moment) : Optimizer(bounds, "CN_Langevin"),
-                    base_opt(bounds, n_particles, iter, dt, k, beta, alpha, 0)
+                    base_opt(bounds, n_particles, iter, dt, beta, alpha, 0)
   {
     this->gamma = gamma;
     this->lambda = lambda;

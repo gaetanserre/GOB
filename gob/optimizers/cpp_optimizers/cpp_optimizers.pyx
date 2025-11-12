@@ -135,7 +135,6 @@ cdef extern from "include/optimizers/particles/Langevin.hh":
       int n_particles,
       int iter,
       double dt,
-      int k,
       double beta,
       double alpha,
       int batch_size
@@ -150,7 +149,6 @@ cdef extern from "include/optimizers/particles/common-noise/Langevin.hh":
       int n_particles,
       int iter,
       double dt,
-      int k,
       double beta,
       double alpha,
       double gamma,
@@ -416,12 +414,11 @@ cdef class Langevin:
     int n_particles,
     int iter,
     double dt,
-    int k,
     beta,
     double alpha,
     int batch_size
   ):
-    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, k, beta, alpha, batch_size)
+    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
   
   def minimize(self, f):
     py_init()
@@ -443,7 +440,6 @@ cdef class CN_Langevin:
     int n_particles,
     int iter,
     double dt,
-    int k,
     double beta,
     double alpha,
     double gamma,
@@ -451,7 +447,7 @@ cdef class CN_Langevin:
     double delta,
     int moment
   ):
-    self.thisptr = new CCN_Langevin(bounds, n_particles, iter, dt, k, beta, alpha, gamma, lambda_, delta, moment)
+    self.thisptr = new CCN_Langevin(bounds, n_particles, iter, dt, beta, alpha, gamma, lambda_, delta, moment)
 
   def minimize(self, f):
     py_init()

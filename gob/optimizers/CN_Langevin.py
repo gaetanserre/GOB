@@ -20,8 +20,6 @@ class CN_Langevin(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : list
-        The kappa exponent.
     beta : float
         The inverse temperature.
     alpha : float
@@ -44,7 +42,6 @@ class CN_Langevin(Optimizer):
         n_particles=200,
         iter=100,
         dt=0.1,
-        k=10_000,
         beta=0.5,
         alpha=1,
         gamma=1,
@@ -68,7 +65,7 @@ class CN_Langevin(Optimizer):
                 )
 
         self.c_opt = CCN_Langevin(
-            bounds, n_particles, iter, dt, k, beta, alpha, gamma, lambda_, delta, moment
+            bounds, n_particles, iter, dt, beta, alpha, gamma, lambda_, delta, moment
         )
         self.verbose = verbose
 

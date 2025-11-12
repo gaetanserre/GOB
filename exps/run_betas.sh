@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=run_sigmas
+#SBATCH --job-name=run_betas
 #SBATCH --output=%x.o%j
 #SBATCH --ntasks=1
 #SBATCH --partition=cpu_long
@@ -21,4 +21,4 @@ set -x
 cd ${SLURM_SUBMIT_DIR}
 
 # execution
-python run_sigmas.py
+python run_betas.py
