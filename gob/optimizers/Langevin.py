@@ -20,8 +20,6 @@ class Langevin(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : list
-        The kappa exponent.
     beta : float
         The inverse temperature.
     alpha : float
@@ -39,16 +37,13 @@ class Langevin(Optimizer):
         n_particles=200,
         iter=100,
         dt=0.1,
-        k=10_000,
         beta=0.5,
-        alpha=1,
+        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("Langevin", bounds)
-        self.c_opt = C_Langevin(
-            bounds, n_particles, iter, dt, k, beta, alpha, batch_size
-        )
+        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):
