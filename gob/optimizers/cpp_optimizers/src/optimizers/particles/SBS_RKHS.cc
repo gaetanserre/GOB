@@ -52,6 +52,6 @@ dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const funct
     double eval = f(particles.row(i));
     (*evals)[i] = eval;
   }
-  dyn_vector stddev = Eigen::VectorXd::Ones(particles.rows()) * pow(sqrt(2 * this->dt), this->theta - 1);
+  dyn_vector stddev = Eigen::VectorXd::Ones(particles.rows());
   return {((kernel * grads + kernel_grad) / particles.rows()), stddev, noise};
 }

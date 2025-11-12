@@ -76,7 +76,8 @@ cdef extern from "include/optimizers/decision/AdaRankOpt.hh":
       int max_trials,
       int max_degree,
       double trust_region_radius,
-      int bobyqa_eval
+      int bobyqa_eval,
+      int it_lim
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -122,7 +123,6 @@ cdef extern from "include/optimizers/particles/SBS_RKHS.hh":
       int k,
       double sigma,
       double alpha,
-      double theta,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -147,7 +147,7 @@ cdef extern from "include/optimizers/particles/Langevin.hh":
 
 cdef class PRS:
   cdef CPRS *thisptr
-  def __cinit__(self, bounds, int n_eval=1000):
+  def __cinit__(self, bounds, int n_eval):
     self.thisptr = new CPRS(bounds, n_eval)
   
   def minimize(self, f):
@@ -167,10 +167,10 @@ cdef class AdaLIPO_P:
   def __cinit__(
       self,
       bounds,
-      int n_eval=1000,
-      int max_trials=800,
-      double trust_region_radius=0.1,
-      int bobyqa_eval=10
+      int n_eval,
+      int max_trials,
+      double trust_region_radius,
+      int bobyqa_eval
     ):
     self.thisptr = new CAdaLIPO_P(
         bounds,
@@ -193,7 +193,7 @@ cdef class AdaLIPO_P:
 
 cdef class CMA_ES:
   cdef CCMA_ES *thisptr
-  def __cinit__(self, bounds, int n_eval=1000, vector[double] m0=[], double sigma=0.1):
+  def __cinit__(self, bounds, int n_eval, vector[double] m0, double sigma):
     self.thisptr = new CCMA_ES(bounds, n_eval, m0, sigma)
 
   def minimize(self, f):
@@ -213,13 +213,13 @@ cdef class SBS:
   def __cinit__(
     self,
     bounds,
-    int n_particles=200,
-    int iter=100,
-    double dt=0.01,
-    int k=10_000,
-    double sigma=0.1,
-    double alpha=0.99,
-    int batch_size=0
+    int n_particles,
+    int iter,
+    double dt,
+    int k,
+    double sigma,
+    double alpha,
+    int batch_size
   ):
     self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
 
@@ -240,15 +240,15 @@ cdef class CBO:
   def __cinit__(
     self,
     bounds,
-    int n_particles=200,
-    int iter=100,
-    double dt=0.01,
-    double lam=1,
-    double epsilon=1e-2,
-    double beta=1,
-    double sigma=5.1,
-    double alpha=1,
-    int batch_size=0
+    int n_particles,
+    int iter,
+    double dt,
+    double lam,
+    double epsilon,
+    double beta,
+    double sigma,
+    double alpha,
+    int batch_size
   ):
     self.thisptr = new CCBO(bounds, n_particles, iter, dt, lam, epsilon, beta, sigma, alpha, batch_size)
 
@@ -269,11 +269,12 @@ cdef class AdaRankOpt:
   def __cinit__(
       self,
       bounds,
-      int n_eval=1000,
-      int max_trials=800,
-      int max_degree=80,
-      double trust_region_radius=0.1,
-      int bobyqa_eval=10
+      int n_eval,
+      int max_trials,
+      int max_degree,
+      double trust_region_radius,
+      int bobyqa_eval,
+      int it_lim
     ):
     self.thisptr = new CAdaRankOpt(
         bounds,
@@ -281,7 +282,8 @@ cdef class AdaRankOpt:
         max_trials,
         max_degree,
         trust_region_radius,
-        bobyqa_eval)
+        bobyqa_eval,
+        it_lim)
   
   def minimize(self, f):
     py_init()
@@ -303,13 +305,13 @@ cdef class ECP:
   def __cinit__(
       self,
       bounds,
-      int n_eval=50,
-      double epsilon=1e-2,
-      double theta_init=1.001,
-      int C =1000,
-      int max_trials=1_000_000,
-      double trust_region_radius=0.1,
-      int bobyqa_eval=10
+      int n_eval,
+      double epsilon,
+      double theta_init,
+      int C,
+      int max_trials,
+      double trust_region_radius,
+      int bobyqa_eval
     ):
     self.thisptr = new CECP(
         bounds,
@@ -341,14 +343,14 @@ cdef class PSO:
   def __cinit__(
     self,
     bounds,
-    int n_particles=200,
-    int iter=100,
-    double dt=0.01,
-    double omega=0.7,
-    double c2=2.0,
-    double beta=1e5,
-    double alpha=1,
-    int batch_size=0
+    int n_particles,
+    int iter,
+    double dt,
+    double omega,
+    double c2,
+    double beta,
+    double alpha,
+    int batch_size
   ):
     self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size)
 
@@ -366,16 +368,15 @@ cdef class SBS_RKHS:
   def __cinit__(
     self,
     bounds,
-    int n_particles=200,
-    int iter=100,
-    double dt=0.01,
-    int k=10_000,
-    sigma=0.1,
-    double alpha=0.99,
-    double theta=1,
-    int batch_size=0
+    int n_particles,
+    int iter,
+    double dt,
+    int k,
+    sigma,
+    double alpha,
+    int batch_size
   ):
-    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma, alpha, theta, batch_size)
+    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
   
   def minimize(self, f):
     py_init()
@@ -394,13 +395,13 @@ cdef class Langevin:
   def __cinit__(
     self,
     bounds,
-    int n_particles=200,
-    int iter=100,
-    double dt=0.1,
-    int k=10_000,
-    beta=0.5,
-    double alpha=1,
-    int batch_size=0
+    int n_particles,
+    int iter,
+    double dt,
+    int k,
+    beta,
+    double alpha,
+    int batch_size
   ):
     self.thisptr = new CLangevin(bounds, n_particles, iter, dt, k, beta, alpha, batch_size)
   

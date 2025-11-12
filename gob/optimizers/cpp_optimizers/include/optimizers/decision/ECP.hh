@@ -9,13 +9,13 @@ class ECP : public Optimizer
 {
 public:
   ECP(vec_bounds bounds,
-      int n_eval = 50,
-      double epsilon = 1e-2,
-      double theta_init = 1.001,
-      int C = 1000,
-      int max_trials = 1000000,
-      double trust_region_radius = 0.1,
-      int bobyqa_eval = 10,
+      int n_eval,
+      double epsilon,
+      double theta_init,
+      int C,
+      int max_trials,
+      double trust_region_radius,
+      int bobyqa_eval,
       bool verbose = false) : Optimizer(bounds, "ECP+TR")
   {
     this->n_eval = n_eval;

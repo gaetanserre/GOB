@@ -44,7 +44,6 @@ class SBS_RKHS(Optimizer):
         k=10_000,
         sigma=0.1,
         alpha=0.99,
-        theta=1,
         batch_size=0,
         verbose=False,
     ):
@@ -58,7 +57,6 @@ class SBS_RKHS(Optimizer):
             k,
             sigma,
             alpha,
-            theta,
             batch_size,
         )
         self.verbose = verbose

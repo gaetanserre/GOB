@@ -9,18 +9,16 @@ class SBS_RKHS : public Particles_Optimizer
 public:
   SBS_RKHS(
       vec_bounds bounds,
-      int n_particles = 200,
-      int iter = 100,
-      double dt = 0.01,
-      int k = 10000,
-      double sigma = 0.1,
-      double alpha = 0.99,
-      double theta = 1,
-      int batch_size = 0) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
+      int n_particles,
+      int iter,
+      double dt,
+      int k,
+      double sigma,
+      double alpha,
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha))
   {
     this->k = k;
     this->sigma = sigma;
-    this->theta = theta;
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
