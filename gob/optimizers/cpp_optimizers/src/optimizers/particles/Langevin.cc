@@ -15,6 +15,6 @@ dynamic Langevin::compute_dynamics(const Eigen::MatrixXd &particles, const funct
     grads.row(j) = -gradient(particles.row(j), f, &f_x);
     (*evals)[j] = f_x;
   }
-  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
+  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re) * sqrt(this->beta);
   return {grads, noise};
 }
