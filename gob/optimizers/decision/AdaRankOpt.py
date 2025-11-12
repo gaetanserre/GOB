@@ -2,13 +2,13 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import ECP as C_ECP
+from ..optimizer import Optimizer
+from ..cpp_optimizers import AdaRankOpt as C_AdaRankOpt
 
 
-class ECP(Optimizer):
+class AdaRankOpt(Optimizer):
     """
-    Interface for the ECP+TR optimizer.
+    Interface for the AdaRankOpt optimizer.
 
     Parameters
     ----------
@@ -16,35 +16,32 @@ class ECP(Optimizer):
         The bounds of the search space.
     n_eval : int
         The maximum number of function evaluations.
-    epsilon : float
-        The initial Lipschitz constant estimate.
-    theta_init : float
-        The scaling factor for epsilon.
-    C : float
-        How many candidates to sample before increasing epsilon.
     max_trials : int
         The maximum number of potential candidates sampled at each iteration.
+    max_degree : int
+        The maximum degree of the polynomial kernel.
     trust_region_radius : float
         The trust region radius.
     bobyqa_eval : int
         The number of evaluations for the BOBYQA optimizer.
+    it_lim : int
+        The iteration limit for the BOBYQA optimizer.
     verbose : bool
-        Whether to print information about the optimization
+        Whether to print information about the optimization process.
     """
 
     def __init__(
         self,
         bounds,
-        n_eval=50,
-        epsilon=1e-2,
-        theta_init=1.001,
-        C=1000,
-        max_trials=10_000_000,
+        n_eval=1000,
+        max_trials=50_000,
+        max_degree=15,
         trust_region_radius=0.1,
         bobyqa_eval=20,
+        it_lim=100,
         verbose=False,
     ):
-        super().__init__("ECP+TR", bounds)
+        super().__init__("AdaRankOpt", bounds)
 
         if n_eval < bobyqa_eval:
             bobyqa_eval = n_eval
@@ -52,15 +49,14 @@ class ECP(Optimizer):
         else:
             n_eval = n_eval // bobyqa_eval
 
-        self.c_opt = C_ECP(
+        self.c_opt = C_AdaRankOpt(
             bounds,
             n_eval,
-            epsilon,
-            theta_init,
-            C,
             max_trials,
+            max_degree,
             trust_region_radius,
             bobyqa_eval,
+            it_lim,
         )
 
         self.verbose = verbose

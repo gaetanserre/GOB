@@ -2,8 +2,8 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import CN_Langevin as CCN_Langevin
+from ..optimizer import Optimizer
+from ..cpp_optimizers import CN_Langevin as CCN_Langevin
 
 
 class CN_Langevin(Optimizer):
@@ -26,7 +26,7 @@ class CN_Langevin(Optimizer):
         The coefficient to decrease the step size.
     gamma : float
         The coefficient for the common noise.
-    lambda_ : float
+    ``lambda_`` : float
         The regularization parameter for the common noise.
     delta : float
         The parameter for the Bessel process.

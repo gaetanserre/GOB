@@ -2,13 +2,13 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .optimizer import Optimizer
-from .cpp_optimizers import Langevin as C_Langevin
+from ..optimizer import Optimizer
+from ..cpp_optimizers import SBS_RKHS as C_SBS_RKHS
 
 
-class Langevin(Optimizer):
+class SBS_RKHS(Optimizer):
     """
-    Interface for the Langevin optimizer.
+    Interface for the SBS RKHS optimizer.
 
     Parameters
     ----------
@@ -20,10 +20,14 @@ class Langevin(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    beta : float
-        The inverse temperature.
+    k : int
+        The kappa exponent.
+    sigma : float
+        The kernel bandwidth.
     alpha : float
         The coefficient to decrease the step size.
+    theta : float
+        The regularization parameter for the RKHS-based noise.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -36,14 +40,25 @@ class Langevin(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.1,
-        beta=0.5,
+        dt=0.01,
+        k=10_000,
+        sigma=0.1,
         alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("Langevin", bounds)
-        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
+        super().__init__("SBS-RKHS", bounds)
+
+        self.c_opt = C_SBS_RKHS(
+            bounds,
+            n_particles,
+            iter,
+            dt,
+            k,
+            sigma,
+            alpha,
+            batch_size,
+        )
         self.verbose = verbose
 
     def minimize(self, f):
