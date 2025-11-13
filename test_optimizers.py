@@ -4,7 +4,7 @@ from gob.optimizers import *
 
 pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND", gen=42)
 
-f = Ackley()
+f = Styblinskitang()
 
 bounds = f.visual_bounds
 
@@ -21,19 +21,26 @@ verbose = False
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-""" opt = SBS(
+opt = SBS(
     bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=verbose
 )
 res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = Langevin(
+    bounds=bounds,
+    n_particles=n_particles,
+    iter=iter,
+    verbose=verbose,
+    beta=1,
+    alpha=0.99,
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+""" opt = CN_Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
+res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
-
-opt = Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
-res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}")
-
-opt = CN_Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
-res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}")
 
 """ opt = AdaLIPO_P(bounds)
 res = opt.minimize(f)
