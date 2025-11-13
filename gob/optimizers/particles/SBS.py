@@ -20,8 +20,6 @@ class SBS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : int
-        The kappa exponent.
     sigma : float
         The kernel bandwidth.
     alpha : float
@@ -38,8 +36,8 @@ class SBS(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.01,
-        k=10_000,
+        dt=10,
+        k=1,
         sigma=0.1,
         alpha=0.99,
         batch_size=0,

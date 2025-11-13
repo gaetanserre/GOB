@@ -1,12 +1,16 @@
+#
+# Created in 2025 by Gaëtan Serré
+#
+
 import sys
 import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 from gob import GOB
+from gob.benchmarks import PyGKLS, create_bounds, augment_dimensions
 import inspect
 import gob.benchmarks as gb
-import numpy as np
 
 
 def print_avg_rank(res_dict):
@@ -34,50 +38,28 @@ def print_avg_rank(res_dict):
     print(latex_str)
 
 
-if __name__ == "__main__":
-    benchmarks = [gb.PyGKLS(2, 50, [-100, 100], -100, smoothness="ND", gen=42)]
-    bounds = [gb.create_bounds(2, -99, 99)]
-    multi_modal_benchmarks = [
-        gb.Ackley(),
-        gb.Deb(),
-        gb.Levy(),
-        gb.Michalewicz(),
-        gb.Rastrigin(),
-        gb.Styblinskitang(),
-    ]
-    for bm in multi_modal_benchmarks:
-        benchmarks.append(bm)
-        bounds.append(bm.visual_bounds)
-    multi_modal_benchmarks_names = [str(bm) for bm in multi_modal_benchmarks]
+n_particles = 150
+iter = 300
+sigma = 1 / n_particles**2
+dim = 10
 
+if __name__ == "__main__":
+    pygkls = PyGKLS(dim, 15, [-100, 100], -100, smoothness="ND")
+
+    benchmarks = []
+    bounds = []
     for name, obj in inspect.getmembers(gb, inspect.isclass):
         if name != "PyGKLS":
-            b = obj()
-            if str(b) not in multi_modal_benchmarks_names:
-                benchmarks.append(obj())
-                bounds.append(benchmarks[-1].visual_bounds)
-
-    n_particles = 150
-    iter = 300
-    dimension = 2
-    bounds = [gb.augment_dimensions(b, dimension) for b in bounds]
-    a = 50
-    betas = np.linspace(1e-4, 1, 10)
-    print(f"Betas: {betas}")
-    optimizers = [
-        (
-            "Langevin",
-            {
-                "n_particles": n_particles,
-                "iter": iter,
-                "beta": beta,
-            },
-        )
-        for beta in betas
-    ]
+            benchmarks.append(obj())
+            bounds.append(augment_dimensions(benchmarks[-1].visual_bounds, dim))
+    benchmarks.append(pygkls)
+    bounds.append(create_bounds(dim, -99, 99))
 
     gob = GOB(
-        optimizers,
+        [
+            ("Langevin", {"n_particles": n_particles, "iter": iter}),
+            ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
+        ],
         benchmarks,
         ["Proportion"],
         bounds=bounds,

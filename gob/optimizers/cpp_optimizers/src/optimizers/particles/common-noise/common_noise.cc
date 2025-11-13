@@ -62,7 +62,7 @@ void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
     particles->row(j) += this->base_opt->dt *
-                             (dyn.drift.row(j) + common_dynamic.drift.transpose()) +
+                             (dyn.drift.row(j) + this->gamma * common_dynamic.drift.transpose()) +
                          sqrt(this->base_opt->dt) *
                              (dyn.noise.row(j) + this->gamma * (common_dynamic.noise * common_noise).transpose());
     particles->row(j) = clip_vector(particles->row(j), this->base_opt->bounds);

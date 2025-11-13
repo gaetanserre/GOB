@@ -2,7 +2,7 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from .create_bounds import create_bounds
+from .create_bounds import create_bounds, augment_dimensions
 from .ackley import Ackley
 from .bentcigar import Bentcigar
 from .deb import Deb
@@ -21,6 +21,7 @@ from .pygkls import PyGKLS
 
 __all__ = [
     "create_bounds",
+    "augment_dimensions",
     "PyGKLS",
     "Ackley",
     "Bentcigar",

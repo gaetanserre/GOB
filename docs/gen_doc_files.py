@@ -8,6 +8,10 @@ import gob.benchmarks as gb
 from pathlib import Path
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
+
+
+matplotlib.rcParams.update({"font.size": 9, "text.usetex": True})
 
 
 def create_dir(path: Path):
@@ -96,12 +100,19 @@ if __name__ == "__main__":
             ).reshape(X.shape)
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
-            ax.plot_surface(X, Y, Z, cmap="coolwarm")
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
+            ax.plot_surface(X, Y, Z, linewidth=0.2, edgecolors="white", cmap="coolwarm")
+            ax.set_xlabel("$x$")
+            ax.set_ylabel("$y$")
+            ax.set_box_aspect(None, zoom=0.8)
+            xticks = ax.xaxis.get_major_ticks()
+            yticks = ax.yaxis.get_major_ticks()
+            for i in range(0, len(xticks), 2):
+                xticks[i].label1.set_visible(False)
+            for i in range(0, len(yticks), 2):
+                yticks[i].label1.set_visible(False)
             plt.savefig(
                 wd / f"benchmarks/graphs/{name}.png",
-                dpi=300,
+                dpi=400,
                 bbox_inches="tight",
                 transparent=True,
             )
@@ -111,8 +122,8 @@ if __name__ == "__main__":
                 f"{ben}\n"
                 f"{''.join(['='] * len(str(ben)))}\n\n"
                 f".. image:: graphs/{name}.png\n"
-                "   :width: 500px\n"
-                "   :height: 500px\n"
+                "   :width: 550px\n"
+                "   :height: 550px\n"
                 "   :align: center\n\n"
                 "Uses the `pyGKLS <https://pypi.org/project/gkls/>`_ package to generate random test functions, with control over their geometry. \n\n"
                 f".. automodule:: gob.benchmarks.{name.lower()}\n"
@@ -136,13 +147,19 @@ if __name__ == "__main__":
                 [ben(np.array([x, y])) for x, y in zip(np.ravel(X), np.ravel(Y))]
             ).reshape(X.shape)
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
-
-            ax.plot_surface(X, Y, Z, cmap="coolwarm")
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
+            ax.plot_surface(X, Y, Z, linewidth=0.2, edgecolors="white", cmap="coolwarm")
+            ax.set_xlabel("$x$")
+            ax.set_ylabel("$y$")
+            ax.set_box_aspect(None, zoom=0.8)
+            xticks = ax.xaxis.get_major_ticks()
+            yticks = ax.yaxis.get_major_ticks()
+            for i in range(0, len(xticks), 2):
+                xticks[i].label1.set_visible(False)
+            for i in range(0, len(yticks), 2):
+                yticks[i].label1.set_visible(False)
             plt.savefig(
                 wd / f"benchmarks/graphs/{name}.png",
-                dpi=300,
+                dpi=400,
                 bbox_inches="tight",
                 transparent=True,
             )
@@ -152,8 +169,8 @@ if __name__ == "__main__":
                 f"{ben}\n"
                 f"{''.join(['='] * len(str(ben)))}\n\n"
                 f".. image:: graphs/{name}.png\n"
-                "   :width: 500px\n"
-                "   :height: 500px\n"
+                "   :width: 550px\n"
+                "   :height: 550px\n"
                 "   :align: center\n\n"
                 f".. automodule:: gob.benchmarks.{name.lower()}\n"
                 "   :members:\n"

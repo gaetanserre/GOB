@@ -37,8 +37,8 @@ class Langevin(Optimizer):
         n_particles=200,
         iter=100,
         dt=0.1,
-        beta=0.5,
-        alpha=1,
+        beta=1,
+        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
