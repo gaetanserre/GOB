@@ -11,6 +11,7 @@ from gob import GOB
 from gob.benchmarks import PyGKLS, create_bounds, augment_dimensions
 import inspect
 import gob.benchmarks as gb
+import numpy as np
 
 
 def print_avg_rank(res_dict):
