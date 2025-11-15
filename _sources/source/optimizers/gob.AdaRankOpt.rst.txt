@@ -1,7 +1,7 @@
 AdaRankOpt
 ==========
 
-.. automodule:: gob.optimizers.AdaRankOpt
+.. automodule:: gob.optimizers.decision.AdaRankOpt
    :members:
    :show-inheritance:
    :undoc-members:

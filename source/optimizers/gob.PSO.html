@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../../_static/logo.png" as="image">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>PSO - GOB 0.0.3 documentation</title>
+        <title>PSO - GOB 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">GOB 0.0.3 documentation</div></a>
+      <a href="../../index.html"><div class="brand">GOB 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
     <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -212,6 +212,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.GD.html">GD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.Langevin.html">Langevin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">PSO</a></li>
@@ -283,11 +284,11 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-gob.optimizers.PSO">
-<span id="pso"></span><h1>PSO<a class="headerlink" href="#module-gob.optimizers.PSO" title="Link to this heading">¶</a></h1>
+          <section id="module-gob.optimizers.particles.PSO">
+<span id="pso"></span><h1>PSO<a class="headerlink" href="#module-gob.optimizers.particles.PSO" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="gob.optimizers.PSO.PSO">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.PSO.</span></span><span class="sig-name descname"><span class="pre">PSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_particles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.PSO.PSO" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.particles.PSO.PSO">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.particles.PSO.</span></span><span class="sig-name descname"><span class="pre">PSO</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_particles</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">omega</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100000.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alpha</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.particles.PSO.PSO" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
 <p>Interface for the <em>social only</em> PSO optimizer.</p>
 <dl class="field-list simple">
@@ -308,8 +309,8 @@ optimization is used.</p></li>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.PSO.PSO.minimize">
-<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.PSO.PSO.minimize" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.particles.PSO.PSO.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.particles.PSO.PSO.minimize" title="Link to this definition">¶</a></dt>
 <dd><p>Minimize a function using the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -325,8 +326,8 @@ optimization is used.</p></li>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.PSO.PSO.set_stop_criterion">
-<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.PSO.PSO.set_stop_criterion" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.particles.PSO.PSO.set_stop_criterion">
+<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.particles.PSO.PSO.set_stop_criterion" title="Link to this definition">¶</a></dt>
 <dd><p>Set a stop criterion for the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -402,9 +403,9 @@ optimization is used.</p></li>
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">PSO</a><ul>
-<li><a class="reference internal" href="#gob.optimizers.PSO.PSO"><code class="docutils literal notranslate"><span class="pre">PSO</span></code></a><ul>
-<li><a class="reference internal" href="#gob.optimizers.PSO.PSO.minimize"><code class="docutils literal notranslate"><span class="pre">PSO.minimize()</span></code></a></li>
-<li><a class="reference internal" href="#gob.optimizers.PSO.PSO.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">PSO.set_stop_criterion()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.particles.PSO.PSO"><code class="docutils literal notranslate"><span class="pre">PSO</span></code></a><ul>
+<li><a class="reference internal" href="#gob.optimizers.particles.PSO.PSO.minimize"><code class="docutils literal notranslate"><span class="pre">PSO.minimize()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.particles.PSO.PSO.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">PSO.set_stop_criterion()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -418,7 +419,7 @@ optimization is used.</p></li>
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=47de8214"></script>
+</div><script src="../../_static/documentation_options.js?v=8c5712d9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

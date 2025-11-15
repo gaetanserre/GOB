@@ -3,11 +3,11 @@
   <head><meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="color-scheme" content="light dark"><meta name="viewport" content="width=device-width, initial-scale=1" />
-<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="MLSL" href="gob.MLSL.html"><link rel="prev" title="ECP+TR" href="gob.ECP.html">
+<link rel="index" title="Index" href="../../genindex.html"><link rel="search" title="Search" href="../../search.html"><link rel="next" title="Langevin" href="gob.Langevin.html"><link rel="prev" title="ECP+TR" href="gob.ECP.html">
         <link rel="prefetch" href="../../_static/logo.png" as="image">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>GD - GOB 0.0.3 documentation</title>
+        <title>GD - GOB 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">GOB 0.0.3 documentation</div></a>
+      <a href="../../index.html"><div class="brand">GOB 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -174,7 +174,7 @@
           <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
         </button>
       </div>
-      <label class="toc-overlay-icon toc-header-icon no-toc" for="__toc">
+      <label class="toc-overlay-icon toc-header-icon" for="__toc">
         <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
       </label>
     </div>
@@ -187,7 +187,7 @@
     <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -212,6 +212,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2 current current-page"><a class="current reference internal" href="#">GD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.Langevin.html">Langevin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PSO.html">PSO</a></li>
@@ -278,52 +279,47 @@
               <svg class="theme-icon-when-light"><use href="#svg-sun"></use></svg>
             </button>
           </div>
-          <label class="toc-overlay-icon toc-content-icon no-toc" for="__toc">
+          <label class="toc-overlay-icon toc-content-icon" for="__toc">
             <span class="icon"><svg><use href="#svg-toc"></use></svg></span>
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-gob.optimizers.GD">
-<span id="gd"></span><h1>GD<a class="headerlink" href="#module-gob.optimizers.GD" title="Link to this heading">¶</a></h1>
+          <section id="module-gob.optimizers.misc.GD">
+<span id="gd"></span><h1>GD<a class="headerlink" href="#module-gob.optimizers.misc.GD" title="Link to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="gob.optimizers.misc.GD.GD">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.misc.GD.</span></span><span class="sig-name descname"><span class="pre">GD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.GD.GD" title="Link to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
 <p>The gradient descent optimizer.</p>
 <dl class="field-list simple">
-<dt class="field-odd">type bounds<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-<dt class="field-even">param bounds<span class="colon">:</span></dt>
-<dd class="field-even"><p>The bounds of the search space.</p>
-</dd>
-<dt class="field-odd">type bounds<span class="colon">:</span></dt>
-<dd class="field-odd"><p>ndarray</p>
-</dd>
-<dt class="field-even">type n_step<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">param n_step<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The number of steps to take.</p>
-</dd>
-<dt class="field-even">type n_step<span class="colon">:</span></dt>
-<dd class="field-even"><p>int</p>
-</dd>
-<dt class="field-odd">type step_size<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-<dt class="field-even">param step_size<span class="colon">:</span></dt>
-<dd class="field-even"><p>The step size of the gradient</p>
-</dd>
-<dt class="field-odd">type step_size<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
-</dd>
-<dt class="field-odd">param verbose<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Whether to print information about the optimization process.</p>
-</dd>
-<dt class="field-even">type verbose<span class="colon">:</span></dt>
-<dd class="field-even"><p>bool</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>bounds</strong> (<em>ndarray</em>) – The bounds of the search space.</p></li>
+<li><p><strong>n_step</strong> (<em>int</em>) – The number of steps to take.</p></li>
+<li><p><strong>step_size</strong> (<em>float</em>) – The step size of the gradient</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print information about the optimization process.</p></li>
+</ul>
 </dd>
 </dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="gob.optimizers.misc.GD.GD.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.GD.GD.minimize" title="Link to this definition">¶</a></dt>
+<dd><p>Minimize a function using the optimizer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>f</strong> (<em>Function</em>) – The objective function.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The minimum point and the minimum value.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pair</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 
         </article>
@@ -331,12 +327,12 @@
       <footer>
         
         <div class="related-pages">
-          <a class="next-page" href="gob.MLSL.html">
+          <a class="next-page" href="gob.Langevin.html">
               <div class="page-info">
                 <div class="context">
                   <span>Next</span>
                 </div>
-                <div class="title">MLSL</div>
+                <div class="title">Langevin</div>
               </div>
               <svg class="furo-related-icon"><use href="#svg-arrow-right"></use></svg>
             </a>
@@ -376,13 +372,35 @@
         
       </footer>
     </div>
-    <aside class="toc-drawer no-toc">
+    <aside class="toc-drawer">
       
+      
+      <div class="toc-sticky toc-scroll">
+        <div class="toc-title-container">
+          <span class="toc-title">
+            On this page
+          </span>
+        </div>
+        <div class="toc-tree-container">
+          <div class="toc-tree">
+            <ul>
+<li><a class="reference internal" href="#">GD</a><ul>
+<li><a class="reference internal" href="#gob.optimizers.misc.GD.GD"><code class="docutils literal notranslate"><span class="pre">GD</span></code></a><ul>
+<li><a class="reference internal" href="#gob.optimizers.misc.GD.GD.minimize"><code class="docutils literal notranslate"><span class="pre">GD.minimize()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+          </div>
+        </div>
+      </div>
       
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=47de8214"></script>
+</div><script src="../../_static/documentation_options.js?v=8c5712d9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

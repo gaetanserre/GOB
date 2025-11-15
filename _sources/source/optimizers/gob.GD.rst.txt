@@ -1,7 +1,7 @@
 GD
 ==
 
-.. automodule:: gob.optimizers.GD
+.. automodule:: gob.optimizers.misc.GD
    :members:
    :show-inheritance:
    :undoc-members:

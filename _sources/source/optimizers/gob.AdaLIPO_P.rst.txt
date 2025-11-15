@@ -1,7 +1,7 @@
 AdaLIPO+TR
 ==========
 
-.. automodule:: gob.optimizers.AdaLIPO_P
+.. automodule:: gob.optimizers.decision.AdaLIPO_P
    :members:
    :show-inheritance:
    :undoc-members:

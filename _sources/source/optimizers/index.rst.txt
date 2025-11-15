@@ -13,6 +13,7 @@ Optimizers
    gob.Direct
    gob.ECP
    gob.GD
+   gob.Langevin
    gob.MLSL
    gob.PRS
    gob.PSO

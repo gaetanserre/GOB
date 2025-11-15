@@ -1,7 +1,7 @@
 MLSL
 ====
 
-.. automodule:: gob.optimizers.MLSL
+.. automodule:: gob.optimizers.misc.MLSL
    :members:
    :show-inheritance:
    :undoc-members:

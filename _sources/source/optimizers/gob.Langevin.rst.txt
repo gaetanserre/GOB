@@ -1,7 +1,7 @@
-BayesOpt
+Langevin
 ========
 
-.. automodule:: gob.optimizers.misc.BayesOpt
+.. automodule:: gob.optimizers.particles.Langevin
    :members:
    :show-inheritance:
    :undoc-members:

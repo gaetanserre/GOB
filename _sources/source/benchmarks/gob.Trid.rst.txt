@@ -2,8 +2,8 @@ Trid
 ====
 
 .. image:: graphs/Trid.png
-   :width: 500px
-   :height: 500px
+   :width: 550px
+   :height: 550px
    :align: center
 
 .. automodule:: gob.benchmarks.trid

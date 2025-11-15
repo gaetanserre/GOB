@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../../_static/logo.png" as="image">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>BayesOpt - GOB 0.0.3 documentation</title>
+        <title>BayesOpt - GOB 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">GOB 0.0.3 documentation</div></a>
+      <a href="../../index.html"><div class="brand">GOB 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
     <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -212,6 +212,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.GD.html">GD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.Langevin.html">Langevin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PSO.html">PSO</a></li>
@@ -283,11 +284,11 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-gob.optimizers.BayesOpt">
-<span id="bayesopt"></span><h1>BayesOpt<a class="headerlink" href="#module-gob.optimizers.BayesOpt" title="Link to this heading">¶</a></h1>
+          <section id="module-gob.optimizers.misc.BayesOpt">
+<span id="bayesopt"></span><h1>BayesOpt<a class="headerlink" href="#module-gob.optimizers.misc.BayesOpt" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="gob.optimizers.BayesOpt.BayesOpt">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.BayesOpt.</span></span><span class="sig-name descname"><span class="pre">BayesOpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.BayesOpt.BayesOpt" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.misc.BayesOpt.BayesOpt">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.misc.BayesOpt.</span></span><span class="sig-name descname"><span class="pre">BayesOpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.BayesOpt.BayesOpt" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
 <p>Interface for the BayesOpt optimizer.</p>
 <dl class="field-list simple">
@@ -300,8 +301,8 @@
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.BayesOpt.BayesOpt.minimize">
-<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.BayesOpt.BayesOpt.minimize" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.misc.BayesOpt.BayesOpt.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.BayesOpt.BayesOpt.minimize" title="Link to this definition">¶</a></dt>
 <dd><p>Minimize a function using the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -317,8 +318,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.BayesOpt.BayesOpt.set_stop_criterion">
-<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.BayesOpt.BayesOpt.set_stop_criterion" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.misc.BayesOpt.BayesOpt.set_stop_criterion">
+<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.BayesOpt.BayesOpt.set_stop_criterion" title="Link to this definition">¶</a></dt>
 <dd><p>Set a stop criterion for the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -328,13 +329,13 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.BayesOpt.BayesOpt.transform_bounds">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.BayesOpt.BayesOpt.transform_bounds" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.misc.BayesOpt.BayesOpt.transform_bounds">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform_bounds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">domain</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.BayesOpt.BayesOpt.transform_bounds" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.BayesOpt.BayesOpt.transform_function">
-<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.BayesOpt.BayesOpt.transform_function" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.misc.BayesOpt.BayesOpt.transform_function">
+<em class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">transform_function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.misc.BayesOpt.BayesOpt.transform_function" title="Link to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -404,11 +405,11 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">BayesOpt</a><ul>
-<li><a class="reference internal" href="#gob.optimizers.BayesOpt.BayesOpt"><code class="docutils literal notranslate"><span class="pre">BayesOpt</span></code></a><ul>
-<li><a class="reference internal" href="#gob.optimizers.BayesOpt.BayesOpt.minimize"><code class="docutils literal notranslate"><span class="pre">BayesOpt.minimize()</span></code></a></li>
-<li><a class="reference internal" href="#gob.optimizers.BayesOpt.BayesOpt.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">BayesOpt.set_stop_criterion()</span></code></a></li>
-<li><a class="reference internal" href="#gob.optimizers.BayesOpt.BayesOpt.transform_bounds"><code class="docutils literal notranslate"><span class="pre">BayesOpt.transform_bounds()</span></code></a></li>
-<li><a class="reference internal" href="#gob.optimizers.BayesOpt.BayesOpt.transform_function"><code class="docutils literal notranslate"><span class="pre">BayesOpt.transform_function()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.misc.BayesOpt.BayesOpt"><code class="docutils literal notranslate"><span class="pre">BayesOpt</span></code></a><ul>
+<li><a class="reference internal" href="#gob.optimizers.misc.BayesOpt.BayesOpt.minimize"><code class="docutils literal notranslate"><span class="pre">BayesOpt.minimize()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.misc.BayesOpt.BayesOpt.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">BayesOpt.set_stop_criterion()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.misc.BayesOpt.BayesOpt.transform_bounds"><code class="docutils literal notranslate"><span class="pre">BayesOpt.transform_bounds()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.misc.BayesOpt.BayesOpt.transform_function"><code class="docutils literal notranslate"><span class="pre">BayesOpt.transform_function()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -422,7 +423,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=47de8214"></script>
+</div><script src="../../_static/documentation_options.js?v=8c5712d9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -7,7 +7,7 @@
         <link rel="prefetch" href="_static/logo.png" as="image">
 
     <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>GOB - GOB 0.0.3 documentation</title>
+        <title>GOB - GOB 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">GOB 0.0.3 documentation</div></a>
+      <a href="index.html"><div class="brand">GOB 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
     <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -212,6 +212,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.GD.html">GD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.Langevin.html">Langevin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.PRS.html">PRS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.PSO.html">PSO</a></li>
@@ -290,7 +291,18 @@
 <dt class="sig sig-object py" id="gob.gob.GOB">
 <em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.gob.</span></span><span class="sig-name descname"><span class="pre">GOB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Global Optimization Benchmarks.</p>
+<p>Global Optimization Benchmark.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>optimizers</strong> (<em>List tuple</em><em>(</em><em>str</em><em> | </em><em>class</em><em>, </em><em>dict</em><em>) </em><em>| </em><em>List str</em><em> | </em><em>List Object</em>) – The optimizers to use. A tuple is (name | class, dict of keyword arguments).</p></li>
+<li><p><strong>benchmarks</strong> (<em>List str</em><em> | </em><em>Object</em>) – The benchmarks to use.</p></li>
+<li><p><strong>metrics</strong> (<em>List str</em><em> | </em><em>Object</em>) – The metrics to use.</p></li>
+<li><p><strong>bounds</strong> (<em>array-like</em><em> of </em><em>shape</em><em> (</em><em>n_benchmark</em><em>, </em><em>n_variables</em><em>, </em><em>2</em><em>)</em>) – The bounds of the search space.</p></li>
+<li><p><strong>options</strong> (<em>dict</em><em> of </em><em>keyword arguments for the metrics</em>) – {name: dict of keyword arguments}</p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.competitive_ratio">
 <span class="sig-name descname"><span class="pre">competitive_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.competitive_ratio" title="Link to this definition">¶</a></dt>
@@ -373,13 +385,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.run" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latex_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.run" title="Link to this definition">¶</a></dt>
 <dd><p>Run the benchmark.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_runs</strong> (<em>int</em>) – The number of runs to perform.</p></li>
 <li><p><strong>verbose</strong> (<em>int</em>) – The verbosity level.</p></li>
+<li><p><strong>latex_table</strong> (<em>bool</em>) – Whether to print the results in LaTeX table format.</p></li>
 </ul>
 </dd>
 </dl>
@@ -471,7 +484,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=47de8214"></script>
+</div><script src="_static/documentation_options.js?v=8c5712d9"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>

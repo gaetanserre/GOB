@@ -7,7 +7,7 @@
         <link rel="prefetch" href="../../_static/logo.png" as="image">
 
     <link rel="shortcut icon" href="../../_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 -->
-        <title>AdaRankOpt - GOB 0.0.3 documentation</title>
+        <title>AdaRankOpt - GOB 0.0.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -163,7 +163,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="../../index.html"><div class="brand">GOB 0.0.3 documentation</div></a>
+      <a href="../../index.html"><div class="brand">GOB 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -187,7 +187,7 @@
     <img class="sidebar-logo" src="../../_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="../../search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -212,6 +212,7 @@
 <li class="toctree-l2"><a class="reference internal" href="gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.GD.html">GD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="gob.Langevin.html">Langevin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PRS.html">PRS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="gob.PSO.html">PSO</a></li>
@@ -283,11 +284,11 @@
           </label>
         </div>
         <article role="main" id="furo-main-content">
-          <section id="module-gob.optimizers.AdaRankOpt">
-<span id="adarankopt"></span><h1>AdaRankOpt<a class="headerlink" href="#module-gob.optimizers.AdaRankOpt" title="Link to this heading">¶</a></h1>
+          <section id="module-gob.optimizers.decision.AdaRankOpt">
+<span id="adarankopt"></span><h1>AdaRankOpt<a class="headerlink" href="#module-gob.optimizers.decision.AdaRankOpt" title="Link to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="gob.optimizers.AdaRankOpt.AdaRankOpt">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.AdaRankOpt.</span></span><span class="sig-name descname"><span class="pre">AdaRankOpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trust_region_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bobyqa_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.AdaRankOpt.AdaRankOpt" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.decision.AdaRankOpt.AdaRankOpt">
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.optimizers.decision.AdaRankOpt.</span></span><span class="sig-name descname"><span class="pre">AdaRankOpt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_trials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50000</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_degree</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trust_region_radius</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bobyqa_eval</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">it_lim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.decision.AdaRankOpt.AdaRankOpt" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Optimizer</span></code></p>
 <p>Interface for the AdaRankOpt optimizer.</p>
 <dl class="field-list simple">
@@ -299,13 +300,14 @@
 <li><p><strong>max_degree</strong> (<em>int</em>) – The maximum degree of the polynomial kernel.</p></li>
 <li><p><strong>trust_region_radius</strong> (<em>float</em>) – The trust region radius.</p></li>
 <li><p><strong>bobyqa_eval</strong> (<em>int</em>) – The number of evaluations for the BOBYQA optimizer.</p></li>
+<li><p><strong>it_lim</strong> (<em>int</em>) – The iteration limit for the BOBYQA optimizer.</p></li>
 <li><p><strong>verbose</strong> (<em>bool</em>) – Whether to print information about the optimization process.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.AdaRankOpt.AdaRankOpt.minimize">
-<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.AdaRankOpt.AdaRankOpt.minimize" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.decision.AdaRankOpt.AdaRankOpt.minimize">
+<span class="sig-name descname"><span class="pre">minimize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">f</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.decision.AdaRankOpt.AdaRankOpt.minimize" title="Link to this definition">¶</a></dt>
 <dd><p>Minimize a function using the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -321,8 +323,8 @@
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="gob.optimizers.AdaRankOpt.AdaRankOpt.set_stop_criterion">
-<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.AdaRankOpt.AdaRankOpt.set_stop_criterion" title="Link to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="gob.optimizers.decision.AdaRankOpt.AdaRankOpt.set_stop_criterion">
+<span class="sig-name descname"><span class="pre">set_stop_criterion</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">stop_criterion</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.optimizers.decision.AdaRankOpt.AdaRankOpt.set_stop_criterion" title="Link to this definition">¶</a></dt>
 <dd><p>Set a stop criterion for the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -398,9 +400,9 @@
           <div class="toc-tree">
             <ul>
 <li><a class="reference internal" href="#">AdaRankOpt</a><ul>
-<li><a class="reference internal" href="#gob.optimizers.AdaRankOpt.AdaRankOpt"><code class="docutils literal notranslate"><span class="pre">AdaRankOpt</span></code></a><ul>
-<li><a class="reference internal" href="#gob.optimizers.AdaRankOpt.AdaRankOpt.minimize"><code class="docutils literal notranslate"><span class="pre">AdaRankOpt.minimize()</span></code></a></li>
-<li><a class="reference internal" href="#gob.optimizers.AdaRankOpt.AdaRankOpt.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">AdaRankOpt.set_stop_criterion()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.decision.AdaRankOpt.AdaRankOpt"><code class="docutils literal notranslate"><span class="pre">AdaRankOpt</span></code></a><ul>
+<li><a class="reference internal" href="#gob.optimizers.decision.AdaRankOpt.AdaRankOpt.minimize"><code class="docutils literal notranslate"><span class="pre">AdaRankOpt.minimize()</span></code></a></li>
+<li><a class="reference internal" href="#gob.optimizers.decision.AdaRankOpt.AdaRankOpt.set_stop_criterion"><code class="docutils literal notranslate"><span class="pre">AdaRankOpt.set_stop_criterion()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -414,7 +416,7 @@
       
     </aside>
   </div>
-</div><script src="../../_static/documentation_options.js?v=47de8214"></script>
+</div><script src="../../_static/documentation_options.js?v=8c5712d9"></script>
     <script src="../../_static/doctools.js?v=9bcbadda"></script>
     <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../../_static/scripts/furo.js?v=46bd48cc"></script>

@@ -5,7 +5,7 @@
     <meta name="color-scheme" content="light dark"><link rel="index" title="Index" href="genindex.html"><link rel="search" title="Search" href="search.html">
         <link rel="prefetch" href="_static/logo.png" as="image">
 
-    <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 --><title>Python Module Index - GOB 0.0.3 documentation</title>
+    <link rel="shortcut icon" href="_static/favicon.svg"><!-- Generated with Sphinx 8.2.3 and Furo 2025.09.25 --><title>Python Module Index - GOB 0.0.4 documentation</title>
 <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d111a655" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo.css?v=580074bf" />
     <link rel="stylesheet" type="text/css" href="_static/styles/furo-extensions.css?v=8dab3a3b" />
@@ -161,7 +161,7 @@
       </label>
     </div>
     <div class="header-center">
-      <a href="index.html"><div class="brand">GOB 0.0.3 documentation</div></a>
+      <a href="index.html"><div class="brand">GOB 0.0.4 documentation</div></a>
     </div>
     <div class="header-right">
       <div class="theme-toggle-container theme-toggle-header">
@@ -185,7 +185,7 @@
     <img class="sidebar-logo" src="_static/logo.png" alt="Logo"/>
   </div>
   
-  <span class="sidebar-brand-text">GOB 0.0.3 documentation</span>
+  <span class="sidebar-brand-text">GOB 0.0.4 documentation</span>
   
 </a><form class="sidebar-search-container" method="get" action="search.html" role="search">
   <input class="sidebar-search" placeholder="Search" name="q" aria-label="Search">
@@ -210,6 +210,7 @@
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.Direct.html">Direct</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.ECP.html">ECP+TR</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.GD.html">GD</a></li>
+<li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.Langevin.html">Langevin</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.MLSL.html">MLSL</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.PRS.html">PRS</a></li>
 <li class="toctree-l2"><a class="reference internal" href="source/optimizers/gob.PSO.html">PSO</a></li>
@@ -405,79 +406,85 @@
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.AdaLIPO_P.html#module-gob.optimizers.AdaLIPO_P"><code class="xref">gob.optimizers.AdaLIPO_P</code></a></td><td>
+        <a href="source/optimizers/gob.AdaLIPO_P.html#module-gob.optimizers.decision.AdaLIPO_P"><code class="xref">gob.optimizers.decision.AdaLIPO_P</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.AdaRankOpt.html#module-gob.optimizers.AdaRankOpt"><code class="xref">gob.optimizers.AdaRankOpt</code></a></td><td>
+        <a href="source/optimizers/gob.AdaRankOpt.html#module-gob.optimizers.decision.AdaRankOpt"><code class="xref">gob.optimizers.decision.AdaRankOpt</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.BayesOpt.html#module-gob.optimizers.BayesOpt"><code class="xref">gob.optimizers.BayesOpt</code></a></td><td>
+        <a href="source/optimizers/gob.ECP.html#module-gob.optimizers.decision.ECP"><code class="xref">gob.optimizers.decision.ECP</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.CBO.html#module-gob.optimizers.CBO"><code class="xref">gob.optimizers.CBO</code></a></td><td>
+        <a href="source/optimizers/gob.BayesOpt.html#module-gob.optimizers.misc.BayesOpt"><code class="xref">gob.optimizers.misc.BayesOpt</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.CMA_ES.html#module-gob.optimizers.CMA_ES"><code class="xref">gob.optimizers.CMA_ES</code></a></td><td>
+        <a href="source/optimizers/gob.CMA_ES.html#module-gob.optimizers.misc.CMA_ES"><code class="xref">gob.optimizers.misc.CMA_ES</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.CRS.html#module-gob.optimizers.CRS"><code class="xref">gob.optimizers.CRS</code></a></td><td>
+        <a href="source/optimizers/gob.CRS.html#module-gob.optimizers.misc.CRS"><code class="xref">gob.optimizers.misc.CRS</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.Direct.html#module-gob.optimizers.Direct"><code class="xref">gob.optimizers.Direct</code></a></td><td>
+        <a href="source/optimizers/gob.Direct.html#module-gob.optimizers.misc.Direct"><code class="xref">gob.optimizers.misc.Direct</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.ECP.html#module-gob.optimizers.ECP"><code class="xref">gob.optimizers.ECP</code></a></td><td>
+        <a href="source/optimizers/gob.GD.html#module-gob.optimizers.misc.GD"><code class="xref">gob.optimizers.misc.GD</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.GD.html#module-gob.optimizers.GD"><code class="xref">gob.optimizers.GD</code></a></td><td>
+        <a href="source/optimizers/gob.MLSL.html#module-gob.optimizers.misc.MLSL"><code class="xref">gob.optimizers.misc.MLSL</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.MLSL.html#module-gob.optimizers.MLSL"><code class="xref">gob.optimizers.MLSL</code></a></td><td>
+        <a href="source/optimizers/gob.PRS.html#module-gob.optimizers.misc.PRS"><code class="xref">gob.optimizers.misc.PRS</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.PRS.html#module-gob.optimizers.PRS"><code class="xref">gob.optimizers.PRS</code></a></td><td>
+        <a href="source/optimizers/gob.CBO.html#module-gob.optimizers.particles.CBO"><code class="xref">gob.optimizers.particles.CBO</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.PSO.html#module-gob.optimizers.PSO"><code class="xref">gob.optimizers.PSO</code></a></td><td>
+        <a href="source/optimizers/gob.Langevin.html#module-gob.optimizers.particles.Langevin"><code class="xref">gob.optimizers.particles.Langevin</code></a></td><td>
     <em></em></td>
   </tr>
   <tr class="cg-1">
     <td></td>
     <td>&#160;&#160;&#160;
-        <a href="source/optimizers/gob.SBS.html#module-gob.optimizers.SBS"><code class="xref">gob.optimizers.SBS</code></a></td><td>
+        <a href="source/optimizers/gob.PSO.html#module-gob.optimizers.particles.PSO"><code class="xref">gob.optimizers.particles.PSO</code></a></td><td>
+    <em></em></td>
+  </tr>
+  <tr class="cg-1">
+    <td></td>
+    <td>&#160;&#160;&#160;
+        <a href="source/optimizers/gob.SBS.html#module-gob.optimizers.particles.SBS"><code class="xref">gob.optimizers.particles.SBS</code></a></td><td>
     <em></em></td>
   </tr>
 </table>
@@ -520,7 +527,7 @@
       
     </aside>
   </div>
-</div><script src="_static/documentation_options.js?v=47de8214"></script>
+</div><script src="_static/documentation_options.js?v=8c5712d9"></script>
     <script src="_static/doctools.js?v=9bcbadda"></script>
     <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/scripts/furo.js?v=46bd48cc"></script>
