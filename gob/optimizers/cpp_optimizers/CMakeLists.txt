@@ -21,7 +21,7 @@ foreach(hfile IN LISTS GLPK_HEADERS)
 endforeach()
 list(REMOVE_DUPLICATES GLPK_INCLUDE_DIRS)
 
-find_package(Eigen3 3.3 REQUIRED)
+find_package(Eigen3 3.4.0 REQUIRED)
 message(STATUS "EIGEN3_INCLUDE_DIR: ${EIGEN3_INCLUDE_DIR}")
 
 set(Python_EXECUTABLE "python" CACHE STRING "Path to the Python executable")
