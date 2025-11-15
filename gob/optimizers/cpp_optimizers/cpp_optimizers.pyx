@@ -113,21 +113,6 @@ cdef extern from "include/optimizers/particles/PSO.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
-cdef extern from "include/optimizers/particles/SBS_RKHS.hh":
-  cdef cppclass CSBS_RKHS "SBS_RKHS":
-    CSBS_RKHS(
-      vector[vector[double]] bounds,
-      int n_particles,
-      int iter,
-      double dt,
-      int k,
-      double sigma,
-      double alpha,
-      int batch_size
-    )
-    pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criterion(double stop_criterion)
-
 cdef extern from "include/optimizers/particles/Langevin.hh":
   cdef cppclass CLangevin "Langevin":
     CLangevin(
@@ -138,23 +123,6 @@ cdef extern from "include/optimizers/particles/Langevin.hh":
       double beta,
       double alpha,
       int batch_size
-    )
-    pair[vector[double], double] py_minimize(PyObject* f)
-    void set_stop_criterion(double stop_criterion)
-
-cdef extern from "include/optimizers/particles/common-noise/Langevin.hh":
-  cdef cppclass CCN_Langevin "CN_Langevin":
-    CCN_Langevin(
-      vector[vector[double]] bounds,
-      int n_particles,
-      int iter,
-      double dt,
-      double beta,
-      double alpha,
-      double gamma,
-      double lambda_,
-      double delta,
-      int moment
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -379,33 +347,6 @@ cdef class PSO:
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
 
-cdef class SBS_RKHS:
-  cdef CSBS_RKHS *thisptr
-  def __cinit__(
-    self,
-    bounds,
-    int n_particles,
-    int iter,
-    double dt,
-    int k,
-    double sigma,
-    double alpha,
-    int batch_size
-  ):
-    self.thisptr = new CSBS_RKHS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
-  
-  def minimize(self, f):
-    py_init()
-    cdef PyObject* pyob_ptr = <PyObject*>f
-    res = self.thisptr.py_minimize(pyob_ptr)
-    return res
-
-  def set_stop_criterion(self, stop_criterion):
-    self.thisptr.set_stop_criterion(stop_criterion)
-  
-  def __del__(self):
-    del self.thisptr
-    
 cdef class Langevin:
   cdef CLangevin *thisptr
   def __cinit__(
@@ -431,29 +372,3 @@ cdef class Langevin:
   
   def __del__(self):
     del self.thisptr
-
-cdef class CN_Langevin:
-  cdef CCN_Langevin *thisptr
-  def __cinit__(
-    self,
-    bounds,
-    int n_particles,
-    int iter,
-    double dt,
-    double beta,
-    double alpha,
-    double gamma,
-    double lambda_,
-    double delta,
-    int moment
-  ):
-    self.thisptr = new CCN_Langevin(bounds, n_particles, iter, dt, beta, alpha, gamma, lambda_, delta, moment)
-
-  def minimize(self, f):
-    py_init()
-    cdef PyObject* pyob_ptr = <PyObject*>f
-    res = self.thisptr.py_minimize(pyob_ptr)
-    return res
-
-  def set_stop_criterion(self, stop_criterion):
-    self.thisptr.set_stop_criterion(stop_criterion)

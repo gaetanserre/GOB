@@ -8,15 +8,15 @@ f = Square()
 
 bounds = create_bounds(2, -99, 99)
 
-""" opt = CBO(bounds)
+opt = CBO(bounds)
 res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}") """
+print(f"Results for {opt}: {res[1]}")
 
 opt = SBS(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
-""" opt = AdaLIPO_P(bounds)
+opt = AdaLIPO_P(bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
@@ -26,4 +26,8 @@ print(f"Results for {opt}: {res[1]}")
 
 opt = CMA_ES(bounds)
 res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}") """
+print(f"Results for {opt}: {res[1]}")
+
+opt = Langevin(bounds)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
