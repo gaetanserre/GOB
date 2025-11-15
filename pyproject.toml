@@ -6,7 +6,7 @@ maintainers = [
   { name = "Gaëtan Serré", email = "gaetan.serre@ens-paris-saclay.fr" },
 ]
 name = "gob"
-version = "0.0.4"
+version = "0.0.5"
 dependencies = [
   "numpy>=2.1.3",
   "Cython>=3.0.11",
