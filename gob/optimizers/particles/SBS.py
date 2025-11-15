@@ -20,6 +20,8 @@ class SBS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
+    k : float
+        The kappa exponent.
     sigma : float
         The kernel bandwidth.
     alpha : float
