@@ -3,6 +3,7 @@
  */
 
 #include "optimizers/particles/particles_utils.hh"
+#include <numeric>
 
 double log_sum_exp(double *begin, double *end)
 {
