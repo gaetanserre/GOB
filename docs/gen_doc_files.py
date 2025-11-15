@@ -10,8 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
-
-matplotlib.rcParams.update({"font.size": 9, "text.usetex": True})
+matplotlib.rcParams.update({"font.size": 9})
 
 
 def create_dir(path: Path):
@@ -101,8 +100,8 @@ if __name__ == "__main__":
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
             ax.plot_surface(X, Y, Z, linewidth=0.2, edgecolors="white", cmap="coolwarm")
-            ax.set_xlabel("$x$")
-            ax.set_ylabel("$y$")
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
             ax.set_box_aspect(None, zoom=0.8)
             xticks = ax.xaxis.get_major_ticks()
             yticks = ax.yaxis.get_major_ticks()
@@ -148,8 +147,8 @@ if __name__ == "__main__":
             ).reshape(X.shape)
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
             ax.plot_surface(X, Y, Z, linewidth=0.2, edgecolors="white", cmap="coolwarm")
-            ax.set_xlabel("$x$")
-            ax.set_ylabel("$y$")
+            ax.set_xlabel("x")
+            ax.set_ylabel("y")
             ax.set_box_aspect(None, zoom=0.8)
             xticks = ax.xaxis.get_major_ticks()
             yticks = ax.yaxis.get_major_ticks()
