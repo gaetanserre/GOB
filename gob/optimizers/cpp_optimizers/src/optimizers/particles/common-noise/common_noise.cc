@@ -19,7 +19,7 @@ common_dynamic Common_Noise::square_dynamic(const Eigen::MatrixXd &particles, co
   for (int dim = 0; dim < d; dim++)
   {
     double moment = func(particles, dim);
-    drift(dim) = (particles(idx, dim) * (moment - 3 / 2)) / (4 * pow(this->lambda + moment, 2));
+    drift(dim) = (particles(idx, dim) * (this->delta - 3 / 2)) / (4 * pow(this->lambda + moment, 2));
     noise(dim) = particles(idx, dim) / (2 * (this->lambda + moment));
   }
   return {drift, noise.asDiagonal()};

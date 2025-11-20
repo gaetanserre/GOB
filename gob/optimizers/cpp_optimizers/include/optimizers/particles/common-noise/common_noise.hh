@@ -30,6 +30,8 @@ public:
   {
     this->base_opt = base_optimizer;
     this->gamma = gamma;
+    this->lambda = lambda;
+    this->delta = delta;
     this->noise_type = noise_type;
   }
 
