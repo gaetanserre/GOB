@@ -41,7 +41,7 @@ class CN_Langevin(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.1,
+        dt=10,
         beta=1,
         alpha=0.99,
         gamma=1,

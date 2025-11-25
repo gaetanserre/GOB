@@ -49,5 +49,5 @@ private:
   common_dynamic m2_dynamic(const Eigen::MatrixXd &particles, const int &idx);
   common_dynamic var_dynamic(const Eigen::MatrixXd &particles, const int &idx);
 
-  void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples);
+  void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, int &t);
 };

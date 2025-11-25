@@ -45,7 +45,6 @@ cdef extern from "include/optimizers/particles/SBS.hh":
       double dt,
       int k,
       double sigma,
-      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -136,7 +135,6 @@ cdef extern from "include/optimizers/particles/Langevin.hh":
       int iter,
       double dt,
       double beta,
-      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -234,10 +232,9 @@ cdef class SBS:
     double dt,
     int k,
     double sigma,
-    double alpha,
     int batch_size
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
+    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -415,10 +412,9 @@ cdef class Langevin:
     int iter,
     double dt,
     beta,
-    double alpha,
     int batch_size
   ):
-    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
+    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, beta, batch_size)
   
   def minimize(self, f):
     py_init()

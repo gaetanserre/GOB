@@ -4,16 +4,24 @@
 
 #include "optimizers/particles/particles_optimizer.hh"
 
-void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples)
+void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, int &t)
 {
   vector<double> evals((*particles).rows());
+  for (int i = 0; i < particles->rows(); i++)
+  {
+    samples->push_back((*particles).row(i));
+  }
+
   dynamic dyn = this->compute_dynamics(*particles, f, &evals);
+
+  // Drift update
+  this->sched->step(particles, dyn.drift, t);
+  double dt = this->sched->get_dt();
 
   for (int j = 0; j < particles->rows(); j++)
   {
     all_evals->push_back(evals[j]);
-    samples->push_back((*particles).row(j));
-    particles->row(j) += dyn.drift.row(j) * this->dt + sqrt(this->dt) * dyn.noise.row(j);
+    particles->row(j) += sqrt(dt) * dyn.noise.row(j);
     particles->row(j) = clip_vector(particles->row(j), this->bounds);
   }
 }
@@ -23,6 +31,7 @@ result_eigen Particles_Optimizer::minimize(function<double(dyn_vector)> f)
   vector<double> all_evals;
   vector<dyn_vector> samples;
   Eigen::MatrixXd particles(this->n_particles, this->bounds.size());
+
   for (int i = 0; i < this->n_particles; i++)
   {
     particles.row(i) = unif_random_vector(this->re, this->bounds);
@@ -54,7 +63,7 @@ result_eigen Particles_Optimizer::minimize(function<double(dyn_vector)> f)
       {
         batch_particles.row(j) = particles.row(perm[j]);
       }
-      this->update_particles(&batch_particles, f, &all_evals, &samples);
+      this->update_particles(&batch_particles, f, &all_evals, &samples, i);
       for (int j = 0; j < this->batch_size; j++)
       {
         particles.row(perm[j]) = batch_particles.row(j);
@@ -62,13 +71,11 @@ result_eigen Particles_Optimizer::minimize(function<double(dyn_vector)> f)
     }
     else
 
-      this->update_particles(&particles, f, &all_evals, &samples);
+      this->update_particles(&particles, f, &all_evals, &samples, i);
 
     if (this->has_stop_criterion && min_vec(all_evals) <= this->stop_criterion)
       break;
-    this->sched->step();
   }
   int argmin = argmin_vec(all_evals);
-  this->sched->reset();
   return {samples[argmin], all_evals[argmin]};
 }

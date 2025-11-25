@@ -4,9 +4,9 @@ from gob.optimizers import *
 
 pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND", gen=42)
 
-f = Styblinskitang()
+f = Square()
 
-bounds = f.visual_bounds
+bounds = augment_dimensions(f.visual_bounds, 2)  # f.visual_bounds
 
 """ opt = CBO(bounds)
 res = opt.minimize(f)
@@ -28,12 +28,25 @@ res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
 opt = Langevin(
+    bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose, beta=1
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = PSO(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CBO(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CN_Langevin(
     bounds=bounds,
     n_particles=n_particles,
     iter=iter,
+    moment="M1",
     verbose=verbose,
-    beta=1,
-    alpha=0.99,
 )
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")

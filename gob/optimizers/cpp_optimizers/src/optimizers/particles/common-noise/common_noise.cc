@@ -37,10 +37,20 @@ common_dynamic Common_Noise::var_dynamic(const Eigen::MatrixXd &particles, const
   return square_dynamic(particles, idx, compute_variance);
 }
 
-void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples)
+void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, int &t)
 {
   vector<double> evals((*particles).rows());
+  for (int i = 0; i < particles->rows(); i++)
+  {
+    samples->push_back((*particles).row(i));
+  }
+
   dynamic dyn = this->base_opt->compute_dynamics(*particles, f, &evals);
+
+  // Drift update
+  this->base_opt->sched->step(particles, dyn.drift, t);
+  double dt = this->base_opt->sched->get_dt();
+
   dyn_vector common_noise = normal_random_vector(this->base_opt->re, particles->cols(), 0, 1);
 
   for (int j = 0; j < particles->rows(); j++)
@@ -59,12 +69,10 @@ void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(
       common_dynamic = this->var_dynamic(*particles, j);
     }
 
+    // Noise, common drift, and common noise update
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
-    particles->row(j) += this->base_opt->dt *
-                             (dyn.drift.row(j) + this->gamma * common_dynamic.drift.transpose()) +
-                         sqrt(this->base_opt->dt) *
-                             (dyn.noise.row(j) + this->gamma * (common_dynamic.noise * common_noise).transpose());
+    particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * this->gamma * (common_dynamic.noise * common_noise).transpose();
     particles->row(j) = clip_vector(particles->row(j), this->base_opt->bounds);
   }
 }
@@ -80,13 +88,13 @@ result_eigen Common_Noise::minimize(function<double(dyn_vector)> f)
   }
   for (int i = 0; i < this->base_opt->iter; i++)
   {
-    this->update_particles(&particles, f, &all_evals, &samples);
+    this->update_particles(&particles, f, &all_evals, &samples, i);
 
     if (this->base_opt->has_stop_criterion && min_vec(all_evals) <= this->base_opt->stop_criterion)
       break;
-    this->base_opt->sched->step();
+    // this->base_opt->sched->step();
   }
   int argmin = argmin_vec(all_evals);
-  this->base_opt->sched->reset();
+  // this->base_opt->sched->reset();
   return {samples[argmin], all_evals[argmin]};
 }

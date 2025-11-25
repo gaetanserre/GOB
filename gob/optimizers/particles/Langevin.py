@@ -36,14 +36,13 @@ class Langevin(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.1,
+        dt=10,
         beta=1,
-        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("Langevin", bounds)
-        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
+        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):
