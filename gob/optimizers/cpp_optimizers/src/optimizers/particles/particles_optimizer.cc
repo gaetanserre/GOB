@@ -18,6 +18,7 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
   this->sched->step(particles, dyn.drift, t);
   double dt = this->sched->get_dt();
 
+  // Noise update
   for (int j = 0; j < particles->rows(); j++)
   {
     all_evals->push_back(evals[j]);
