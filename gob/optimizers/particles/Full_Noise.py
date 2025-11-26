@@ -40,7 +40,7 @@ class Full_Noise(CPP_Optimizer):
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("Full Noise", bounds, verbose)
+        super().__init__("Full_Noise", bounds, verbose)
         self.c_opt = C_Full_Noise(bounds, n_particles, iter, dt, alpha, batch_size)
 
     def minimize(self, f):
