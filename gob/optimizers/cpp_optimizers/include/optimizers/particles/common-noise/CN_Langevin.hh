@@ -13,7 +13,6 @@ public:
       int iter,
       double dt,
       double beta,
-      double alpha,
       double gamma,
       double lambda,
       double delta,

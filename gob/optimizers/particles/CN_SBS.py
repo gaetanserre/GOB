@@ -3,12 +3,12 @@
 #
 
 from ..optimizer import Optimizer
-from ..cpp_optimizers import CN_Langevin as CCN_Langevin
+from ..cpp_optimizers import CN_SBS as CCN_SBS
 
 
-class CN_Langevin(Optimizer):
+class CN_SBS(Optimizer):
     """
-    Interface for the Common noise Langevin optimizer.
+    Interface for the Common noise SBS optimizer.
 
     Parameters
     ----------
@@ -20,8 +20,8 @@ class CN_Langevin(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    beta : float
-        The inverse temperature.
+    sigma : float
+        The kernel bandwidth.
     gamma : float
         The coefficient for the common noise.
     ``lambda_`` : float
@@ -40,14 +40,14 @@ class CN_Langevin(Optimizer):
         n_particles=200,
         iter=100,
         dt=10,
-        beta=1,
+        sigma=0.1,
         gamma=1,
         lambda_=0,
         delta=2.1,
         moment="M2",
         verbose=False,
     ):
-        super().__init__("CN_Langevin", bounds)
+        super().__init__("CN_SBS", bounds)
 
         match moment:
             case "M1":
@@ -61,8 +61,8 @@ class CN_Langevin(Optimizer):
                     'Invalid moment type. Choose from "M1", "M2", or "VAR".'
                 )
 
-        self.c_opt = CCN_Langevin(
-            bounds, n_particles, iter, dt, beta, gamma, lambda_, delta, moment
+        self.c_opt = CCN_SBS(
+            bounds, n_particles, iter, dt, sigma, gamma, lambda_, delta, moment
         )
         self.verbose = verbose
 

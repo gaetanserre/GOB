@@ -77,7 +77,31 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_Langevin",
+                "CN_SBS",
+                {
+                    "n_particles": n_particles,
+                    "iter": iter,
+                    "moment": "VAR",
+                },
+            ),
+            (
+                "CN_SBS",
+                {
+                    "n_particles": n_particles,
+                    "iter": iter,
+                    "moment": "M1",
+                },
+            ),
+            (
+                "CN_SBS",
+                {
+                    "n_particles": n_particles,
+                    "iter": iter,
+                    "moment": "M2",
+                },
+            ),
+            (
+                "CN_SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,

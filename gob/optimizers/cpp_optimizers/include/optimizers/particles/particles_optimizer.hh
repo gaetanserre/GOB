@@ -2,10 +2,10 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/optimizer.hh"
 #include "optimizers/particles/schedulers.hh"
-
-#pragma once
 
 struct dynamic
 {

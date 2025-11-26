@@ -20,8 +20,6 @@ class SBS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : float
-        The kappa exponent.
     sigma : float
         The kernel bandwidth.
     batch_size : int
@@ -37,13 +35,12 @@ class SBS(Optimizer):
         n_particles=200,
         iter=100,
         dt=10,
-        k=1,
         sigma=0.1,
         batch_size=0,
         verbose=False,
     ):
         super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, batch_size)
+        self.c_opt = C_SBS(bounds, n_particles, iter, dt, sigma, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):

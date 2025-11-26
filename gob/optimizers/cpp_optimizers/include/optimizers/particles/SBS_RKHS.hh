@@ -12,19 +12,16 @@ public:
       int n_particles,
       int iter,
       double dt,
-      int k,
       double sigma,
       double alpha,
       int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, alpha), "SBS_RKHS")
   {
-    this->k = k;
     this->sigma = sigma;
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
 
 private:
-  int k;
   double sigma;
   double theta;
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);

@@ -3,7 +3,7 @@
  */
 
 #include "optimizers/particles/common-noise/common_noise.hh"
-#include "optimizers/particles/common-noise/Langevin.hh"
+#include "optimizers/particles/common-noise/CN_Langevin.hh"
 
 void CN_Langevin::set_stop_criterion(double stop_criterion)
 {

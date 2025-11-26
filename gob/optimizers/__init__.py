@@ -18,3 +18,4 @@ from .particles.PSO import PSO
 from .particles.SBS_RKHS import SBS_RKHS
 from .particles.Langevin import Langevin
 from .particles.CN_Langevin import CN_Langevin
+from .particles.CN_SBS import CN_SBS

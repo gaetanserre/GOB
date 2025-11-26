@@ -2,9 +2,9 @@
  * Created in 2025 by Gaëtan Serré
  */
 
-#include "optimizers/particles/schedulers.hh"
-
 #pragma once
+
+#include "optimizers/particles/schedulers.hh"
 
 class Adam : public Scheduler
 {
@@ -21,6 +21,7 @@ private:
 
   Eigen::MatrixXd m;
   Eigen::MatrixXd v;
+  Eigen::MatrixXd v_max;
   double epsilon = 1e-8;
   double approx_dt = 0.0;
 };

@@ -40,7 +40,7 @@ dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const funct
   for (int j = 0; j < particles.rows(); j++)
   {
     double f_x;
-    grads.row(j) = -this->k * gradient(particles.row(j), f, &f_x);
+    grads.row(j) = -gradient(particles.row(j), f, &f_x);
     (*evals)[j] = f_x;
   }
   Eigen::MatrixXd kernel;
