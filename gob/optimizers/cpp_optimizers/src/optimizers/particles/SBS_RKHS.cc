@@ -36,7 +36,7 @@ Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles, const 
 dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
 {
 
-  Eigen::MatrixXd grads(particles.rows(), this->bounds.size());
+  Eigen::MatrixXd grads(particles.rows(), particles.cols());
   for (int j = 0; j < particles.rows(); j++)
   {
     double f_x;

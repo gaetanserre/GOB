@@ -59,7 +59,9 @@ if __name__ == "__main__":
     gob = GOB(
         [
             ("Langevin", {"n_particles": n_particles, "iter": iter}),
+            ("Langevin", {"n_particles": n_particles, "iter": iter, "beta": 0}),
             ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
+            ("Full_Noise", {"n_particles": n_particles, "iter": iter}),
             (
                 "CN_Langevin",
                 {

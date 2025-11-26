@@ -15,7 +15,7 @@ Eigen::MatrixXd SBS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd 
 
 dynamic SBS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
 {
-  Eigen::MatrixXd grads(particles.rows(), this->bounds.size());
+  Eigen::MatrixXd grads(particles.rows(), particles.cols());
   for (int j = 0; j < particles.rows(); j++)
   {
     double f_x;
@@ -24,6 +24,6 @@ dynamic SBS::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
   }
   Eigen::MatrixXd kernel;
   Eigen::MatrixXd kernel_grad = this->rbf_grad(particles, &kernel);
-  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), this->bounds.size());
+  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), particles.cols());
   return {((kernel * grads + kernel_grad) / particles.rows()), noise};
 }

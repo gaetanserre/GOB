@@ -48,6 +48,6 @@ dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
     this->velocities.row(i) = this->omega * this->velocities.row(i) + this->c2 * (vf.transpose() - particles.row(i));
   }
 
-  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), this->bounds.size());
+  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), particles.cols());
   return {this->velocities, noise};
 }

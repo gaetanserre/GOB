@@ -3,10 +3,11 @@
 #
 
 from ..optimizer import Optimizer
-from ..cpp_optimizers import Langevin as C_Langevin
+from ..cpp_optimizers import Full_Noise as C_Full_Noise
+import numpy as np
 
 
-class Langevin(Optimizer):
+class Full_Noise(Optimizer):
     """
     Interface for the Langevin optimizer.
 
@@ -20,8 +21,8 @@ class Langevin(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    beta : float
-        The inverse temperature.
+    alpha : float
+        The coefficient to decrease the step size.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -34,19 +35,20 @@ class Langevin(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=10,
-        beta=1,
+        dt=0.1,
+        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("Langevin", bounds)
-        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, batch_size)
+        super().__init__("Full Noise", bounds)
+        self.c_opt = C_Full_Noise(bounds, n_particles, iter, dt, alpha, batch_size)
         self.verbose = verbose
 
     def minimize(self, f):
         if self.verbose:
             f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
+        res = self.c_opt.minimize(f)
+        return (res[0], f(np.array(res[0])))
 
     def set_stop_criterion(self, stop_criterion):
         self.c_opt.set_stop_criterion(stop_criterion)

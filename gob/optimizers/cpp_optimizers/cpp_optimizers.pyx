@@ -170,6 +170,20 @@ cdef extern from "include/optimizers/particles/common-noise/CN_SBS.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
+
+cdef extern from "include/optimizers/particles/Full_Noise.hh":
+  cdef cppclass CFull_Noise "Full_Noise":
+    CFull_Noise(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double alpha,
+      int batch_size
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
 # Python interface
 
 cdef class PRS:
@@ -488,3 +502,22 @@ cdef class CN_SBS:
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class Full_Noise:
+  cdef CFull_Noise *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double alpha,
+    int batch_size
+  ):
+    self.thisptr = new CFull_Noise(bounds, n_particles, iter, dt, alpha, batch_size)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res

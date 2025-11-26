@@ -17,7 +17,7 @@ dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
   double f_vf = f(vf);
 
   Eigen::MatrixXd drift(particles.rows(), particles.cols());
-  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
+  Eigen::MatrixXd noise = normal_noise(particles.rows(), particles.cols(), this->re);
   for (int i = 0; i < particles.rows(); i++)
   {
     dyn_vector diff = (particles.row(i) - vf.transpose());
