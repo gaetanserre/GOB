@@ -27,9 +27,7 @@ opt = SBS(
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
-opt = Langevin(
-    bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose, beta=1
-)
+opt = Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 

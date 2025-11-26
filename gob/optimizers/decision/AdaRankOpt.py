@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import AdaRankOpt as C_AdaRankOpt
 
 
-class AdaRankOpt(Optimizer):
+class AdaRankOpt(CPP_Optimizer):
     """
     Interface for the AdaRankOpt optimizer.
 
@@ -41,7 +41,7 @@ class AdaRankOpt(Optimizer):
         it_lim=100,
         verbose=False,
     ):
-        super().__init__("AdaRankOpt", bounds)
+        super().__init__("AdaRankOpt", bounds, verbose)
 
         if n_eval < bobyqa_eval:
             bobyqa_eval = n_eval
@@ -58,16 +58,3 @@ class AdaRankOpt(Optimizer):
             bobyqa_eval,
             it_lim,
         )
-
-        self.verbose = verbose
-
-    def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt

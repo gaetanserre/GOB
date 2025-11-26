@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import AdaLIPO_P as C_AdaLIPO_P
 
 
-class AdaLIPO_P(Optimizer):
+class AdaLIPO_P(CPP_Optimizer):
     """
     Interface for the AdaLIPO+TR optimizer.
 
@@ -35,7 +35,7 @@ class AdaLIPO_P(Optimizer):
         bobyqa_eval=20,
         verbose=False,
     ):
-        super().__init__("AdaLIPO+TR", bounds)
+        super().__init__("AdaLIPO+TR", bounds, verbose)
 
         if n_eval < bobyqa_eval:
             bobyqa_eval = n_eval
@@ -50,16 +50,3 @@ class AdaLIPO_P(Optimizer):
             trust_region_radius,
             bobyqa_eval,
         )
-
-        self.verbose = verbose
-
-    def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt

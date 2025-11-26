@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import CBO as C_CBO
 
 
-class CBO(Optimizer):
+class CBO(CPP_Optimizer):
     """
     Interface for the CBO optimizer.
 
@@ -51,7 +51,7 @@ class CBO(Optimizer):
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("CBO", bounds)
+        super().__init__("CBO", bounds, verbose)
         self.c_opt = C_CBO(
             bounds,
             n_particles,
@@ -64,15 +64,3 @@ class CBO(Optimizer):
             alpha,
             batch_size,
         )
-        self.verbose = verbose
-
-    def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt

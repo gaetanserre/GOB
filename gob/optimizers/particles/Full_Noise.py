@@ -2,12 +2,12 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import Full_Noise as C_Full_Noise
 import numpy as np
 
 
-class Full_Noise(Optimizer):
+class Full_Noise(CPP_Optimizer):
     """
     Interface for the Langevin optimizer.
 
@@ -40,18 +40,9 @@ class Full_Noise(Optimizer):
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("Full Noise", bounds)
+        super().__init__("Full Noise", bounds, verbose)
         self.c_opt = C_Full_Noise(bounds, n_particles, iter, dt, alpha, batch_size)
-        self.verbose = verbose
 
     def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        res = self.c_opt.minimize(f)
+        res = super().minimize(f)
         return (res[0], f(np.array(res[0])))
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt
