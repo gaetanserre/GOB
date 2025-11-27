@@ -10,7 +10,7 @@ import gob.benchmarks as gb
 n_particles = 150
 iter = 300
 sigma = 1 / n_particles**2
-dim = 10
+dim = 2
 
 if __name__ == "__main__":
     pygkls = PyGKLS(dim, 15, [-100, 100], -100, smoothness="ND")
@@ -28,9 +28,10 @@ if __name__ == "__main__":
         [
             ("Langevin", {"n_particles": n_particles, "iter": iter}),
             ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
+            "CBO",
         ],
-        benchmarks,
-        ["Proportion"],
+        benchmarks[:3],
+        [],
         bounds=bounds,
     )
-    gob.run(n_runs=5, verbose=1)
+    gob.run(n_runs=5, verbose=1, latex_table=True)

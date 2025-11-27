@@ -4,6 +4,8 @@
 
 from prettytable.colortable import ColorTable, Themes
 import numpy as np
+from statsmodels.stats.multitest import multipletests
+from scipy.stats import mannwhitneyu
 
 
 def print_purple(*text):
@@ -91,6 +93,18 @@ def print_table_by_benchmark(res_dict):
         print(tab)
 
 
+def _significancy(res_dict_benchmark, best_optim_name):
+    sols = res_dict_benchmark[best_optim_name]["Approx"]["all"]
+    p_values = []
+    for optim_name, optim_dict in res_dict_benchmark.items():
+        if optim_name != best_optim_name:
+            sols_other = optim_dict["Approx"]["all"]
+            _, p_value = mannwhitneyu(sols, sols_other, alternative="two-sided")
+            p_values.append(p_value)
+    pvals_corr = multipletests(p_values, method="holm")[1]
+    return (np.array(pvals_corr) < 0.05).all(), pvals_corr[0]
+
+
 def print_table_by_metric_latex(res_dict):
     """
     Print the results of the optimization for each metric in LaTeX format.
@@ -107,6 +121,7 @@ def print_table_by_metric_latex(res_dict):
         tab = ColorTable(theme=Themes.LAVENDER)
         tab.add_column("Benchmark", list(res_dict.keys()))
         names_opt = list(list(res_dict.values())[0].keys())
+        p_values = {}
         for name_opt in names_opt:
             score = []
             for benchmark_name in res_dict:
@@ -119,20 +134,38 @@ def print_table_by_metric_latex(res_dict):
                     mean = transform_number(
                         res_dict[benchmark_name][name_opt][metric_name]["mean"]
                     )
-                    std = transform_number(
+                    """ std = transform_number(
                         res_dict[benchmark_name][name_opt][metric_name]["std"]
-                    )
+                    ) """
                     if (
                         res_dict[benchmark_name][name_opt][metric_name]["mean"]
                         == best_mean
                     ):
                         mean = f"\\mathbf{{{mean}}}"
-                    score.append(f"${mean} \\pm {std}$")
+                        if benchmark_name in p_values:
+                            significancy = True
+                        else:
+                            count_best = sum(1 for m in means if m == best_mean)
+                            if count_best > 1:
+                                significancy = True
+                                p_values[benchmark_name] = "N/A"
+                            else:
+                                significancy, p_val = _significancy(
+                                    res_dict[benchmark_name], name_opt
+                                )
+                                p_values[benchmark_name] = f"${p_val:.3f}$"
+                        if significancy:
+                            color = r"\cellcolor{lightgray}"
+                            mean = f"{color} {mean}"
+                    score.append(f"${mean}$")
                 else:
                     score.append(
                         f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
                     )
             tab.add_column(name_opt, score)
+        print(p_values)
+        p_values = [p_values[bm] for bm in res_dict]
+        tab.add_column("p-value", p_values)
         print(tab.get_formatted_string("latex"))
 
 

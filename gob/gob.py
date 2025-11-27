@@ -255,7 +255,11 @@ class GOB:
                     sols.append(sol)
                     if nr < n_runs - 1:
                         optimizer_ = self.parse_optimizer(optimizer, self.bounds[i])
-                opt_dict["Approx"] = {"mean": np.mean(sols), "std": np.std(sols)}
+                opt_dict["Approx"] = {
+                    "mean": np.mean(sols),
+                    "std": np.std(sols),
+                    "all": np.array(sols),
+                }
                 for metric in self.metrics:
                     metric = self.parse_metric(
                         metric, benchmark, self.bounds[i], self.options.get(metric, {})
