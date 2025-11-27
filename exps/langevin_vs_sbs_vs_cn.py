@@ -42,7 +42,7 @@ def print_avg_rank(res_dict):
 n_particles = 150
 iter = 300
 sigma = 1 / n_particles**2
-dim = 10
+dim = 20
 
 if __name__ == "__main__":
     pygkls = PyGKLS(dim, 15, [-100, 100], -100, smoothness="ND")
@@ -61,7 +61,6 @@ if __name__ == "__main__":
             ("Langevin", {"n_particles": n_particles, "iter": iter}),
             ("Langevin", {"n_particles": n_particles, "iter": iter, "beta": 0}),
             ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
-            ("Full_Noise", {"n_particles": n_particles, "iter": iter}),
             (
                 "CN_Langevin",
                 {
@@ -79,7 +78,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_SBS",
+                "CN_Langevin",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
