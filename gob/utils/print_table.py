@@ -102,7 +102,7 @@ def _significancy(res_dict_benchmark, best_optim_name):
             _, p_value = mannwhitneyu(sols, sols_other, alternative="two-sided")
             p_values.append(p_value)
     pvals_corr = multipletests(p_values, method="holm")[1]
-    return (np.array(pvals_corr) < 0.05).all(), pvals_corr[0]
+    return (np.array(pvals_corr) < 0.05).all(), np.max(pvals_corr[0])
 
 
 def print_table_by_metric_latex(res_dict):
@@ -163,9 +163,10 @@ def print_table_by_metric_latex(res_dict):
                         f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
                     )
             tab.add_column(name_opt, score)
-        print(p_values)
-        p_values = [p_values[bm] for bm in res_dict]
-        tab.add_column("p-value", p_values)
+        if metric_name == "Approx":
+            print(p_values)
+            p_values = [p_values[bm] for bm in res_dict]
+            tab.add_column("p-value", p_values)
         print(tab.get_formatted_string("latex"))
 
 
