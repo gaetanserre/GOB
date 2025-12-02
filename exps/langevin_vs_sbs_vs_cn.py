@@ -42,7 +42,7 @@ def print_avg_rank(res_dict):
 n_particles = 150
 iter = 300
 sigma = 1 / n_particles**2
-dim = 20
+dim = 50
 
 if __name__ == "__main__":
     pygkls = PyGKLS(dim, 15, [-100, 100], -100, smoothness="ND")
