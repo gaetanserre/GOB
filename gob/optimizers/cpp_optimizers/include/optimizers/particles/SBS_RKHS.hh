@@ -3,6 +3,7 @@
  */
 
 #include "optimizers/particles/particles_optimizer.hh"
+#include "optimizers/particles/Adam.hh"
 
 class SBS_RKHS : public Particles_Optimizer
 {
@@ -13,8 +14,7 @@ public:
       int iter,
       double dt,
       double sigma,
-      double alpha,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, alpha), "SBS_RKHS")
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new Adam(dt), "SBS_RKHS")
   {
     this->sigma = sigma;
   }

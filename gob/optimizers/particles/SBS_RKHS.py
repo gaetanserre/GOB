@@ -22,8 +22,6 @@ class SBS_RKHS(CPP_Optimizer):
         The time step.
     sigma : float
         The kernel bandwidth.
-    alpha : float
-        The coefficient to decrease the step size.
     theta : float
         The regularization parameter for the RKHS-based noise.
     batch_size : int
@@ -40,7 +38,6 @@ class SBS_RKHS(CPP_Optimizer):
         iter=100,
         dt=10,
         sigma=0.1,
-        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
@@ -52,6 +49,5 @@ class SBS_RKHS(CPP_Optimizer):
             iter,
             dt,
             sigma,
-            alpha,
             batch_size,
         )

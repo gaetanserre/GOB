@@ -42,7 +42,7 @@ def print_avg_rank(res_dict):
 n_particles = 150
 iter = 300
 sigma = 1 / n_particles**2
-dim = 10
+dim = 50
 
 if __name__ == "__main__":
     pygkls = PyGKLS(dim, 15, [-100, 100], -100, smoothness="ND")
@@ -58,8 +58,32 @@ if __name__ == "__main__":
 
     gob = GOB(
         [
-            ("Langevin", {"n_particles": n_particles, "iter": iter}),
-            ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
+            ("SBS", {"n_particles": n_particles, "iter": iter}),
+            (
+                "CN_SBS",
+                {
+                    "n_particles": n_particles,
+                    "iter": iter,
+                    "moment": "M1",
+                },
+            ),
+            (
+                "CN_SBS",
+                {
+                    "n_particles": n_particles,
+                    "iter": iter,
+                    "moment": "M2",
+                },
+            ),
+            (
+                "CN_SBS",
+                {
+                    "n_particles": n_particles,
+                    "iter": iter,
+                    "moment": "VAR",
+                },
+            ),
+            ("SBS-RKHS", {"n_particles": n_particles, "iter": iter}),
         ],
         benchmarks,
         ["Proportion"],

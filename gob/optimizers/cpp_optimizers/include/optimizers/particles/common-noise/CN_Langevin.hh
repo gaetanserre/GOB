@@ -16,7 +16,7 @@ public:
       double gamma,
       double lambda,
       double delta,
-      int moment) : Optimizer(bounds, "CN_Langevin"),
+      int moment) : Optimizer(bounds, "CN-Langevin"),
                     base_opt(bounds, n_particles, iter, dt, beta, 0)
   {
     this->gamma = gamma;

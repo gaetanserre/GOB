@@ -47,7 +47,7 @@ class CN_SBS(CPP_Optimizer):
         moment="M2",
         verbose=False,
     ):
-        super().__init__("CN_SBS", bounds, verbose)
+        super().__init__("CN-SBS", bounds, verbose)
 
         match moment:
             case "M1":

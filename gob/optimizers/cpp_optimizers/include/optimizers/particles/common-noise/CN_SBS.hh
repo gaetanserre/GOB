@@ -16,7 +16,7 @@ public:
       double gamma,
       double lambda,
       double delta,
-      int moment) : Optimizer(bounds, "CN_SBS"),
+      int moment) : Optimizer(bounds, "CN-SBS"),
                     base_opt(bounds, n_particles, iter, dt, sigma, 0)
   {
     this->gamma = gamma;

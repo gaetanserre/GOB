@@ -47,7 +47,7 @@ class CN_Langevin(CPP_Optimizer):
         moment="M2",
         verbose=False,
     ):
-        super().__init__("CN_Langevin", bounds, verbose)
+        super().__init__("CN-Langevin", bounds, verbose)
 
         match moment:
             case "M1":
