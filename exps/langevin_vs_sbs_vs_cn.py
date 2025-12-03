@@ -58,11 +58,10 @@ if __name__ == "__main__":
 
     gob = GOB(
         [
-            ("Langevin", {"n_particles": n_particles, "iter": iter}),
+            """ ("Langevin", {"n_particles": n_particles, "iter": iter}),
             ("Langevin", {"n_particles": n_particles, "iter": iter, "beta": 0}),
-            ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
-            (
-                "CN_Langevin",
+            ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}), """(
+                "CN-Langevin",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -70,7 +69,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_Langevin",
+                "CN-Langevin",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -78,7 +77,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_Langevin",
+                "CN-Langevin",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -86,7 +85,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_SBS",
+                "CN-SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -94,7 +93,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_SBS",
+                "CN-SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -102,7 +101,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_SBS",
+                "CN-SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,

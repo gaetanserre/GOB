@@ -60,7 +60,7 @@ if __name__ == "__main__":
         [
             ("SBS", {"n_particles": n_particles, "iter": iter}),
             (
-                "CN_SBS",
+                "CN-SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -68,7 +68,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_SBS",
+                "CN-SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
@@ -76,7 +76,7 @@ if __name__ == "__main__":
                 },
             ),
             (
-                "CN_SBS",
+                "CN-SBS",
                 {
                     "n_particles": n_particles,
                     "iter": iter,
