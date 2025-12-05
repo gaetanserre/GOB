@@ -28,7 +28,7 @@ Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles, const 
   Eigen::MatrixXd K_sqrt = es.eigenvectors() * D.cwiseSqrt().asDiagonal() * es.eigenvectors().transpose();
   Eigen::MatrixXd K_sqrt_kron = Eigen::kroneckerProduct(K_sqrt, Eigen::MatrixXd::Identity(d, d));
 
-  dyn_vector alphas_tmp = (K_sqrt_kron / particles.rows()) * normal_random_vector(this->re, K_sqrt_kron.rows(), 0, 1);
+  dyn_vector alphas_tmp = K_sqrt_kron * normal_random_vector(this->re, K_sqrt_kron.rows(), 0, 1);
   Eigen::MatrixXd alphas = Eigen::Map<Eigen::MatrixXd>(alphas_tmp.data(), particles.rows(), d);
   return alphas;
 }
