@@ -37,6 +37,27 @@ common_dynamic Common_Noise::var_dynamic(const Eigen::MatrixXd &particles, const
   return square_dynamic(particles, idx, compute_variance);
 }
 
+common_dynamic Common_Noise::mean_var_dynamic(const Eigen::MatrixXd &particles, const int &idx)
+{
+  int d = particles.cols();
+  common_dynamic var_dyn = this->var_dynamic(particles, idx);
+  dyn_vector drift = dyn_vector::Zero(2 * d);
+  drift << dyn_vector::Zero(d), var_dyn.drift;
+  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(d, 2 * d);
+}
+
+int get_common_dim(NoiseType noise_type, int d)
+{
+  if (noise_type == NoiseType::M1 || noise_type == NoiseType::M2 || noise_type == NoiseType::VAR)
+  {
+    return d;
+  }
+  else
+  {
+    return 2 * d;
+  }
+}
+
 void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, int &t)
 {
   vector<double> evals((*particles).rows());
@@ -51,7 +72,10 @@ void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(
   this->base_opt->sched->step(particles, dyn.drift, t);
   double dt = this->base_opt->sched->get_dt();
 
-  dyn_vector common_noise = normal_random_vector(this->base_opt->re, particles->cols(), 0, 1);
+  dyn_vector common_noise = normal_random_vector(
+      this->base_opt->re,
+      get_common_dim(this->noise_type, particles->cols()),
+      0, 1);
 
   for (int j = 0; j < particles->rows(); j++)
   {

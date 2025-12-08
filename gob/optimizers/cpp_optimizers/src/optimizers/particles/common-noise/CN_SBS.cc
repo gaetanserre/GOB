@@ -14,6 +14,6 @@ void CN_SBS::set_stop_criterion(double stop_criterion)
 
 result_eigen CN_SBS::minimize(function<double(dyn_vector)> f)
 {
-  Common_Noise cn(&this->base_opt, this->gamma, this->lambda, this->delta, static_cast<NoiseType>(this->moment), "CN_SBS");
+  Common_Noise cn(&this->base_opt, this->gamma, this->lambda, this->delta, static_cast<NoiseType>(this->moment), this->name);
   return cn.minimize(f);
 }

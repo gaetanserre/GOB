@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=langevin_vs_sbs_vs_cn
+#SBATCH --job-name=Langevin
 #SBATCH --output=%x.o%j
 #SBATCH --ntasks=1
 #SBATCH --partition=cpu_long
@@ -19,6 +19,7 @@ conda activate dev
 set -x
 
 cd ${SLURM_SUBMIT_DIR}
+cd ..
 
 # execution
-python langevin_vs_sbs_vs_cn.py
+python Langevin.py

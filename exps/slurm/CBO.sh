@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=sbs_vs_cn_vs_rkhs
+#SBATCH --job-name=CBO
 #SBATCH --output=%x.o%j
 #SBATCH --ntasks=1
 #SBATCH --partition=cpu_long
@@ -19,6 +19,7 @@ conda activate dev
 set -x
 
 cd ${SLURM_SUBMIT_DIR}
+cd ..
 
 # execution
-python sbs_vs_cn_vs_rkhs.py
+python CBO.py

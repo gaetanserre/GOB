@@ -67,6 +67,16 @@ opt = SBS_RKHS(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbos
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}")
 
+opt = CN_CBO(
+    bounds=bounds,
+    n_particles=n_particles,
+    iter=iter,
+    moment="M1",
+    verbose=verbose,
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
 """ opt = CN_Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """

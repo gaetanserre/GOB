@@ -3,6 +3,7 @@
 #
 
 from prettytable.colortable import ColorTable, Themes
+from prettytable import VRuleStyle
 import numpy as np
 from statsmodels.stats.multitest import multipletests
 from scipy.stats import mannwhitneyu
@@ -105,6 +106,22 @@ def _significancy(res_dict_benchmark, best_optim_name):
     return (np.array(pvals_corr) < 0.05).all(), np.max(pvals_corr)
 
 
+def format_latex_table(tab_string):
+    lines = tab_string.splitlines()
+    # Remove first and last vlines
+    fst_line = list(lines[0])
+    fst_line[-2] = ""
+    # \begin{tabular}{| -> 16
+    fst_line[16] = ""
+    lines[0] = "".join(fst_line)
+
+    # Add thick hlines
+    lines[1] = r"\Xhline{2\arrayrulewidth}"
+    lines.insert(3, r"\Xhline{2\arrayrulewidth}")
+    lines[-2] = r"\Xhline{2\arrayrulewidth}"
+    return "\n".join(lines)
+
+
 def print_table_by_metric_latex(res_dict):
     """
     Print the results of the optimization for each metric in LaTeX format.
@@ -119,7 +136,7 @@ def print_table_by_metric_latex(res_dict):
     for metric_name in metric_names:
         print_purple(f"Results for {metric_name}:")
         tab = ColorTable(theme=Themes.LAVENDER)
-        tab.add_column("Benchmark", list(res_dict.keys()))
+        tab.add_column(r"\textbf{Benchmark}", list(res_dict.keys()))
         names_opt = list(list(res_dict.values())[0].keys())
         p_values = {}
         for name_opt in names_opt:
@@ -155,19 +172,23 @@ def print_table_by_metric_latex(res_dict):
                                 )
                                 p_values[benchmark_name] = f"${p_val:.3f}$"
                         if significancy:
-                            color = r"\cellcolor{lightgray}"
+                            color = r"\cellcolor{cell-gray}"
                             mean = f"{color} {mean}"
                     score.append(f"${mean}$")
                 else:
                     score.append(
                         f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
                     )
-            tab.add_column(name_opt, score)
+            tab.add_column(r"\textbf{" + name_opt + "}", score)
         if metric_name == "Approx":
             print(p_values)
             p_values = [p_values[bm] for bm in res_dict]
-            tab.add_column("p-value", p_values)
-        print(tab.get_formatted_string("latex"))
+            tab.add_column(r"\textbf{p-value}", p_values)
+
+        latex_table = tab.get_formatted_string(
+            "latex", vrules=VRuleStyle.ALL, border=True, format=True
+        )
+        print(format_latex_table(latex_table))
 
 
 def print_table_by_metric(res_dict):

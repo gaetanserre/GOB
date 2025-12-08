@@ -48,6 +48,7 @@ private:
   common_dynamic square_dynamic(const Eigen::MatrixXd &particles, const int &idx, auto func);
   common_dynamic m2_dynamic(const Eigen::MatrixXd &particles, const int &idx);
   common_dynamic var_dynamic(const Eigen::MatrixXd &particles, const int &idx);
+  common_dynamic mean_var_dynamic(const Eigen::MatrixXd &particles, const int &idx);
 
   void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, int &t);
 };

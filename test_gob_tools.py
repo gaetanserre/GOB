@@ -7,8 +7,8 @@ from gob.benchmarks import PyGKLS, create_bounds, augment_dimensions
 import inspect
 import gob.benchmarks as gb
 
-n_particles = 150
-iter = 300
+n_particles = 15
+iter = 10
 sigma = 1 / n_particles**2
 dim = 2
 
@@ -28,7 +28,7 @@ if __name__ == "__main__":
         [
             ("Langevin", {"n_particles": n_particles, "iter": iter}),
             ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
-            "CBO",
+            ("CBO", {"n_particles": n_particles, "iter": iter}),
         ],
         benchmarks[:3],
         [],

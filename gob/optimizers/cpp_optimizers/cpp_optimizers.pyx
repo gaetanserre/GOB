@@ -169,6 +169,25 @@ cdef extern from "include/optimizers/particles/common-noise/CN_SBS.hh":
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
 
+cdef extern from "include/optimizers/particles/common-noise/CN_CBO.hh":
+  cdef cppclass CCN_CBO "CN_CBO":
+    CCN_CBO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double lambda_,
+      double epsilon,
+      double beta,
+      double sigma,
+      double alpha,
+      double gamma,
+      double lambda_cn,
+      double delta,
+      int moment
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
 
 cdef extern from "include/optimizers/particles/Full_Noise.hh":
   cdef cppclass CFull_Noise "Full_Noise":
@@ -491,6 +510,35 @@ cdef class CN_SBS:
     int moment
   ):
     self.thisptr = new CCN_SBS(bounds, n_particles, iter, dt, sigma, gamma, lambda_, delta, moment)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class CN_CBO:
+  cdef CCN_CBO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double lambda_,
+    double epsilon,
+    double beta,
+    double sigma,
+    double alpha,
+    double gamma,
+    double lambda_cn,
+    double delta,
+    int moment
+  ):
+    self.thisptr = new CCN_CBO(bounds, n_particles, iter, dt, lambda_, epsilon, beta, sigma, alpha, gamma, lambda_cn, delta, moment)
 
   def minimize(self, f):
     py_init()
