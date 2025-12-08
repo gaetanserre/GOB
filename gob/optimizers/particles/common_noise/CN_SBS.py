@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..cpp_optimizer import CPP_Optimizer
-from ..cpp_optimizers import CN_SBS as CCN_SBS
+from .common_noise_optimizer import CN_Optimizer
+from ...cpp_optimizers import CN_SBS as CCN_SBS
 
 
-class CN_SBS(CPP_Optimizer):
+class CN_SBS(CN_Optimizer):
     """
     Interface for the Common noise SBS optimizer.
 
@@ -29,7 +29,7 @@ class CN_SBS(CPP_Optimizer):
     delta : float
         The parameter for the Bessel process.
     moment : str
-        The type of moment used for the common noise ("M1" | "M2" | "VAR").
+        The type of moment used for the common noise ("M1" | "M2" | "VAR" | "MVAR").
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -47,20 +47,8 @@ class CN_SBS(CPP_Optimizer):
         moment="M2",
         verbose=False,
     ):
-        super().__init__("CN-SBS", bounds, verbose)
-
-        match moment:
-            case "M1":
-                moment = 0
-            case "M2":
-                moment = 1
-            case "VAR":
-                moment = 2
-            case _:
-                raise ValueError(
-                    'Invalid moment type. Choose from "M1", "M2", or "VAR".'
-                )
+        super().__init__("CN-SBS", bounds, moment, verbose)
 
         self.c_opt = CCN_SBS(
-            bounds, n_particles, iter, dt, sigma, gamma, lambda_, delta, moment
+            bounds, n_particles, iter, dt, sigma, gamma, lambda_, delta, self.moment
         )

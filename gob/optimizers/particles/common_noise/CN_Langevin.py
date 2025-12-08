@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..cpp_optimizer import CPP_Optimizer
-from ..cpp_optimizers import CN_Langevin as CCN_Langevin
+from .common_noise_optimizer import CN_Optimizer
+from ...cpp_optimizers import CN_Langevin as CCN_Langevin
 
 
-class CN_Langevin(CPP_Optimizer):
+class CN_Langevin(CN_Optimizer):
     """
     Interface for the Common noise Langevin optimizer.
 
@@ -29,7 +29,7 @@ class CN_Langevin(CPP_Optimizer):
     delta : float
         The parameter for the Bessel process.
     moment : str
-        The type of moment used for the common noise ("M1" | "M2" | "VAR").
+        The type of moment used for the common noise ("M1" | "M2" | "VAR" | "MVAR").
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -47,20 +47,8 @@ class CN_Langevin(CPP_Optimizer):
         moment="M2",
         verbose=False,
     ):
-        super().__init__("CN-Langevin", bounds, verbose)
-
-        match moment:
-            case "M1":
-                moment = 0
-            case "M2":
-                moment = 1
-            case "VAR":
-                moment = 2
-            case _:
-                raise ValueError(
-                    'Invalid moment type. Choose from "M1", "M2", or "VAR".'
-                )
+        super().__init__("CN-Langevin", bounds, moment, verbose)
 
         self.c_opt = CCN_Langevin(
-            bounds, n_particles, iter, dt, beta, gamma, lambda_, delta, moment
+            bounds, n_particles, iter, dt, beta, gamma, lambda_, delta, self.moment
         )

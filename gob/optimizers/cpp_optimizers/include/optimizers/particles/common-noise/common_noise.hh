@@ -8,7 +8,8 @@ enum NoiseType
 {
   M1 = 0,
   M2 = 1,
-  VAR = 2
+  VAR = 2,
+  MVAR = 3
 };
 
 struct common_dynamic

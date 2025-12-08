@@ -49,6 +49,14 @@ if __name__ == "__main__":
                 "moment": "VAR",
             },
         ),
+        (
+            "CN-Langevin",
+            {
+                "n_particles": n_particles,
+                "iter": iter,
+                "moment": "MVAR",
+            },
+        ),
     ]
 
     # noisy
