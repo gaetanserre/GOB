@@ -276,5 +276,5 @@ class GOB:
                 print_table_by_metric_latex(res_dict)
             else:
                 print_table_by_metric(res_dict)
-            print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
+            # print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
         return res_dict
