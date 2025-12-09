@@ -27,12 +27,26 @@ def print_avg_rank(res_dict):
             avg_ranks[optim_name].append(rank + 1)
         print("")
     print("Average ranks over all benchmarks:")
-    latex_str = "Avg Ranks & "
+    avg_ranks_list = []
     for optim_name in optims_names:
         avg_rank = np.mean(avg_ranks[optim_name])
         print(f"  {optim_name}: {avg_rank:.2f}")
-        latex_str += f"{avg_rank:.2f} & "
-    latex_str = latex_str[:-2] + " \\\\"
+        avg_ranks_list.append(avg_rank)
+
+    latex_str = "Avg Ranks & "
+    for avg_rank in avg_ranks_list:
+        if avg_rank == np.min(avg_ranks_list):
+            latex_str += r"$\mathbf{" + f"{avg_rank:.2f}" + "}$ & "
+        else:
+            latex_str += f"${avg_rank:.2f}$ & "
+    latex_str = (
+        latex_str[:-2]
+        + " \\\\"
+        + "\n"
+        + r"\cdashline{1-"
+        + str(len(avg_ranks_list) + 1)
+        + "}[2pt/1pt]"
+    )
     print("\nLaTeX format:")
     print(latex_str)
 

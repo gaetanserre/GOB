@@ -106,7 +106,7 @@ def _significancy(res_dict_benchmark, best_optim_name):
     return (np.array(pvals_corr) < 0.05).all(), np.max(pvals_corr)
 
 
-def format_latex_table(tab_string):
+def format_latex_table(tab_string, n_cols):
     lines = tab_string.splitlines()
     # Remove first and last vlines
     fst_line = list(lines[0])
@@ -116,9 +116,9 @@ def format_latex_table(tab_string):
     lines[0] = "".join(fst_line)
 
     # Add thick hlines
-    lines[1] = r"\Xhline{2\arrayrulewidth}"
-    lines.insert(3, r"\Xhline{2\arrayrulewidth}")
-    lines[-2] = r"\Xhline{2\arrayrulewidth}"
+    lines[1] = r"\thickhline"
+    lines.insert(3, r"\hline")
+    lines[-2] = r"\cdashline{1-" + str(n_cols) + "}[2pt/1pt]"
     return "\n".join(lines)
 
 
@@ -188,7 +188,12 @@ def print_table_by_metric_latex(res_dict):
         latex_table = tab.get_formatted_string(
             "latex", vrules=VRuleStyle.ALL, border=True, format=True
         )
-        print(format_latex_table(latex_table))
+        print(
+            format_latex_table(
+                latex_table,
+                len(names_opt) + 2 if metric_name == "Approx" else len(names_opt) + 1,
+            )
+        )
 
 
 def print_table_by_metric(res_dict):

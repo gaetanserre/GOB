@@ -97,3 +97,6 @@ if __name__ == "__main__":
         [],
         bounds=smooth_functions_bounds,
     )
+    print("Running smooth functions experiments...")
+    res_dict = gob.run(n_runs=20, verbose=1, latex_table=True)
+    print_avg_rank(res_dict)
