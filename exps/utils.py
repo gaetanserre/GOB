@@ -33,7 +33,7 @@ def print_avg_rank(res_dict):
         print(f"  {optim_name}: {avg_rank:.2f}")
         avg_ranks_list.append(avg_rank)
 
-    latex_str = "Avg Ranks & "
+    latex_str = "Avg Rank & "
     for avg_rank in avg_ranks_list:
         if avg_rank == np.min(avg_ranks_list):
             latex_str += r"$\mathbf{" + f"{avg_rank:.2f}" + "}$ & "
@@ -58,7 +58,6 @@ noisy_functions = [
     gb.Deb(),
     gb.Levy(),
     gb.Rastrigin(),
-    gb.Rosenbrock(),
     gb.Styblinskitang(),
 ]
 
