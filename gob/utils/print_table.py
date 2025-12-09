@@ -113,6 +113,7 @@ def format_latex_table(tab_string, n_cols):
     fst_line[-2] = ""
     # \begin{tabular}{| -> 16
     fst_line[16] = ""
+    fst_line[17] = "l"
     lines[0] = "".join(fst_line)
 
     # Add thick hlines
