@@ -26,6 +26,7 @@ extensions = [
     "sphinx_autodoc_typehints",
     "myst_parser",
     "sphinx.ext.mathjax",
+    "sphinx.ext.linkcode",
 ]
 
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
@@ -56,3 +57,47 @@ html_theme_options = {
 html_css_files = [
     "style.css",
 ]
+
+
+import inspect
+import os
+import sys
+
+
+def linkcode_resolve(domain, info):
+    if domain != "py":
+        return None
+    if not info["module"]:
+        return None
+
+    try:
+        module = __import__(info["module"], fromlist=["dummy"])
+    except Exception:
+        return None
+
+    obj = module
+    for part in info["fullname"].split("."):
+        obj = getattr(obj, part, None)
+        if obj is None:
+            return None
+
+    try:
+        fn = inspect.getsourcefile(obj)
+        if fn is None:
+            fn = inspect.getfile(obj)
+    except Exception:
+        return None
+
+    fn = os.path.relpath(fn, start=os.path.abspath(".."))
+
+    try:
+        source, lineno = inspect.getsourcelines(obj)
+    except Exception:
+        lineno = None
+
+    github_base = "https://github.com/gaetanserre/GOB/blob/main"
+
+    if lineno:
+        return f"{github_base}/{fn}#L{lineno}-L{lineno + len(source) - 1}"
+    else:
+        return f"{github_base}/{fn}"
