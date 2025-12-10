@@ -43,7 +43,7 @@ opt = CN_Langevin(
     bounds=bounds,
     n_particles=n_particles,
     iter=iter,
-    moment="M1",
+    moment="VAR",
     verbose=verbose,
 )
 res = opt.minimize(f)
@@ -53,7 +53,7 @@ opt = CN_SBS(
     bounds=bounds,
     n_particles=n_particles,
     iter=iter,
-    moment="M1",
+    moment="MVAR",
     verbose=verbose,
 )
 res = opt.minimize(f)
@@ -71,7 +71,7 @@ opt = CN_CBO(
     bounds=bounds,
     n_particles=n_particles,
     iter=iter,
-    moment="M1",
+    moment="MVAR",
     verbose=verbose,
 )
 res = opt.minimize(f)

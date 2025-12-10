@@ -46,7 +46,6 @@ private:
   NoiseType noise_type;
 
   common_dynamic m1_dynamic(const Eigen::MatrixXd &particles, const int &idx);
-  common_dynamic square_dynamic(const Eigen::MatrixXd &particles, const int &idx, auto func);
   common_dynamic m2_dynamic(const Eigen::MatrixXd &particles, const int &idx);
   common_dynamic var_dynamic(const Eigen::MatrixXd &particles, const int &idx);
   common_dynamic mean_var_dynamic(const Eigen::MatrixXd &particles, const int &idx);

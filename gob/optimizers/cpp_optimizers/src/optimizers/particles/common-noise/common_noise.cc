@@ -11,38 +11,39 @@ common_dynamic Common_Noise::m1_dynamic(const Eigen::MatrixXd &particles, const 
   return {dyn_vector::Zero(d), Eigen::MatrixXd::Ones(d, d)};
 }
 
-common_dynamic Common_Noise::square_dynamic(const Eigen::MatrixXd &particles, const int &idx, auto func)
+common_dynamic Common_Noise::m2_dynamic(const Eigen::MatrixXd &particles, const int &idx)
 {
   int d = particles.cols();
   dyn_vector drift = dyn_vector::Zero(d);
   dyn_vector noise = dyn_vector::Zero(d);
   for (int dim = 0; dim < d; dim++)
   {
-    double moment = func(particles, dim);
-    drift(dim) = (particles(idx, dim) * (this->delta - 3 / 2)) / (4 * pow(this->lambda + moment, 2));
+    double moment = compute_moment(particles, 2, dim);
+    drift(dim) = particles(idx, dim) * (this->delta - 3 / 2) / (4 * pow(this->lambda + moment, 2));
     noise(dim) = particles(idx, dim) / (2 * (this->lambda + moment));
   }
   return {drift, noise.asDiagonal()};
 }
 
-common_dynamic Common_Noise::m2_dynamic(const Eigen::MatrixXd &particles, const int &idx)
-{
-  auto moment_2 = [](const Eigen::MatrixXd &p, const int &dim)
-  { return compute_moment(p, 2, dim); };
-  return square_dynamic(particles, idx, moment_2);
-}
-
 common_dynamic Common_Noise::var_dynamic(const Eigen::MatrixXd &particles, const int &idx)
 {
-  return square_dynamic(particles, idx, compute_variance);
+  int d = particles.cols();
+  dyn_vector drift = dyn_vector::Zero(d);
+  dyn_vector noise = dyn_vector::Zero(d);
+  for (int dim = 0; dim < d; dim++)
+  {
+    double res[2];
+    compute_mean_variance(particles, dim, res);
+    drift(dim) = (particles(idx, dim) - res[0]) * (this->delta - 3 / 2) / (4 * pow(this->lambda + res[1], 2));
+    noise(dim) = (particles(idx, dim) - res[0]) / (2 * (this->lambda + res[1]));
+  }
+  return {drift, noise.asDiagonal()};
 }
 
 common_dynamic Common_Noise::mean_var_dynamic(const Eigen::MatrixXd &particles, const int &idx)
 {
   int d = particles.cols();
   common_dynamic var_dyn = this->var_dynamic(particles, idx);
-  // dyn_vector drift = dyn_vector::Zero(2 * d);
-  // drift << dyn_vector::Zero(d), var_dyn.drift;
   Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(d, 2 * d);
   noise << Eigen::MatrixXd::Identity(d, d), var_dyn.noise;
   return {var_dyn.drift, noise};
@@ -50,13 +51,13 @@ common_dynamic Common_Noise::mean_var_dynamic(const Eigen::MatrixXd &particles, 
 
 int get_common_dim(NoiseType noise_type, int d)
 {
-  if (noise_type == NoiseType::M1 || noise_type == NoiseType::M2 || noise_type == NoiseType::VAR)
+  if (noise_type == NoiseType::MVAR)
   {
-    return d;
+    return 2 * d;
   }
   else
   {
-    return 2 * d;
+    return d;
   }
 }
 

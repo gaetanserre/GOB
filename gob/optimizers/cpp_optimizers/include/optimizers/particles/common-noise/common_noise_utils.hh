@@ -6,4 +6,4 @@
 
 extern double compute_moment(const Eigen::MatrixXd &particles, const int &r, const int &dim);
 
-extern double compute_variance(const Eigen::MatrixXd &particles, const int &dim);
+extern void compute_mean_variance(const Eigen::MatrixXd &particles, const int &dim, double *res);

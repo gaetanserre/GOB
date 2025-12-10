@@ -15,7 +15,7 @@ double compute_moment(const Eigen::MatrixXd &particles, const int &r, const int 
   return moment;
 }
 
-double compute_variance(const Eigen::MatrixXd &particles, const int &dim)
+void compute_mean_variance(const Eigen::MatrixXd &particles, const int &dim, double *res)
 {
   double mean = compute_moment(particles, 1, dim);
   double variance = 0.0;
@@ -24,5 +24,6 @@ double compute_variance(const Eigen::MatrixXd &particles, const int &dim)
     variance += pow(particles(i, dim) - mean, 2);
   }
   variance /= particles.rows();
-  return variance;
+  res[0] = mean;
+  res[1] = variance;
 }
