@@ -24,40 +24,36 @@ iter = 300
 
 if __name__ == "__main__":
     algorithms = [
-        ("Langevin", {"n_particles": n_particles, "iter": iter, "beta": 0}),
+        ("MSGD", {"n_particles": n_particles, "iter": iter}),
         (
-            "CN-Langevin",
+            "CN-MSGD",
             {
                 "n_particles": n_particles,
                 "iter": iter,
-                "beta": 0,
                 "moment": "M1",
             },
         ),
         (
-            "CN-Langevin",
+            "CN-MSGD",
             {
                 "n_particles": n_particles,
                 "iter": iter,
-                "beta": 0,
                 "moment": "M2",
             },
         ),
         (
-            "CN-Langevin",
+            "CN-MSGD",
             {
                 "n_particles": n_particles,
                 "iter": iter,
-                "beta": 0,
                 "moment": "VAR",
             },
         ),
         (
-            "CN-Langevin",
+            "CN-MSGD",
             {
                 "n_particles": n_particles,
                 "iter": iter,
-                "beta": 0,
                 "moment": "MVAR",
             },
         ),

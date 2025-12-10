@@ -18,6 +18,8 @@ from .particles.PSO import PSO
 from .particles.SBS_RKHS import SBS_RKHS
 from .particles.Langevin import Langevin
 from .particles.Full_Noise import Full_Noise
+from .particles.MSGD import MSGD
 from .particles.common_noise.CN_Langevin import CN_Langevin
 from .particles.common_noise.CN_SBS import CN_SBS
 from .particles.common_noise.CN_CBO import CN_CBO
+from .particles.common_noise.CN_MSGD import CN_MSGD
