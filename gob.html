@@ -289,7 +289,7 @@
 <p><code class="code docutils literal notranslate"><span class="pre">GOB</span></code> is also a toolbox for benchmarking and comparing global optimization algorithms over a suite of test functions. It provides a standardized framework to evaluate the performance of various optimizers using different metrics. The benchmarking suite consists of a class <cite>GOB</cite> that takes as input a list of optimizers, a list of benchmark functions, a list of metrics, and the bounds for the optimization problems. The <cite>run</cite> method executes the optimization algorithms on the benchmark functions for a specified number of runs and computes the performance metrics.</p>
 <dl class="py class" id="module-gob.gob">
 <dt class="sig sig-object py" id="gob.gob.GOB">
-<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.gob.</span></span><span class="sig-name descname"><span class="pre">GOB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB" title="Link to this definition">¶</a></dt>
+<em class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">gob.gob.</span></span><span class="sig-name descname"><span class="pre">GOB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizers</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmarks</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metrics</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gaetanserre/GOB/blob/main/gob/gob.py#L20-L276"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gob.gob.GOB" title="Link to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Global Optimization Benchmark.</p>
 <dl class="field-list simple">
@@ -305,7 +305,7 @@
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.competitive_ratio">
-<span class="sig-name descname"><span class="pre">competitive_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.competitive_ratio" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">competitive_ratio</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">res_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dict</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gaetanserre/GOB/blob/main/gob/gob.py#L170-L210"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gob.gob.GOB.competitive_ratio" title="Link to this definition">¶</a></dt>
 <dd><p>Compute the competitive ratio: <span class="math notranslate nohighlight">\(\frac{1}{|F|}\sum\limits_{f \in F} \frac{\text{approx}(f)}{\min_x f(x)}\)</span>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -326,7 +326,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.parse_benchmark">
-<span class="sig-name descname"><span class="pre">parse_benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">benchmark</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.parse_benchmark" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">benchmark</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gaetanserre/GOB/blob/main/gob/gob.py#L91-L119"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gob.gob.GOB.parse_benchmark" title="Link to this definition">¶</a></dt>
 <dd><p>Parse the benchmark.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -343,7 +343,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.parse_metric">
-<span class="sig-name descname"><span class="pre">parse_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.parse_metric" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_metric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">metric</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">benchmark</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">{}</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gaetanserre/GOB/blob/main/gob/gob.py#L121-L148"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gob.gob.GOB.parse_metric" title="Link to this definition">¶</a></dt>
 <dd><p>Parse the metric.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -365,7 +365,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.parse_optimizer">
-<span class="sig-name descname"><span class="pre">parse_optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.parse_optimizer" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">parse_optimizer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bounds</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gaetanserre/GOB/blob/main/gob/gob.py#L56-L89"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gob.gob.GOB.parse_optimizer" title="Link to this definition">¶</a></dt>
 <dd><p>Parse the optimizer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -385,7 +385,7 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="gob.gob.GOB.run">
-<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latex_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#gob.gob.GOB.run" title="Link to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_runs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">latex_table</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference external" href="https://github.com/gaetanserre/GOB/blob/main/gob/gob.py#L223-L276"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#gob.gob.GOB.run" title="Link to this definition">¶</a></dt>
 <dd><p>Run the benchmark.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
