@@ -43,9 +43,9 @@ def print_avg_rank(res_dict):
         latex_str[:-2]
         + " \\\\"
         + "\n"
-        + r"\cdashline{1-"
+        + r"\cline{1-"
         + str(len(avg_ranks_list) + 1)
-        + "}[2pt/1pt]"
+        + "}"
     )
     print("\nLaTeX format:")
     print(latex_str)
@@ -64,9 +64,6 @@ noisy_functions = [
 noisy_functions_bounds = [
     augment_dimensions(f.visual_bounds, dim) for f in noisy_functions
 ]
-
-noisy_functions.append(gb.PyGKLS(dim, 15, [-100, 100], -100, smoothness="ND"))
-noisy_functions_bounds.append(create_bounds(dim, -99, 99))
 
 flat_functions = [
     gb.Bentcigar(),
