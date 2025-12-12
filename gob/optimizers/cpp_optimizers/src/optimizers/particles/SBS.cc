@@ -13,7 +13,7 @@ Eigen::MatrixXd SBS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd 
   return dxkxy;
 }
 
-dynamic SBS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+dynamic SBS::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time)
 {
   Eigen::MatrixXd grads(particles.rows(), particles.cols());
   for (int j = 0; j < particles.rows(); j++)

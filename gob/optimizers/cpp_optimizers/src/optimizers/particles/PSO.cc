@@ -6,7 +6,7 @@
 #include "optimizers/particles/noise.hh"
 #include "optimizers/particles/particles_utils.hh"
 
-dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time)
 {
   double min_eval = INFINITY;
   int argmin = -1;

@@ -60,7 +60,6 @@ noisy_functions = [
     gb.Rastrigin(),
     gb.Styblinskitang(),
 ]
-
 noisy_functions_bounds = [
     augment_dimensions(f.visual_bounds, dim) for f in noisy_functions
 ]

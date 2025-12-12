@@ -11,7 +11,7 @@ double smooth_heaviside(double x)
   return 0.5 * erf(x) + 0.5;
 }
 
-dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time)
 {
   dyn_vector vf = clip_vector(compute_consensus(particles, f, evals, this->beta), this->bounds);
   double f_vf = f(vf);

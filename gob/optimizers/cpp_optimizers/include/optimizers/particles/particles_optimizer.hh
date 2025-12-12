@@ -36,7 +36,7 @@ public:
 
   virtual result_eigen minimize(function<double(dyn_vector)> f);
 
-  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals) = 0;
+  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time) = 0;
   int n_particles;
   int iter;
   int batch_size;

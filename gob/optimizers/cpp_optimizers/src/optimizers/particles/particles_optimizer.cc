@@ -12,7 +12,7 @@ void Particles_Optimizer::update_particles(Eigen::MatrixXd *particles, function<
     samples->push_back((*particles).row(i));
   }
 
-  dynamic dyn = this->compute_dynamics(*particles, f, &evals);
+  dynamic dyn = this->compute_dynamics(*particles, f, &evals, t);
 
   // Drift update
   this->sched->step(particles, dyn.drift, t);

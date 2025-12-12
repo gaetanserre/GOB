@@ -69,7 +69,7 @@ void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(
     samples->push_back((*particles).row(i));
   }
 
-  dynamic dyn = this->base_opt->compute_dynamics(*particles, f, &evals);
+  dynamic dyn = this->base_opt->compute_dynamics(*particles, f, &evals, t);
 
   // Drift update
   this->base_opt->sched->step(particles, dyn.drift, t);

@@ -6,7 +6,7 @@
 #include "optimizers/particles/noise.hh"
 #include "optimizers/particles/particles_utils.hh"
 
-dynamic Full_Noise::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+dynamic Full_Noise::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time)
 {
   Eigen::MatrixXd drift = Eigen::MatrixXd::Ones(particles.rows(), particles.cols());
   Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
