@@ -30,6 +30,15 @@ if __name__ == "__main__":
             "SBS-RKHS",
             {"n_particles": n_particles, "iter": iter, "sigma": sigma},
         ),
+        (
+            "SBS-RKHS",
+            {
+                "n_particles": n_particles,
+                "iter": iter,
+                "sigma": sigma,
+                "sigma_noise": 10,
+            },
+        ),
     ]
 
     # noisy

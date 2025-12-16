@@ -16,9 +16,10 @@ Eigen::MatrixXd SBS_RKHS::rbf_grad(const Eigen::MatrixXd &particles, Eigen::Matr
   return dxkxy;
 }
 
-Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles, const Eigen::MatrixXd &rbf_matrix)
+Eigen::MatrixXd SBS_RKHS::compute_noise(const Eigen::MatrixXd &particles)
 {
   int d = particles.cols();
+  Eigen::MatrixXd rbf_matrix = rbf(particles, this->sigma_noise);
 
   // Compute the square root of the RBF matrix
   Eigen::SelfAdjointEigenSolver<Eigen::MatrixXd> es(rbf_matrix);
@@ -48,7 +49,7 @@ dynamic SBS_RKHS::compute_dynamics(const Eigen::MatrixXd &particles, const funct
   Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), particles.cols());
   if (time <= this->iter / 2)
   {
-    noise = this->compute_noise(particles, kernel);
+    noise = this->compute_noise(particles);
   }
 
   for (int i = 0; i < particles.rows(); i++)

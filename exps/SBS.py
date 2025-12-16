@@ -62,10 +62,6 @@ if __name__ == "__main__":
                 "moment": "MVAR",
             },
         ),
-        (
-            "SBS-RKHS",
-            {"n_particles": n_particles, "iter": iter, "sigma": sigma},
-        ),
     ]
 
     # noisy

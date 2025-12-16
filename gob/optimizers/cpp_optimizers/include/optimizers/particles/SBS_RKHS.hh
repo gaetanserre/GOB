@@ -14,6 +14,7 @@ public:
       int iter,
       double dt,
       double sigma,
+      double sigma_noise,
       int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new Adam(dt), "SBS_RKHS")
   {
     this->sigma = sigma;
@@ -24,6 +25,7 @@ public:
 private:
   double sigma;
   double theta;
+  double sigma_noise;
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
-  Eigen::MatrixXd compute_noise(const Eigen::MatrixXd &particles, const Eigen::MatrixXd &rbf_matrix);
+  Eigen::MatrixXd compute_noise(const Eigen::MatrixXd &particles);
 };
