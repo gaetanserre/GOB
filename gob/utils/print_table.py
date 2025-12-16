@@ -166,7 +166,7 @@ def print_table_by_metric_latex(res_dict):
                             count_best = sum(1 for m in means if m == best_mean)
                             if count_best > 1:
                                 significancy = True
-                                p_values[benchmark_name] = "N/A"
+                                p_values[benchmark_name] = str("$0.000$")
                             else:
                                 significancy, p_val = _significancy(
                                     res_dict[benchmark_name], name_opt
