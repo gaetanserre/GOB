@@ -18,6 +18,7 @@ public:
       int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new Adam(dt), "SBS_RKHS")
   {
     this->sigma = sigma;
+    this->sigma_noise = sigma_noise;
   }
 
   virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time);
