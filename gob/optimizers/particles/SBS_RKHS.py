@@ -40,7 +40,7 @@ class SBS_RKHS(CPP_Optimizer):
         iter=100,
         dt=10,
         sigma=0.1,
-        sigma_noise=3,
+        sigma_noise=50,
         batch_size=0,
         verbose=False,
     ):
