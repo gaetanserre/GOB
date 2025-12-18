@@ -67,8 +67,11 @@ dim = 50
 noisy_functions = [
     gb.Ackley(),
     gb.Deb(),
+    gb.Griewank(),
+    gb.Langermann(dim=dim),
     gb.Levy(),
     gb.Rastrigin(),
+    gb.Schwefel(),
     gb.Styblinskitang(),
 ]
 noisy_functions_bounds = [

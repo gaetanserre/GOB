@@ -22,12 +22,13 @@ from gob import GOB
 n_particles = 150
 iter = 300
 sigma = 1 / n_particles**2
+n_runs = 20
 
 if __name__ == "__main__":
     algorithms = [
         ("SBS", {"n_particles": n_particles, "iter": iter, "sigma": sigma}),
         (
-            "CN-SBS",
+            "SMD-SBS",
             {
                 "n_particles": n_particles,
                 "iter": iter,
@@ -36,7 +37,7 @@ if __name__ == "__main__":
             },
         ),
         (
-            "CN-SBS",
+            "SMD-SBS",
             {
                 "n_particles": n_particles,
                 "iter": iter,
@@ -45,7 +46,7 @@ if __name__ == "__main__":
             },
         ),
         (
-            "CN-SBS",
+            "SMD-SBS",
             {
                 "n_particles": n_particles,
                 "iter": iter,
@@ -54,12 +55,20 @@ if __name__ == "__main__":
             },
         ),
         (
-            "CN-SBS",
+            "SMD-SBS",
             {
                 "n_particles": n_particles,
                 "iter": iter,
                 "sigma": sigma,
                 "moment": "MVAR",
+            },
+        ),
+        (
+            "GCN-SBS",
+            {
+                "n_particles": n_particles,
+                "iter": iter,
+                "sigma": sigma,
             },
         ),
     ]
@@ -72,7 +81,9 @@ if __name__ == "__main__":
         bounds=noisy_functions_bounds,
     )
     print("Running noisy functions experiments...")
-    res_dict = gob.run(n_runs=20, verbose=1, latex_table=True)
+    res_dict = gob.run(
+        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="SBS"
+    )
     print_avg_rank(res_dict)
 
     # flat
@@ -83,7 +94,9 @@ if __name__ == "__main__":
         bounds=flat_functions_bounds,
     )
     print("Running flat functions experiments...")
-    res_dict = gob.run(n_runs=20, verbose=1, latex_table=True)
+    res_dict = gob.run(
+        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="SBS"
+    )
     print_avg_rank(res_dict)
 
     # smooth
@@ -94,5 +107,7 @@ if __name__ == "__main__":
         bounds=smooth_functions_bounds,
     )
     print("Running smooth functions experiments...")
-    res_dict = gob.run(n_runs=20, verbose=1, latex_table=True)
+    res_dict = gob.run(
+        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="SBS"
+    )
     print_avg_rank(res_dict)
