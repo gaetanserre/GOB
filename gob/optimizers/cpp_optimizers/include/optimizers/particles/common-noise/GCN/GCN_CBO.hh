@@ -4,10 +4,10 @@
 
 #include "optimizers/particles/CBO.hh"
 
-class CN_CBO : public Optimizer
+class GCN_CBO : public Optimizer
 {
 public:
-  CN_CBO(
+  GCN_CBO(
       vec_bounds bounds,
       int n_particles,
       int iter,
@@ -17,16 +17,10 @@ public:
       double beta,
       double sigma,
       double alpha,
-      double gamma,
-      double lambda_cn,
-      double delta,
-      int moment) : Optimizer(bounds, "CN-CBO"),
-                    base_opt(bounds, n_particles, iter, dt, lambda, epsilon, beta, sigma, alpha, 0)
+      double sigma_cn) : Optimizer(bounds, "GCN-CBO"),
+                         base_opt(bounds, n_particles, iter, dt, lambda, epsilon, beta, sigma, alpha, 0)
   {
-    this->gamma = gamma;
-    this->lambda = lambda;
-    this->delta = delta;
-    this->moment = moment;
+    this->sigma = sigma_cn;
   }
 
   virtual void set_stop_criterion(double stop_criterion);
@@ -34,8 +28,5 @@ public:
 
 private:
   CBO base_opt;
-  double gamma;
-  double lambda;
-  double delta;
-  int moment;
+  double sigma;
 };

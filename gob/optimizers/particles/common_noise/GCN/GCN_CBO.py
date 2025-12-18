@@ -1,14 +1,14 @@
 #
-# Created in 2024 by Gaëtan Serré
+# Created in 2025 by Gaëtan Serré
 #
 
-from .common_noise_optimizer import CN_Optimizer
-from ...cpp_optimizers import CN_CBO as CCN_CBO
+from ....cpp_optimizer import CPP_Optimizer
+from ....cpp_optimizers import GCN_CBO as CGCN_CBO
 
 
-class CN_CBO(CN_Optimizer):
+class GCN_CBO(CPP_Optimizer):
     """
-    Interface for the Common noise CBO optimizer.
+    Interface for the Geometric Common Noise CBO optimizer.
 
     Parameters
     ----------
@@ -30,14 +30,8 @@ class CN_CBO(CN_Optimizer):
         The standard deviation of the Gaussian noise.
     alpha : float
         The coefficient to decrease the step size.
-    gamma : float
-        The coefficient for the common noise.
-    ``lambda_`` : float
-        The regularization parameter for the common noise.
-    delta : float
-        The parameter for the Bessel process.
-    moment : str
-        The type of moment used for the common noise ("M1" | "M2" | "VAR" | "MVAR").
+    sigma_noise : float
+        The kernel bandwidth for the common noise.
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -53,15 +47,12 @@ class CN_CBO(CN_Optimizer):
         beta=1,
         sigma=5.1,
         alpha=1,
-        gamma=1,
-        lambda_=0,
-        delta=2.1,
-        moment="M2",
+        sigma_noise=1,
         verbose=False,
     ):
-        super().__init__("CN-CBO", bounds, moment, verbose)
+        super().__init__("GCN-CBO", bounds, verbose)
 
-        self.c_opt = CCN_CBO(
+        self.c_opt = CGCN_CBO(
             bounds,
             n_particles,
             iter,
@@ -71,8 +62,5 @@ class CN_CBO(CN_Optimizer):
             beta,
             sigma,
             alpha,
-            gamma,
-            lambda_,
-            delta,
-            self.moment,
+            sigma_noise,
         )
