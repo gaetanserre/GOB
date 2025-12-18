@@ -8,7 +8,7 @@
 common_dynamic Common_Noise::m1_dynamic(const Eigen::MatrixXd &particles, const int &idx)
 {
   int d = particles.cols();
-  return {dyn_vector::Zero(d), Eigen::MatrixXd::Ones(d, d)};
+  return {dyn_vector::Zero(d), (1 / (1 + this->lambda)) * Eigen::MatrixXd::Identity(d, d)};
 }
 
 common_dynamic Common_Noise::m2_dynamic(const Eigen::MatrixXd &particles, const int &idx)
@@ -103,7 +103,7 @@ void Common_Noise::update_particles(Eigen::MatrixXd *particles, function<double(
     // Noise, common drift, and common noise update
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
-    particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * this->gamma * (common_dynamic.noise * common_noise).transpose();
+    particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * (dyn.noise.row(j) + this->gamma * (common_dynamic.noise * common_noise).transpose());
     particles->row(j) = clip_vector(particles->row(j), this->base_opt->bounds);
   }
 }
