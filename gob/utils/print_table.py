@@ -94,7 +94,7 @@ def print_table_by_benchmark(res_dict):
         print(tab)
 
 
-def _significancy(res_dict_benchmark, best_optim_name):
+def _significancy_against_all(res_dict_benchmark, best_optim_name):
     sols = res_dict_benchmark[best_optim_name]["Approx"]["all"]
     p_values = []
     for optim_name, optim_dict in res_dict_benchmark.items():
@@ -104,6 +104,15 @@ def _significancy(res_dict_benchmark, best_optim_name):
             p_values.append(p_value)
     pvals_corr = multipletests(p_values, method="holm")[1]
     return (np.array(pvals_corr) < 0.05).all(), np.max(pvals_corr)
+
+
+def _significancy_against_reference(
+    res_dict_benchmark, best_optim_name, reference_optim_name
+):
+    sols = res_dict_benchmark[best_optim_name]["Approx"]["all"]
+    sols_other = res_dict_benchmark[reference_optim_name]["Approx"]["all"]
+    _, p_value = mannwhitneyu(sols, sols_other, alternative="two-sided")
+    return p_value < 0.05, p_value
 
 
 def format_latex_table(tab_string, n_cols):
@@ -123,7 +132,7 @@ def format_latex_table(tab_string, n_cols):
     return "\n".join(lines)
 
 
-def print_table_by_metric_latex(res_dict):
+def print_table_by_metric_latex(res_dict, reference_optimizer=None):
     """
     Print the results of the optimization for each metric in LaTeX format.
 
@@ -131,6 +140,8 @@ def print_table_by_metric_latex(res_dict):
     ----------
     res_dict : dict
         The results of the optimization of the form {"Benchmark name": {"Optimizer name": {"Metric name": ...}}}
+    reference_optimizer : str, optional
+        The name of the reference optimizer for significancy testing.
     """
     metric_names = list(list(list(res_dict.values())[0].values())[0].keys())
     print("")
@@ -152,9 +163,6 @@ def print_table_by_metric_latex(res_dict):
                     mean = transform_number(
                         res_dict[benchmark_name][name_opt][metric_name]["mean"]
                     )
-                    """ std = transform_number(
-                        res_dict[benchmark_name][name_opt][metric_name]["std"]
-                    ) """
                     if (
                         res_dict[benchmark_name][name_opt][metric_name]["mean"]
                         == best_mean
@@ -167,9 +175,19 @@ def print_table_by_metric_latex(res_dict):
                             if count_best > 1:
                                 significancy = True
                                 p_values[benchmark_name] = str("$0.000$")
-                            else:
-                                significancy, p_val = _significancy(
+                            elif (
+                                reference_optimizer is None
+                                or name_opt == reference_optimizer
+                            ):
+                                significancy, p_val = _significancy_against_all(
                                     res_dict[benchmark_name], name_opt
+                                )
+                                p_values[benchmark_name] = f"${p_val:.3f}$"
+                            else:
+                                significancy, p_val = _significancy_against_reference(
+                                    res_dict[benchmark_name],
+                                    name_opt,
+                                    reference_optimizer,
                                 )
                                 p_values[benchmark_name] = f"${p_val:.3f}$"
                         if significancy:

@@ -220,7 +220,7 @@ class GOB:
         else:
             return name
 
-    def run(self, n_runs=1, verbose=0, latex_table=False):
+    def run(self, n_runs=1, verbose=0, latex_table=False, **table_kwargs):
         """
         Run the benchmark.
 
@@ -232,6 +232,13 @@ class GOB:
             The verbosity level.
         latex_table : bool
             Whether to print the results in LaTeX table format.
+        **table_kwargs : dict
+            Additional keyword arguments for the table printing functions.
+
+        Returns
+        -------
+        dict
+            The results dictionary.
         """
         res_dict = {}
         min_dict = {}
@@ -273,8 +280,8 @@ class GOB:
             min_dict[str(benchmark)] = benchmark.min
         if verbose:
             if latex_table:
-                print_table_by_metric_latex(res_dict)
+                print_table_by_metric_latex(res_dict, **table_kwargs)
             else:
-                print_table_by_metric(res_dict)
+                print_table_by_metric(res_dict, **table_kwargs)
             # print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
         return res_dict
