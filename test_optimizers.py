@@ -4,9 +4,9 @@ from gob.optimizers import *
 
 pygkls = PyGKLS(2, 15, [-100, 100], -100, smoothness="ND", gen=42)
 
-f = Square()
+f = Levy()
 
-bounds = augment_dimensions(f.visual_bounds, 2)  # f.visual_bounds
+bounds = augment_dimensions(f.visual_bounds, 50)  # f.visual_bounds
 
 """ opt = CBO(bounds)
 res = opt.minimize(f)
@@ -17,11 +17,39 @@ iter = 300
 sigma = 1 / n_particles**2
 verbose = False
 
+opt = CBO(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CN_CBO(
+    bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose, moment="M1"
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CN_CBO(
+    bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose, moment="M2"
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CN_CBO(
+    bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose, moment="VAR"
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
+opt = CN_CBO(
+    bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose, moment="MVAR"
+)
+res = opt.minimize(f)
+print(f"Results for {opt}: {res[1]}")
+
 """ opt = SBS_RKHS(bounds=bounds)
 res = opt.minimize(f)
 print(f"Results for {opt}: {res[1]}") """
 
-opt = SBS(
+""" opt = SBS(
     bounds=bounds, n_particles=n_particles, iter=iter, sigma=sigma, verbose=verbose
 )
 res = opt.minimize(f)
@@ -75,7 +103,7 @@ opt = CN_CBO(
     verbose=verbose,
 )
 res = opt.minimize(f)
-print(f"Results for {opt}: {res[1]}")
+print(f"Results for {opt}: {res[1]}") """
 
 """ opt = CN_Langevin(bounds=bounds, n_particles=n_particles, iter=iter, verbose=verbose)
 res = opt.minimize(f)
