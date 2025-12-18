@@ -1,0 +1,3 @@
+- [ ] RKHS with infinite sigma
+- [ ] Generalize RKHS noise
+- [x] Avg ranks computation (take care of ties)

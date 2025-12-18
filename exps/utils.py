@@ -21,11 +21,22 @@ def print_avg_rank(res_dict):
         for optim_name in res_dict[bm]:
             optim_mean.append((optim_name, res_dict[bm][optim_name]["Approx"]["mean"]))
         optim_mean = sorted(optim_mean, key=lambda x: x[1])
+        # Compute ranks with handling ties
+        ranks = {}
+        current_rank = 1
+        for i, (optim_name, mean) in enumerate(optim_mean):
+            if i > 0 and mean == optim_mean[i - 1][1]:
+                ranks[optim_name] = ranks[optim_mean[i - 1][0]]
+            else:
+                ranks[optim_name] = current_rank
+            current_rank += 1
         print(f"Ranks for {bm}:")
-        for rank, (optim_name, mean) in enumerate(optim_mean):
-            print(f"  Rank {rank + 1}: {optim_name} with mean {mean:.4f}")
-            avg_ranks[optim_name].append(rank + 1)
+        for optim_name, mean in optim_mean:
+            rank = ranks[optim_name]
+            print(f"  Rank {rank}: {optim_name} with mean {mean:.4f}")
+            avg_ranks[optim_name].append(rank)
         print("")
+
     print("Average ranks over all benchmarks:")
     avg_ranks_list = []
     for optim_name in optims_names:
