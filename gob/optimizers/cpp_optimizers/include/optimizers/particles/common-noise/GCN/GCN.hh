@@ -24,10 +24,12 @@ public:
   GCN(
       Particles_Optimizer *base_optimizer,
       double sigma,
-      std::string name) : Optimizer(base_optimizer->bounds, name)
+      std::string name,
+      bool independent_noise = true) : Optimizer(base_optimizer->bounds, name)
   {
     this->base_opt = base_optimizer;
     this->sigma = sigma;
+    this->independent_noise = independent_noise;
   }
 
   virtual result_eigen minimize(function<double(dyn_vector)> f);
@@ -35,6 +37,7 @@ public:
 private:
   Particles_Optimizer *base_opt;
   double sigma;
+  bool independent_noise = true;
 
   Eigen::MatrixXd compute_noise(const Eigen::MatrixXd &particles);
   void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, const int &time_);

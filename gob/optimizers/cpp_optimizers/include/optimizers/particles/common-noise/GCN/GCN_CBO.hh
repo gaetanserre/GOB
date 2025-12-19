@@ -17,10 +17,12 @@ public:
       double beta,
       double sigma,
       double alpha,
-      double sigma_cn) : Optimizer(bounds, "GCN-CBO"),
-                         base_opt(bounds, n_particles, iter, dt, lambda, epsilon, beta, sigma, alpha, 0)
+      double sigma_cn,
+      bool independent_noise = true) : Optimizer(bounds, "GCN-CBO"),
+                                       base_opt(bounds, n_particles, iter, dt, lambda, epsilon, beta, sigma, alpha, 0)
   {
     this->sigma = sigma_cn;
+    this->independent_noise = independent_noise;
   }
 
   virtual void set_stop_criterion(double stop_criterion);
@@ -29,4 +31,5 @@ public:
 private:
   CBO base_opt;
   double sigma;
+  bool independent_noise = true;
 };

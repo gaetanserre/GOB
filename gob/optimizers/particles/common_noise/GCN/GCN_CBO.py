@@ -32,6 +32,8 @@ class GCN_CBO(CPP_Optimizer):
         The coefficient to decrease the step size.
     sigma_noise : float
         The kernel bandwidth for the common noise.
+    independent_noise : bool
+        Whether to use independent noise for each particle.
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -48,6 +50,7 @@ class GCN_CBO(CPP_Optimizer):
         sigma=5.1,
         alpha=1,
         sigma_noise=1,
+        independent_noise=True,
         verbose=False,
     ):
         super().__init__("GCN-CBO", bounds, verbose)
@@ -63,4 +66,5 @@ class GCN_CBO(CPP_Optimizer):
             sigma,
             alpha,
             sigma_noise,
+            independent_noise,
         )

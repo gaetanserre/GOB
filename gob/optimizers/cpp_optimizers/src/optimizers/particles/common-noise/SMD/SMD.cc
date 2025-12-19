@@ -75,6 +75,12 @@ void SMD::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vecto
   this->base_opt->sched->step(particles, dyn.drift, time_);
   double dt = this->base_opt->sched->get_dt();
 
+  // Noise update
+  if (this->independent_noise)
+  {
+    (*particles) += dyn.noise * sqrt(dt);
+  }
+
   dyn_vector common_noise = normal_random_vector(
       this->base_opt->re,
       get_common_dim(this->noise_type, particles->cols()),
@@ -106,7 +112,7 @@ void SMD::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vecto
       }
 
       // Noise, common drift, and common noise update
-      particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * (dyn.noise.row(j) + this->gamma * (common_dynamic.noise * common_noise).transpose());
+      particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * this->gamma * (common_dynamic.noise * common_noise).transpose();
     }
     else
     {

@@ -14,6 +14,6 @@ void GCN_CBO::set_stop_criterion(double stop_criterion)
 
 result_eigen GCN_CBO::minimize(function<double(dyn_vector)> f)
 {
-  GCN gcn(&this->base_opt, this->sigma, this->name);
+  GCN gcn(&this->base_opt, this->sigma, this->name, this->independent_noise);
   return gcn.minimize(f);
 }

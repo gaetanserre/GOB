@@ -22,7 +22,6 @@ class SMD_Optimizer(CPP_Optimizer):
     """
 
     def __init__(self, name, bounds, moment, verbose=False):
-        super().__init__(name, bounds, verbose)
 
         match moment:
             case "M1":
@@ -37,3 +36,5 @@ class SMD_Optimizer(CPP_Optimizer):
                 raise ValueError(
                     'Invalid moment type. Choose from "M1", "M2", "VAR", or "MVAR".'
                 )
+
+        super().__init__("SMD-" + name, bounds, verbose)

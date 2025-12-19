@@ -44,10 +44,10 @@ class SMD_SBS(SMD_Optimizer):
         gamma=1,
         lambda_=0,
         delta=2.1,
-        moment="M2",
+        moment="M1",
         verbose=False,
     ):
-        super().__init__("SMD-SBS", bounds, moment, verbose)
+        super().__init__("SBS", bounds, moment, verbose)
 
         self.c_opt = CSMD_SBS(
             bounds, n_particles, iter, dt, sigma, gamma, lambda_, delta, self.moment

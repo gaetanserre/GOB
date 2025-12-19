@@ -1,5 +1,5 @@
 from ....cpp_optimizer import CPP_Optimizer
-from ....cpp_optimizers import GCN_SBS as CGCN_Langevin
+from ....cpp_optimizers import GCN_Langevin as CGCN_Langevin
 
 
 class GCN_MSGD(CPP_Optimizer):
@@ -33,4 +33,4 @@ class GCN_MSGD(CPP_Optimizer):
     ):
         super().__init__("GCN-MSGD", bounds, verbose)
 
-        self.c_opt = CGCN_Langevin(bounds, n_particles, iter, dt, 0, sigma_noise)
+        self.c_opt = CGCN_Langevin(bounds, n_particles, iter, dt, 0, sigma_noise, False)

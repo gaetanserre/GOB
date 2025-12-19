@@ -22,6 +22,10 @@ from gob import GOB
 n_particles = 150
 iter = 300
 n_runs = 20
+independent_noise = True
+
+in_status = "independent noise" if independent_noise else "no independent noise"
+print(f"CBO experiments with {in_status}")
 
 if __name__ == "__main__":
     algorithms = [
@@ -32,6 +36,7 @@ if __name__ == "__main__":
                 "n_particles": n_particles,
                 "iter": iter,
                 "moment": "M1",
+                "independent_noise": independent_noise,
             },
         ),
         (
@@ -40,6 +45,7 @@ if __name__ == "__main__":
                 "n_particles": n_particles,
                 "iter": iter,
                 "moment": "M2",
+                "independent_noise": independent_noise,
             },
         ),
         (
@@ -48,6 +54,7 @@ if __name__ == "__main__":
                 "n_particles": n_particles,
                 "iter": iter,
                 "moment": "VAR",
+                "independent_noise": independent_noise,
             },
         ),
         (
@@ -56,6 +63,7 @@ if __name__ == "__main__":
                 "n_particles": n_particles,
                 "iter": iter,
                 "moment": "MVAR",
+                "independent_noise": independent_noise,
             },
         ),
         (
@@ -63,6 +71,7 @@ if __name__ == "__main__":
             {
                 "n_particles": n_particles,
                 "iter": iter,
+                "independent_noise": independent_noise,
             },
         ),
     ]
@@ -80,7 +89,7 @@ if __name__ == "__main__":
     )
     print_avg_rank(res_dict)
 
-    # flat
+    """ # flat
     gob = GOB(
         algorithms,
         flat_functions,
@@ -104,4 +113,4 @@ if __name__ == "__main__":
     res_dict = gob.run(
         n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="CBO"
     )
-    print_avg_rank(res_dict)
+    print_avg_rank(res_dict) """

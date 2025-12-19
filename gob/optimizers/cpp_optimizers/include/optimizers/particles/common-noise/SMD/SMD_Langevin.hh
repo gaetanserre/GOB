@@ -16,13 +16,15 @@ public:
       double gamma,
       double lambda,
       double delta,
-      int moment) : Optimizer(bounds, "SMD-Langevin"),
-                    base_opt(bounds, n_particles, iter, dt, beta, 0)
+      int moment,
+      bool independent_noise = true) : Optimizer(bounds, "SMD-Langevin"),
+                                       base_opt(bounds, n_particles, iter, dt, beta, 0)
   {
     this->gamma = gamma;
     this->lambda = lambda;
     this->delta = delta;
     this->moment = moment;
+    this->independent_noise = independent_noise;
   }
 
   virtual void set_stop_criterion(double stop_criterion);
@@ -34,4 +36,5 @@ private:
   double lambda;
   double delta;
   int moment;
+  bool independent_noise;
 };

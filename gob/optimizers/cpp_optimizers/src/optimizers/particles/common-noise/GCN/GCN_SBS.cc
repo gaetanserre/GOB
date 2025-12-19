@@ -14,6 +14,6 @@ void GCN_SBS::set_stop_criterion(double stop_criterion)
 
 result_eigen GCN_SBS::minimize(function<double(dyn_vector)> f)
 {
-  GCN gcn(&this->base_opt, this->sigma, this->name);
+  GCN gcn(&this->base_opt, this->sigma, this->name, false);
   return gcn.minimize(f);
 }

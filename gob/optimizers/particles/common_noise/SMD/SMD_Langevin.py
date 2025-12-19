@@ -30,6 +30,8 @@ class SMD_Langevin(SMD_Optimizer):
         The parameter for the Bessel process.
     moment : str
         The type of moment used for the common noise ("M1" | "M2" | "VAR" | "MVAR").
+    independent_noise : bool
+        Whether to use independent noise or not.
     verbose : bool
         Whether to print information about the optimization process.
     """
@@ -44,11 +46,21 @@ class SMD_Langevin(SMD_Optimizer):
         gamma=1,
         lambda_=0,
         delta=2.1,
-        moment="M2",
+        moment="M1",
+        independent_noise=True,
         verbose=False,
     ):
-        super().__init__("SMD-Langevin", bounds, moment, verbose)
+        super().__init__("Langevin", bounds, moment, verbose)
 
         self.c_opt = CSMD_Langevin(
-            bounds, n_particles, iter, dt, beta, gamma, lambda_, delta, self.moment
+            bounds,
+            n_particles,
+            iter,
+            dt,
+            beta,
+            gamma,
+            lambda_,
+            delta,
+            self.moment,
+            independent_noise,
         )

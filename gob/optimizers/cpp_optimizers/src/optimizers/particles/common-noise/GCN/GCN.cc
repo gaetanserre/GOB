@@ -46,11 +46,17 @@ void GCN::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vecto
     noise = this->compute_noise(*particles);
   }
 
+  // Independent noise
+  if (this->independent_noise)
+  {
+    (*particles) += dyn.noise * sqrt(dt);
+  }
+
   // Noise update
   for (int j = 0; j < particles->rows(); j++)
   {
     all_evals->push_back(evals[j]);
-    particles->row(j) += sqrt(dt) * (dyn.noise.row(j) + noise.row(j));
+    particles->row(j) += sqrt(dt) * noise.row(j);
     particles->row(j) = clip_vector(particles->row(j), this->bounds);
   }
 }

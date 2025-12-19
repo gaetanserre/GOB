@@ -13,10 +13,12 @@ public:
       int iter,
       double dt,
       double beta,
-      double sigma_cn) : Optimizer(bounds, "GCN-Langevin"),
-                         base_opt(bounds, n_particles, iter, dt, beta, 0)
+      double sigma_cn,
+      bool independent_noise = true) : Optimizer(bounds, "GCN-Langevin"),
+                                       base_opt(bounds, n_particles, iter, dt, beta, 0)
   {
     this->sigma = sigma_cn;
+    this->independent_noise = independent_noise;
   }
 
   virtual void set_stop_criterion(double stop_criterion);
@@ -25,4 +27,5 @@ public:
 private:
   Langevin base_opt;
   double sigma;
+  bool independent_noise = true;
 };

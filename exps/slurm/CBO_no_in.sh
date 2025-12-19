@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=Langevin
+#SBATCH --job-name=CBO_no_in
 #SBATCH --output=%x.o%j
 #SBATCH --ntasks=1
 #SBATCH --partition=cpu_long
@@ -22,4 +22,4 @@ cd ${SLURM_SUBMIT_DIR}
 cd ..
 
 # execution
-python Langevin.py
+python CBO_no_in.py

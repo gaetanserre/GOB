@@ -14,6 +14,6 @@ void SMD_SBS::set_stop_criterion(double stop_criterion)
 
 result_eigen SMD_SBS::minimize(function<double(dyn_vector)> f)
 {
-  SMD smd(&this->base_opt, this->gamma, this->lambda, this->delta, static_cast<NoiseType>(this->moment), this->name);
+  SMD smd(&this->base_opt, this->gamma, this->lambda, this->delta, static_cast<NoiseType>(this->moment), this->name, false);
   return smd.minimize(f);
 }

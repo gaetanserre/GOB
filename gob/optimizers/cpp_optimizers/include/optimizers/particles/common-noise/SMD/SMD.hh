@@ -27,13 +27,15 @@ public:
       double lambda,
       double delta,
       NoiseType noise_type,
-      std::string name) : Optimizer(base_optimizer->bounds, name)
+      std::string name,
+      bool independent_noise = true) : Optimizer(base_optimizer->bounds, name)
   {
     this->base_opt = base_optimizer;
     this->gamma = gamma;
     this->lambda = lambda;
     this->delta = delta;
     this->noise_type = noise_type;
+    this->independent_noise = independent_noise;
   }
 
   virtual result_eigen minimize(function<double(dyn_vector)> f);
@@ -44,6 +46,7 @@ private:
   double lambda;
   double delta;
   NoiseType noise_type;
+  bool independent_noise;
 
   common_dynamic m1_dynamic(const Eigen::MatrixXd &particles, const int &idx);
   common_dynamic m2_dynamic(const Eigen::MatrixXd &particles, const int &idx);
