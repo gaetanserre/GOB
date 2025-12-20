@@ -14,14 +14,10 @@ public:
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, alpha), "PSO")
   {
-    this->omega = omega;
-    this->c2 = c2;
     this->beta = beta;
     this->velocities = Eigen::MatrixXd::Zero(n_particles, bounds.size());
   }
@@ -30,8 +26,6 @@ public:
   compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time);
 
 private:
-  double omega;
-  double c2;
   double beta;
   Eigen::MatrixXd velocities;
 };

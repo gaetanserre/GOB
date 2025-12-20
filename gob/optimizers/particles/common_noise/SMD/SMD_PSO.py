@@ -20,10 +20,6 @@ class SMD_PSO(SMD_Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    omega : float
-        The inertia weight.
-    c2 : float
-        The cognitive coefficient.
     beta : float
         The inverse temperature.
     alpha : float
@@ -46,8 +42,6 @@ class SMD_PSO(SMD_Optimizer):
         n_particles=200,
         iter=1000,
         dt=0.01,
-        omega=0.7,
-        c2=2,
         beta=1e5,
         alpha=1,
         gamma=1,
@@ -63,8 +57,6 @@ class SMD_PSO(SMD_Optimizer):
             n_particles,
             iter,
             dt,
-            omega,
-            c2,
             beta,
             alpha,
             gamma,

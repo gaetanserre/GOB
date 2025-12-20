@@ -12,12 +12,10 @@ public:
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       double sigma_cn) : Optimizer(bounds, "GCN-PSO"),
-                         base_opt(bounds, n_particles, iter, dt, omega, c2, beta, alpha, 0)
+                         base_opt(bounds, n_particles, iter, dt, beta, alpha, 0)
   {
     this->sigma = sigma_cn;
   }

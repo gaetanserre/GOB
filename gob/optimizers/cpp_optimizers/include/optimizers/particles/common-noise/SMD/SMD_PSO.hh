@@ -12,15 +12,13 @@ public:
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       double gamma,
       double lambda_cn,
       double delta,
       int moment) : Optimizer(bounds, "SMD-PSO"),
-                    base_opt(bounds, n_particles, iter, dt, omega, c2, beta, alpha, 0)
+                    base_opt(bounds, n_particles, iter, dt, beta, alpha, 0)
   {
     this->gamma = gamma;
     this->lambda = lambda_cn;

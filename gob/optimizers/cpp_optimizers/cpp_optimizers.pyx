@@ -102,8 +102,6 @@ cdef extern from "include/optimizers/particles/PSO.hh":
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       int batch_size
@@ -185,8 +183,6 @@ cdef extern from "include/optimizers/particles/common-noise/SMD/SMD_PSO.hh":
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       double gamma,
@@ -262,8 +258,6 @@ cdef extern from "include/optimizers/particles/common-noise/GCN/GCN_PSO.hh":
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       double sigma_cn
@@ -472,13 +466,11 @@ cdef class PSO:
     int n_particles,
     int iter,
     double dt,
-    double omega,
-    double c2,
     double beta,
     double alpha,
     int batch_size
   ):
-    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size)
+    self.thisptr = new CPSO(bounds, n_particles, iter, dt, beta, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -615,8 +607,6 @@ cdef class SMD_PSO:
     int n_particles,
     int iter,
     double dt,
-    double omega,
-    double c2,
     double beta,
     double alpha,
     double gamma,
@@ -624,7 +614,7 @@ cdef class SMD_PSO:
     double delta,
     int moment
   ):
-    self.thisptr = new CSMD_PSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, gamma, lambda_cn, delta, moment)
+    self.thisptr = new CSMD_PSO(bounds, n_particles, iter, dt, beta, alpha, gamma, lambda_cn, delta, moment)
 
   def minimize(self, f):
     py_init()
@@ -737,13 +727,11 @@ cdef class GCN_PSO:
     int n_particles,
     int iter,
     double dt,
-    double omega,
-    double c2,
     double beta,
     double alpha,
     double sigma_cn
   ):
-    self.thisptr = new CGCN_PSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, sigma_cn)
+    self.thisptr = new CGCN_PSO(bounds, n_particles, iter, dt, beta, alpha, sigma_cn)
 
   def minimize(self, f):
     py_init()
