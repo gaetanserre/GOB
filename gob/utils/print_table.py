@@ -250,9 +250,15 @@ def print_table_by_metric(res_dict):
         print(tab)
 
 
-def print_competitive_ratios(ratios):
+def print_competitive_ratios(ratios, latex=False):
     print_purple("Competitive ratios:")
     tab = ColorTable(["Optimizer", "Competitive ratio"], theme=Themes.LAVENDER)
     for opt_name, ratio in ratios.items():
         tab.add_row([opt_name, f"{ratio:.4f}"])
-    print(tab)
+    if latex:
+        tab_string = tab.get_formatted_string(
+            "latex", vrules=VRuleStyle.ALL, border=True, format=True
+        )
+        print(tab_string)
+    else:
+        print(tab)

@@ -4,6 +4,7 @@
 
 from utils import (
     print_avg_rank,
+    print_competitive_ratios,
     noisy_functions,
     noisy_functions_bounds,
     flat_functions,
@@ -85,10 +86,11 @@ if __name__ == "__main__":
         bounds=noisy_functions_bounds,
     )
     print("Running noisy functions experiments...")
-    res_dict = gob.run(
+    res_dict, ratios = gob.run(
         n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="Langevin"
     )
     print_avg_rank(res_dict)
+    print_competitive_ratios(ratios)
 
     # flat
     gob = GOB(
@@ -98,10 +100,11 @@ if __name__ == "__main__":
         bounds=flat_functions_bounds,
     )
     print("Running flat functions experiments...")
-    res_dict = gob.run(
+    res_dict, ratios = gob.run(
         n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="Langevin"
     )
     print_avg_rank(res_dict)
+    print_competitive_ratios(ratios)
 
     # smooth
     gob = GOB(
@@ -111,7 +114,8 @@ if __name__ == "__main__":
         bounds=smooth_functions_bounds,
     )
     print("Running smooth functions experiments...")
-    res_dict = gob.run(
+    res_dict, ratios = gob.run(
         n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="Langevin"
     )
     print_avg_rank(res_dict)
+    print_competitive_ratios(ratios)

@@ -278,10 +278,12 @@ class GOB:
                     print_dark_green(f"Done for {name_optimizer_} on {benchmark}.")
             res_dict[str(benchmark)] = bench_dict
             min_dict[str(benchmark)] = benchmark.min
+        comp_ratios = self.competitive_ratio(res_dict, min_dict)
         if verbose:
             if latex_table:
                 print_table_by_metric_latex(res_dict, **table_kwargs)
+                print_competitive_ratios(comp_ratios, latex=True)
             else:
                 print_table_by_metric(res_dict, **table_kwargs)
-            # print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
-        return res_dict
+                print_competitive_ratios(comp_ratios)
+        return res_dict, comp_ratios

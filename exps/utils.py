@@ -50,16 +50,26 @@ def print_avg_rank(res_dict):
             latex_str += r"$\mathbf{" + f"{avg_rank:.2f}" + "}$ & "
         else:
             latex_str += f"${avg_rank:.2f}$ & "
-    latex_str = (
-        latex_str[:-2]
-        + " \\\\"
-        + "\n"
-        + r"\cline{1-"
-        + str(len(avg_ranks_list) + 1)
-        + "}"
-    )
+    latex_str = latex_str[:-2] + " \\\\" + "\n"
     print("\nLaTeX format:")
     print(latex_str)
+
+
+def print_competitive_ratios(ratios):
+    latex_str = "Comp. Ratio & "
+    min_ration = min(list(ratios.values()))
+    for i, ratio in enumerate(ratios.values()):
+        if ratio == min_ration:
+            ratio_str = r"$\mathbf{" + f"{ratio:.4f}" + "}$"
+        else:
+            ratio_str = f"${ratio:.4f}$"
+        if i == len(ratios) - 1:
+            latex_str += ratio_str + " \\\\"
+        else:
+            latex_str += ratio_str + " & "
+    print("\nCompetitive Ratios in LaTeX format:")
+    print(latex_str)
+    print(r"\cline{1-" + str(len(list(ratios)) + 1) + "}")
 
 
 dim = 50
@@ -68,7 +78,7 @@ noisy_functions = [
     gb.Ackley(),
     gb.Deb(),
     gb.Griewank(),
-    gb.Langermann(dim=dim),
+    # gb.Langermann(dim=dim),
     gb.Levy(),
     gb.Rastrigin(),
     gb.Schwefel(),
