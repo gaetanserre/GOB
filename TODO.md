@@ -1,5 +1,6 @@
 - [ ] RKHS with infinite sigma
 - [ ] Other metric or no metric at all
+- [ ] Remove Adam
 - [x] Generalize RKHS noise
 - [x] Test stats only against reference algorithm
 - [x] Avg ranks computation (take care of ties)
