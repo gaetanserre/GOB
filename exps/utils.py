@@ -91,7 +91,7 @@ noisy_functions_bounds = [
 flat_functions = [
     gb.Bentcigar(),
     gb.Dixonprice(),
-    gb.Michalewicz(),
+    # gb.Michalewicz(),
     gb.Rosenbrock(),
     gb.Zakharov(),
 ]
