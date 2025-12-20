@@ -18,7 +18,7 @@ class Langermann(Benchmark):
     """
 
     def __init__(self, dim=2, m=None, c=None, A=None, seed=42):
-        super().__init__("Langermann", 0, create_bounds(2, 0, 10))
+        super().__init__("Langermann", None, create_bounds(2, 0, 10))
 
         np.random.seed(seed)
         if m is None:
