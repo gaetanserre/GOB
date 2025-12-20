@@ -2,6 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/particles/particles_optimizer.hh"
 
 class PSO : public Particles_Optimizer
