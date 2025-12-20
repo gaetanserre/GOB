@@ -97,7 +97,7 @@ if __name__ == "__main__":
     )
     print("Running flat functions experiments...")
     res_dict, ratios = gob.run(
-        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="MSGD"
+        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="SBS"
     )
     print_avg_rank(res_dict)
     print_competitive_ratios(ratios)
@@ -111,7 +111,7 @@ if __name__ == "__main__":
     )
     print("Running smooth functions experiments...")
     res_dict, ratios = gob.run(
-        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="MSGD"
+        n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="SBS"
     )
     print_avg_rank(res_dict)
     print_competitive_ratios(ratios)
