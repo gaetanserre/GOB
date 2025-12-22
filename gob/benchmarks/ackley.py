@@ -17,7 +17,7 @@ class Ackley(Benchmark):
     Its minimum is :math:`0` achieved at :math:`x = 0`.
     """
 
-    def __init__(self, a=20, b=0.2, c=1):
+    def __init__(self, a=20, b=0.4, c=1):
         super().__init__("Ackley", 0, create_bounds(2, -32.768, 32.768))
         self.a = a
         self.b = b
