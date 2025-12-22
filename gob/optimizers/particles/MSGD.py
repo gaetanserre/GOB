@@ -32,7 +32,7 @@ class MSGD(CPP_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.01,
+        dt=0.1,
         batch_size=0,
         verbose=False,
     ):

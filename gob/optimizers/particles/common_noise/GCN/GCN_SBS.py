@@ -33,7 +33,7 @@ class GCN_SBS(CPP_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=0.01,
+        dt=0.1,
         sigma=0.1,
         sigma_noise=1,
         verbose=False,

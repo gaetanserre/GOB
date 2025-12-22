@@ -43,7 +43,7 @@ class GCN_CBO(CPP_Optimizer):
         bounds,
         n_particles=200,
         iter=1000,
-        dt=0.01,
+        dt=0.1,
         lam=1,
         epsilon=1e-2,
         beta=1,

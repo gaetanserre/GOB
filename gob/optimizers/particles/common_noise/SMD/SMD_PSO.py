@@ -41,7 +41,7 @@ class SMD_PSO(SMD_Optimizer):
         bounds,
         n_particles=200,
         iter=1000,
-        dt=0.01,
+        dt=0.1,
         beta=1e5,
         alpha=1,
         gamma=1,
