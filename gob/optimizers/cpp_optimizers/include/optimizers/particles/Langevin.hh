@@ -15,7 +15,7 @@ public:
       int iter,
       double dt,
       double beta,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, 0.99), "Langevin")
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, 1), "Langevin")
   {
     this->beta = beta;
   }
