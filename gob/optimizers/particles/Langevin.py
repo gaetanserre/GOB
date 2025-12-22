@@ -34,7 +34,7 @@ class Langevin(CPP_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=10,
+        dt=0.01,
         beta=1,
         batch_size=0,
         verbose=False,

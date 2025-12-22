@@ -13,3 +13,4 @@ dist
 .DS_Store
 docs/_build/
 docs/source/
+latex_aux/

@@ -27,7 +27,7 @@ class GCN_MSGD(CPP_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=10,
+        dt=0.01,
         sigma_noise=1,
         verbose=False,
     ):

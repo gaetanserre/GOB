@@ -1,0 +1,855 @@
+\documentclass{article}
+\usepackage{adjustbox}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[table]{xcolor}
+\usepackage{float}
+\usepackage[a4paper, total={6in, 8in}]{geometry}
+\usepackage{arydshln}
+\usepackage{amsmath}
+
+\definecolor{cell-gray}{HTML}{d9dad8}
+\def\thickhline{\noalign{\hrule height.8pt}}
+
+\title{RKHS noise}
+\author{gaetan.serre93 }
+\date{October 2025}
+
+\begin{document}
+
+\maketitle
+
+$$
+\text{ECR}(m) = \frac{1}{|F|} \sum_{f \in F} \min \left(100, \frac{df_m}{df^\star} \right)
+$$
+where $F$ is the set of benchmark functions, $df_m$ is the distance between the global minimum of $f$ and the approximation found by the method $m$, and $df^\star$ is the smallest distance among all the methods. 
+
+\section{With independent noise}
+
+\subsection{CBO family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Ackley & $20.763$ & $\cellcolor{cell-gray} \mathbf{20.669}$ & $20.725$ & $20.737$ & $20.735$ & $20.677$ & $0.014$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $65.135$ & $\mathbf{62.400}$ & $64.786$ & $64.701$ & $64.566$ & $63.617$ & $0.172$ \\
+        Levy & $382.028$ & $348.104$ & $374.382$ & $367.842$ & $345.344$ & $\cellcolor{cell-gray} \mathbf{342.445}$ & $0.002$ \\
+        Rastrigin & $735.687$ & $701.767$ & $732.340$ & $736.557$ & $\cellcolor{cell-gray} \mathbf{684.349}$ & $702.907$ & $0.001$ \\
+        Schwefel & $15605.291$ & $15757.659$ & $15716.671$ & $15703.796$ & $15739.304$ & $\mathbf{15544.122}$ & $0.715$ \\
+        Styblinski-Tang & $-14.322$ & $-14.843$ & $\cellcolor{cell-gray} \mathbf{-15.141}$ & $-14.738$ & $-14.912$ & $-14.635$ & $0.024$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.57$ & $2.43$ & $3.29$ & $3.86$ & $2.57$ & $\mathbf{2.14}$  \\
+        Comp. Ratio & $1.0396$ & $1.0097$ & $1.0308$ & $1.0311$ & $1.0098$ & $\mathbf{1.0097}$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $112163114910.644$ & $112041320766.396$ & $110389806572.694$ & $110259321729.940$ & $\mathbf{108527965700.968}$ & $109382752121.829$ & $0.164$ \\
+        Dixon-Price & $5011650.880$ & $4464478.892$ & $5021202.672$ & $4830475.113$ & $4343942.566$ & $\cellcolor{cell-gray} \mathbf{4179602.553}$ & $0.003$ \\
+        Rosenbrock & $2625872.105$ & $2553398.083$ & $2861810.683$ & $2735083.126$ & $2478543.729$ & $\mathbf{2428295.965}$ & $0.172$ \\
+        Zakharov & $2083.107$ & $1977.710$ & $2014.879$ & $2049.295$ & $\cellcolor{cell-gray} \mathbf{1914.346}$ & $1997.073$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $5.25$ & $3.25$ & $5.00$ & $4.25$ & $\mathbf{1.50}$ & $1.75$  \\
+        Comp. Ratio & $1.1005$ & $1.0463$ & $1.1124$ & $1.0921$ & $1.0150$ & $\mathbf{1.0128}$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $6710.709$ & $6420.010$ & $6797.700$ & $6991.766$ & $6467.919$ & $\mathbf{6299.061}$ & $0.068$ \\
+        Square & $1145.719$ & $1112.991$ & $1164.514$ & $1122.870$ & $1090.819$ & $\cellcolor{cell-gray} \mathbf{1035.665}$ & $0.002$ \\
+        Sumpow & $234018490.210$ & $\cellcolor{cell-gray} \mathbf{13114132.166}$ & $51007613.564$ & $243731535.715$ & $33457410.716$ & $39971909.722$ & $0.000$ \\
+        Trid & $0.001$ & $0.001$ & $\mathbf{0.001}$ & $0.001$ & $0.001$ & $0.001$ & $0.172$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $5.00$ & $\mathbf{2.25}$ & $4.00$ & $5.25$ & $\mathbf{2.25}$ & $\mathbf{2.25}$  \\
+        Comp. Ratio & $5.2542$ & $\mathbf{1.0235}$ & $1.7733$ & $5.4450$ & $1.4079$ & $1.5120$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{Langevin family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Ackley & $\mathbf{20.629}$ & $20.743$ & $20.646$ & $20.641$ & $20.732$ & $20.739$ & $0.903$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $\mathbf{9.255}$ & $15.976$ & $9.497$ & $9.278$ & $16.192$ & $16.131$ & $0.579$ \\
+        Levy & $371.785$ & $\mathbf{359.379}$ & $364.370$ & $378.739$ & $363.865$ & $379.848$ & $0.636$ \\
+        Rastrigin & $743.216$ & $734.952$ & $738.077$ & $\cellcolor{cell-gray} \mathbf{721.823}$ & $737.659$ & $736.411$ & $0.004$ \\
+        Schwefel & $7299.558$ & $7389.501$ & $7482.538$ & $7425.203$ & $7410.342$ & $\mathbf{7223.211}$ & $0.508$ \\
+        Styblinski-Tang & $\mathbf{-20.386}$ & $-17.886$ & $-20.092$ & $-20.315$ & $-17.533$ & $-17.936$ & $0.655$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.29}$ & $3.14$ & $3.43$ & $2.57$ & $3.86$ & $3.57$  \\
+        Comp. Ratio & $\mathbf{1.0107}$ & $1.1294$ & $1.0164$ & $1.0127$ & $1.1381$ & $1.1366$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $33.349$ & $65.457$ & $\cellcolor{cell-gray} \mathbf{24.418}$ & $36.064$ & $61.569$ & $61.566$ & $0.000$ \\
+        Dixon-Price & $7.508$ & $12.566$ & $\cellcolor{cell-gray} \mathbf{3.795}$ & $4.933$ & $7.375$ & $12.652$ & $0.000$ \\
+        Rosenbrock & $52.569$ & $63.613$ & $\cellcolor{cell-gray} \mathbf{51.579}$ & $52.026$ & $55.475$ & $63.457$ & $0.005$ \\
+        Zakharov & $5.600$ & $6.853$ & $5.598$ & $6.109$ & $5.278$ & $\mathbf{5.210}$ & $0.409$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $3.25$ & $5.75$ & $\mathbf{1.50}$ & $3.00$ & $3.50$ & $4.00$  \\
+        Comp. Ratio & $1.3595$ & $2.1351$ & $\mathbf{1.0186}$ & $1.2395$ & $1.6383$ & $2.0213$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $\cellcolor{cell-gray} \mathbf{48.561}$ & $88.226$ & $75.779$ & $76.639$ & $133.071$ & $89.303$ & $0.000$ \\
+        Square & $\mathbf{38.657}$ & $70.504$ & $39.169$ & $38.818$ & $70.592$ & $71.220$ & $0.674$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $\mathbf{0.001}$ & $0.001$ & $0.001$ & $0.001$ & $0.001$ & $0.001$ & $1.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.00}$ & $3.75$ & $2.00$ & $2.75$ & $3.75$ & $4.00$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $1.4102$ & $1.1434$ & $1.1456$ & $1.6416$ & $1.4203$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\section{Without independent noise}
+
+\subsection{CBO family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Ackley & $20.765$ & $10.700$ & $12.326$ & $12.492$ & $10.604$ & $\cellcolor{cell-gray} \mathbf{10.312}$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $-0.611$ & $-0.864$ & $-0.884$ & $-0.879$ & $-0.633$ & $0.000$ \\
+        Griewank & $65.247$ & $2.450$ & $3.731$ & $3.613$ & $2.350$ & $\cellcolor{cell-gray} \mathbf{2.277}$ & $0.000$ \\
+        Levy & $371.543$ & $27.841$ & $8.287$ & $\cellcolor{cell-gray} \mathbf{6.824}$ & $27.726$ & $7.638$ & $0.000$ \\
+        Rastrigin & $742.267$ & $393.100$ & $\cellcolor{cell-gray} \mathbf{166.241}$ & $349.884$ & $403.168$ & $335.603$ & $0.000$ \\
+        Schwefel & $\cellcolor{cell-gray} \mathbf{15551.879}$ & $16305.158$ & $16446.385$ & $16272.957$ & $16100.885$ & $16340.633$ & $0.001$ \\
+        Styblinski-Tang & $-14.960$ & $-20.821$ & $\cellcolor{cell-gray} \mathbf{-23.616}$ & $-21.664$ & $-20.512$ & $-21.545$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.57$ & $4.14$ & $3.43$ & $2.86$ & $3.29$ & $\mathbf{2.71}$  \\
+        Comp. Ratio & $\mathbf{13.3045}$ & $15.8266$ & $15.3008$ & $15.4392$ & $15.8262$ & $15.3317$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $111316716773.716$ & $946814205.626$ & $865140840.383$ & $\cellcolor{cell-gray} \mathbf{846160615.402}$ & $906845707.629$ & $907775574.263$ & $0.000$ \\
+        Dixon-Price & $4895652.604$ & $22410.667$ & $\cellcolor{cell-gray} \mathbf{933.318}$ & $1030.255$ & $25315.564$ & $2929.248$ & $0.000$ \\
+        Rosenbrock & $2819804.641$ & $151367.372$ & $35428.084$ & $\cellcolor{cell-gray} \mathbf{31091.028}$ & $121260.769$ & $34794.275$ & $0.000$ \\
+        Zakharov & $\mathbf{2061.630}$ & $44946771160.788$ & $60590856055.239$ & $2973236908.636$ & $7108806758.546$ & $1139805279.288$ & $0.598$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.75$ & $4.75$ & $3.00$ & $\mathbf{1.75}$ & $4.00$ & $2.75$  \\
+        Comp. Ratio & $72.9238$ & $32.4998$ & $25.7905$ & $\mathbf{25.7760}$ & $33.0240$ & $26.3326$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $6828.736$ & $1105.415$ & $\cellcolor{cell-gray} \mathbf{71.061}$ & $122.138$ & $1242.508$ & $376.868$ & $0.000$ \\
+        Square & $1136.205$ & $61.218$ & $\cellcolor{cell-gray} \mathbf{7.525}$ & $9.658$ & $69.814$ & $23.815$ & $0.000$ \\
+        Sumpow & $250758158.860$ & $20201664.491$ & $65641.397$ & $\cellcolor{cell-gray} \mathbf{351.315}$ & $9442026.932$ & $38994.089$ & $0.000$ \\
+        Trid & $0.001$ & $9e^{-4}$ & $9e^{-4}$ & $0.001$ & $0.001$ & $\cellcolor{cell-gray} \mathbf{8e^{-4}}$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $6.00$ & $3.75$ & $\mathbf{2.00}$ & $2.50$ & $4.50$ & $2.25$  \\
+        Comp. Ratio & $74.2745$ & $31.1728$ & $25.7502$ & $\mathbf{1.2508}$ & $31.9408$ & $27.3670$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{Langevin family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Ackley & $20.680$ & $20.662$ & $9.887$ & $\cellcolor{cell-gray} \mathbf{9.180}$ & $20.676$ & $20.646$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $9.103$ & $11.652$ & $\cellcolor{cell-gray} \mathbf{0.502}$ & $0.505$ & $11.761$ & $9.213$ & $0.000$ \\
+        Levy & $\mathbf{369.608}$ & $386.913$ & $370.501$ & $388.750$ & $379.344$ & $377.639$ & $1.000$ \\
+        Rastrigin & $739.650$ & $742.018$ & $737.804$ & $\mathbf{725.268}$ & $735.289$ & $731.642$ & $0.072$ \\
+        Schwefel & $7288.428$ & $7435.442$ & $7451.415$ & $7313.699$ & $\mathbf{7264.280}$ & $7417.765$ & $0.617$ \\
+        Styblinski-Tang & $-20.619$ & $-20.116$ & $-31.711$ & $\cellcolor{cell-gray} \mathbf{-34.253}$ & $-20.213$ & $-20.375$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $3.00$ & $4.57$ & $2.57$ & $\mathbf{2.14}$ & $3.57$ & $3.00$  \\
+        Comp. Ratio & $4.0288$ & $4.7791$ & $1.0914$ & $\mathbf{1.0095}$ & $4.8000$ & $4.0707$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $32.924$ & $34.924$ & $\cellcolor{cell-gray} \mathbf{0.127}$ & $8.407$ & $35.609$ & $31.981$ & $0.000$ \\
+        Dixon-Price & $7.798$ & $8.410$ & $\cellcolor{cell-gray} \mathbf{0.754}$ & $1.468$ & $3.368$ & $8.000$ & $0.000$ \\
+        Rosenbrock & $52.159$ & $54.020$ & $\cellcolor{cell-gray} \mathbf{45.839}$ & $45.954$ & $49.339$ & $53.191$ & $0.000$ \\
+        Zakharov & $6.031$ & $7.050$ & $\mathbf{5.792}$ & $5.825$ & $6.016$ & $6.428$ & $0.860$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.00$ & $5.75$ & $\mathbf{1.00}$ & $2.00$ & $3.75$ & $4.50$  \\
+        Comp. Ratio & $28.1318$ & $28.3887$ & $\mathbf{1.0000}$ & $17.5875$ & $26.6460$ & $28.2214$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $46.972$ & $55.525$ & $\cellcolor{cell-gray} \mathbf{0.476}$ & $2.104$ & $69.097$ & $47.463$ & $0.000$ \\
+        Square & $38.918$ & $41.731$ & $\cellcolor{cell-gray} \mathbf{0.272}$ & $0.675$ & $47.621$ & $38.217$ & $0.000$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $0.001$ & $0.001$ & $\cellcolor{cell-gray} \mathbf{-0.003}$ & $-0.003$ & $-0.003$ & $0.001$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $3.25$ & $3.75$ & $\mathbf{1.00}$ & $1.75$ & $4.00$ & $3.50$  \\
+        Comp. Ratio & $50.1764$ & $50.5056$ & $\mathbf{1.0000}$ & $2.2264$ & $50.5000$ & $50.4347$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{MSGD family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{MSGD} & \textbf{SMD-MSGD} & \textbf{SMD-MSGD (2)} & \textbf{SMD-MSGD (3)} & \textbf{SMD-MSGD (4)} & \textbf{GCN-MSGD} & \textbf{p-value} \\
+        \hline
+        Ackley & $11.964$ & $20.682$ & $\mathbf{7.120}$ & $8.674$ & $20.650$ & $20.638$ & $0.081$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $\cellcolor{cell-gray} \mathbf{0.336}$ & $12.103$ & $0.508$ & $0.522$ & $11.845$ & $8.820$ & $0.000$ \\
+        Levy & $\mathbf{357.236}$ & $378.828$ & $388.689$ & $362.584$ & $363.925$ & $369.715$ & $1.000$ \\
+        Rastrigin & $736.737$ & $735.437$ & $732.495$ & $735.546$ & $\mathbf{726.070}$ & $737.783$ & $0.298$ \\
+        Schwefel & $7407.777$ & $\mathbf{7287.815}$ & $7313.501$ & $7480.322$ & $7438.124$ & $7470.090$ & $0.250$ \\
+        Styblinski-Tang & $\cellcolor{cell-gray} \mathbf{-36.749}$ & $-20.281$ & $-31.637$ & $-34.646$ & $-20.041$ & $-20.582$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.14}$ & $3.86$ & $2.43$ & $2.86$ & $3.57$ & $4.00$  \\
+        Comp. Ratio & $\mathbf{1.1016}$ & $7.2593$ & $1.3895$ & $1.2422$ & $7.1581$ & $5.8448$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{MSGD} & \textbf{SMD-MSGD} & \textbf{SMD-MSGD (2)} & \textbf{SMD-MSGD (3)} & \textbf{SMD-MSGD (4)} & \textbf{GCN-MSGD} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $\cellcolor{cell-gray} \mathbf{9e^{-4}}$ & $34.069$ & $0.131$ & $9.967$ & $32.375$ & $34.712$ & $0.000$ \\
+        Dixon-Price & $\mathbf{0.748}$ & $8.146$ & $0.761$ & $1.524$ & $3.143$ & $7.932$ & $0.273$ \\
+        Rosenbrock & $\cellcolor{cell-gray} \mathbf{37.111}$ & $53.034$ & $45.726$ & $45.965$ & $49.758$ & $53.915$ & $0.000$ \\
+        Zakharov & $6.213$ & $6.045$ & $6.370$ & $6.352$ & $\mathbf{5.607}$ & $6.923$ & $0.285$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.50}$ & $4.50$ & $2.75$ & $3.25$ & $3.25$ & $5.75$  \\
+        Comp. Ratio & $\mathbf{1.0270}$ & $28.3511$ & $25.8465$ & $26.1024$ & $26.6365$ & $28.3246$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{MSGD} & \textbf{SMD-MSGD} & \textbf{SMD-MSGD (2)} & \textbf{SMD-MSGD (3)} & \textbf{SMD-MSGD (4)} & \textbf{GCN-MSGD} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $\cellcolor{cell-gray} \mathbf{3e^{-10}}$ & $52.832$ & $0.523$ & $2.113$ & $67.056$ & $48.032$ & $0.000$ \\
+        Square & $\cellcolor{cell-gray} \mathbf{3e^{-11}}$ & $40.884$ & $0.280$ & $0.708$ & $46.477$ & $37.077$ & $0.000$ \\
+        Sumpow & $6e^{-23}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $\cellcolor{cell-gray} \mathbf{-0.003}$ & $0.001$ & $-0.003$ & $-0.003$ & $-0.003$ & $0.001$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $2.25$ & $4.25$ & $\mathbf{1.75}$ & $2.50$ & $4.25$ & $3.50$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $50.5058$ & $50.5000$ & $50.5000$ & $50.5000$ & $50.5057$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{SBS family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{SBS} & \textbf{SMD-SBS} & \textbf{SMD-SBS (2)} & \textbf{SMD-SBS (3)} & \textbf{SMD-SBS (4)} & \textbf{GCN-SBS} & \textbf{p-value} \\
+        \hline
+        Ackley & $10.772$ & $20.712$ & $\mathbf{3.921}$ & $4.663$ & $20.721$ & $20.755$ & $0.598$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $\cellcolor{cell-gray} \mathbf{0.347}$ & $63.964$ & $1.026$ & $1.069$ & $64.649$ & $65.465$ & $0.000$ \\
+        Levy & $373.608$ & $370.276$ & $378.441$ & $379.428$ & $375.829$ & $\mathbf{364.318}$ & $0.262$ \\
+        Rastrigin & $741.729$ & $731.904$ & $736.029$ & $735.039$ & $\mathbf{727.933}$ & $741.857$ & $0.126$ \\
+        Schwefel & $7442.568$ & $9641.797$ & $7352.856$ & $\mathbf{7270.615}$ & $9519.471$ & $9519.609$ & $0.181$ \\
+        Styblinski-Tang & $\cellcolor{cell-gray} \mathbf{-36.537}$ & $-14.920$ & $-16.129$ & $-16.610$ & $-15.551$ & $-14.711$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.43}$ & $3.43$ & $2.57$ & $2.57$ & $3.43$ & $4.43$  \\
+        Comp. Ratio & $\mathbf{1.2594}$ & $16.9789$ & $2.3969$ & $2.4144$ & $16.9439$ & $16.9891$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{SBS} & \textbf{SMD-SBS} & \textbf{SMD-SBS (2)} & \textbf{SMD-SBS (3)} & \textbf{SMD-SBS (4)} & \textbf{GCN-SBS} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $\cellcolor{cell-gray} \mathbf{9e^{-4}}$ & $4140.081$ & $0.194$ & $74.056$ & $3360.796$ & $4324.135$ & $0.000$ \\
+        Dixon-Price & $\cellcolor{cell-gray} \mathbf{0.739}$ & $369.158$ & $5.870$ & $11.440$ & $68.909$ & $314.255$ & $0.000$ \\
+        Rosenbrock & $\cellcolor{cell-gray} \mathbf{36.282}$ & $932.441$ & $48.210$ & $53.021$ & $361.219$ & $836.551$ & $0.000$ \\
+        Zakharov & $5.990$ & $6.378$ & $\mathbf{5.725}$ & $6.284$ & $5.916$ & $5.913$ & $0.365$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.75}$ & $5.75$ & $\mathbf{1.75}$ & $3.50$ & $3.75$ & $4.50$  \\
+        Comp. Ratio & $\mathbf{1.0116}$ & $56.7034$ & $27.5686$ & $29.5113$ & $51.0676$ & $56.0224$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{SBS} & \textbf{SMD-SBS} & \textbf{SMD-SBS (2)} & \textbf{SMD-SBS (3)} & \textbf{SMD-SBS (4)} & \textbf{GCN-SBS} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $\cellcolor{cell-gray} \mathbf{3e^{-10}}$ & $3734.531$ & $193.746$ & $204.878$ & $3470.964$ & $3088.002$ & $0.000$ \\
+        Square & $\cellcolor{cell-gray} \mathbf{3e^{-11}}$ & $1152.094$ & $42.353$ & $44.804$ & $1109.756$ & $1097.584$ & $0.000$ \\
+        Sumpow & $8e^{-19}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $\cellcolor{cell-gray} \mathbf{-0.003}$ & $0.001$ & $-0.003$ & $-0.003$ & $-0.003$ & $0.001$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $2.25$ & $4.75$ & $\mathbf{1.75}$ & $2.50$ & $3.75$ & $3.50$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $50.5057$ & $50.5000$ & $50.5000$ & $50.5000$ & $50.5057$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{PSO family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{PSO} & \textbf{SMD-PSO} & \textbf{SMD-PSO (2)} & \textbf{SMD-PSO (3)} & \textbf{SMD-PSO (4)} & \textbf{GCN-PSO} & \textbf{p-value} \\
+        \hline
+        Ackley & $6.453$ & $7.411$ & $6.486$ & $\mathbf{6.444}$ & $7.709$ & $6.659$ & $0.968$ \\
+        Deb N.1 & $-0.525$ & $-0.621$ & $-0.869$ & $-0.876$ & $\cellcolor{cell-gray} \mathbf{-0.880}$ & $-0.630$ & $0.000$ \\
+        Griewank & $1.531$ & $1.506$ & $1.508$ & $1.532$ & $1.527$ & $\mathbf{1.500}$ & $0.310$ \\
+        Levy & $\mathbf{6.714}$ & $25.747$ & $7.271$ & $6.947$ & $25.523$ & $9.050$ & $0.409$ \\
+        Rastrigin & $355.857$ & $395.582$ & $\cellcolor{cell-gray} \mathbf{158.191}$ & $339.851$ & $393.114$ & $335.445$ & $0.000$ \\
+        Schwefel & $16354.405$ & $16197.829$ & $\mathbf{16195.675}$ & $16266.255$ & $16499.126$ & $16206.585$ & $0.365$ \\
+        Styblinski-Tang & $-23.296$ & $-21.634$ & $\cellcolor{cell-gray} \mathbf{-24.753}$ & $-21.818$ & $-21.425$ & $-21.858$ & $0.002$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $3.57$ & $4.43$ & $\mathbf{2.14}$ & $3.14$ & $4.71$ & $3.00$  \\
+        Comp. Ratio & $1.6208$ & $1.9805$ & $\mathbf{1.0270}$ & $1.2062$ & $1.6786$ & $1.5410$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{PSO} & \textbf{SMD-PSO} & \textbf{SMD-PSO (2)} & \textbf{SMD-PSO (3)} & \textbf{SMD-PSO (4)} & \textbf{GCN-PSO} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $893829579.603$ & $953136766.237$ & $828010313.907$ & $881981199.747$ & $970084961.663$ & $\mathbf{813545654.024}$ & $0.409$ \\
+        Dixon-Price & $\mathbf{685.227}$ & $19346.582$ & $865.236$ & $1035.500$ & $21383.254$ & $3053.368$ & $0.490$ \\
+        Rosenbrock & $\cellcolor{cell-gray} \mathbf{26285.616}$ & $128552.265$ & $33066.590$ & $31620.328$ & $134987.976$ & $32355.510$ & $0.031$ \\
+        Zakharov & $88773270809.789$ & $39331590622.415$ & $32072225958.807$ & $3154278123.718$ & $6091953000.853$ & $\cellcolor{cell-gray} \mathbf{754612395.434}$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $3.00$ & $5.00$ & $3.00$ & $2.50$ & $5.25$ & $\mathbf{2.25}$  \\
+        Comp. Ratio & $25.7747$ & $21.6044$ & $11.5100$ & $1.9946$ & $11.4017$ & $\mathbf{1.9217}$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{PSO} & \textbf{SMD-PSO} & \textbf{SMD-PSO (2)} & \textbf{SMD-PSO (3)} & \textbf{SMD-PSO (4)} & \textbf{GCN-PSO} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $58.482$ & $1076.768$ & $\mathbf{50.182}$ & $118.133$ & $1157.226$ & $379.723$ & $0.126$ \\
+        Square & $9.108$ & $62.013$ & $\cellcolor{cell-gray} \mathbf{7.685}$ & $12.245$ & $69.702$ & $23.127$ & $0.036$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{47.501}$ & $6060074.310$ & $16517.042$ & $371.002$ & $3798930.722$ & $45351.058$ & $0.000$ \\
+        Trid & $-0.001$ & $3e^{-4}$ & $-0.001$ & $-0.001$ & $2e^{-4}$ & $\mathbf{-0.001}$ & $0.508$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.00}$ & $5.50$ & $2.25$ & $2.50$ & $5.50$ & $3.25$  \\
+        Comp. Ratio & $\mathbf{1.0878}$ & $32.6343$ & $25.7502$ & $3.1896$ & $33.2851$ & $27.8941$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\section{Dimension 20}
+
+\section{With independent noise}
+
+\subsection{CBO family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Ackley & $21.002$ & $20.668$ & $21.008$ & $21.016$ & $20.720$ & $\cellcolor{cell-gray} \mathbf{20.666}$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $19.926$ & $19.425$ & $20.344$ & $20.442$ & $\mathbf{19.321}$ & $20.074$ & $0.379$ \\
+        Levy & $90.436$ & $87.231$ & $95.936$ & $95.297$ & $\mathbf{83.747}$ & $93.380$ & $0.164$ \\
+        Rastrigin & $250.042$ & $\cellcolor{cell-gray} \mathbf{233.412}$ & $248.646$ & $249.191$ & $241.634$ & $244.268$ & $0.021$ \\
+        Schwefel & $5111.584$ & $\mathbf{4985.862}$ & $5053.123$ & $5101.531$ & $5141.938$ & $5029.048$ & $0.096$ \\
+        Styblinski-Tang & $-19.890$ & $\mathbf{-20.386}$ & $-19.446$ & $-19.487$ & $-19.953$ & $-20.176$ & $0.337$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $3.71$ & $\mathbf{1.43}$ & $4.29$ & $4.57$ & $2.43$ & $2.43$  \\
+        Comp. Ratio & $1.0358$ & $\mathbf{1.0067}$ & $1.0491$ & $1.0502$ & $1.0132$ & $1.0315$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $32525898156.394$ & $32070939864.201$ & $32129017574.595$ & $30953297015.118$ & $33140388710.074$ & $\cellcolor{cell-gray} \mathbf{29723072748.236}$ & $0.029$ \\
+        Dixon-Price & $431904.495$ & $410493.841$ & $446208.896$ & $446580.682$ & $424232.361$ & $\cellcolor{cell-gray} \mathbf{344252.607}$ & $0.007$ \\
+        Rosenbrock & $484242.018$ & $376346.170$ & $505834.470$ & $397779.068$ & $\cellcolor{cell-gray} \mathbf{351873.855}$ & $352105.139$ & $0.004$ \\
+        Zakharov & $489.971$ & $454.370$ & $520.217$ & $500.251$ & $471.971$ & $\mathbf{437.377}$ & $0.473$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.50$ & $2.50$ & $5.25$ & $4.25$ & $3.25$ & $\mathbf{1.25}$  \\
+        Comp. Ratio & $1.2113$ & $1.0950$ & $1.2510$ & $1.1532$ & $1.1066$ & $\mathbf{1.0002}$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $769.388$ & $688.589$ & $819.966$ & $762.729$ & $688.548$ & $\mathbf{687.288}$ & $0.102$ \\
+        Square & $337.453$ & $319.811$ & $360.156$ & $338.386$ & $305.810$ & $\cellcolor{cell-gray} \mathbf{295.434}$ & $0.005$ \\
+        Sumpow & $25.236$ & $9.851$ & $13.128$ & $14.592$ & $7.054$ & $\cellcolor{cell-gray} \mathbf{6.152}$ & $0.000$ \\
+        Trid & $-0.004$ & $-0.004$ & $-0.005$ & $-0.005$ & $-0.004$ & $\mathbf{-0.005}$ & $0.208$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $5.25$ & $3.25$ & $4.75$ & $4.00$ & $2.75$ & $\mathbf{1.00}$  \\
+        Comp. Ratio & $1.8430$ & $1.1725$ & $1.3874$ & $1.4073$ & $1.0475$ & $\mathbf{1.0000}$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{Langevin family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Ackley & $20.829$ & $20.836$ & $\mathbf{20.820}$ & $20.835$ & $20.830$ & $20.834$ & $0.365$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $2.616$ & $3.749$ & $\cellcolor{cell-gray} \mathbf{2.516}$ & $2.581$ & $3.893$ & $3.738$ & $0.050$ \\
+        Levy & $98.173$ & $102.236$ & $\mathbf{88.373}$ & $97.791$ & $96.379$ & $99.645$ & $0.053$ \\
+        Rastrigin & $236.958$ & $239.939$ & $239.804$ & $\mathbf{234.609}$ & $235.367$ & $238.349$ & $0.298$ \\
+        Schwefel & $2454.309$ & $2354.140$ & $2466.140$ & $2316.290$ & $2437.805$ & $\cellcolor{cell-gray} \mathbf{2307.289}$ & $0.039$ \\
+        Styblinski-Tang & $\mathbf{-28.463}$ & $-27.143$ & $-28.118$ & $-28.022$ & $-26.802$ & $-26.916$ & $0.208$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $2.71$ & $4.43$ & $\mathbf{2.43}$ & $\mathbf{2.43}$ & $3.43$ & $3.43$  \\
+        Comp. Ratio & $1.0321$ & $1.1163$ & $\mathbf{1.0176}$ & $1.0255$ & $1.1219$ & $1.1106$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $5.755$ & $11.674$ & $\mathbf{5.169}$ & $7.894$ & $11.993$ & $11.191$ & $0.096$ \\
+        Dixon-Price & $1.954$ & $2.484$ & $\cellcolor{cell-gray} \mathbf{1.218}$ & $1.414$ & $1.793$ & $2.473$ & $0.000$ \\
+        Rosenbrock & $\cellcolor{cell-gray} \mathbf{14.042}$ & $18.987$ & $18.187$ & $18.039$ & $19.234$ & $18.549$ & $0.000$ \\
+        Zakharov & $\mathbf{0.105}$ & $0.254$ & $0.203$ & $0.241$ & $0.117$ & $0.157$ & $0.751$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.00}$ & $5.50$ & $2.25$ & $3.00$ & $4.25$ & $4.00$  \\
+        Comp. Ratio & $\mathbf{1.1796}$ & $2.0170$ & $1.3079$ & $1.5680$ & $1.5687$ & $1.7538$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $\cellcolor{cell-gray} \mathbf{8.220}$ & $15.393$ & $11.568$ & $10.940$ & $19.172$ & $16.332$ & $0.000$ \\
+        Square & $7.360$ & $13.948$ & $\mathbf{7.181}$ & $7.428$ & $13.995$ & $13.454$ & $0.351$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $-0.005$ & $-0.005$ & $\mathbf{-0.006}$ & $-0.005$ & $-0.005$ & $-0.006$ & $0.308$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $2.00$ & $4.00$ & $\mathbf{1.50}$ & $2.75$ & $4.00$ & $3.00$  \\
+        Comp. Ratio & $\mathbf{1.0078}$ & $1.4559$ & $1.1018$ & $1.0935$ & $1.5717$ & $1.4657$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\section{Without independent noise}
+
+\subsection{CBO family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Ackley & $21.004$ & $17.561$ & $17.129$ & $\cellcolor{cell-gray} \mathbf{16.961}$ & $17.256$ & $17.515$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $-0.723$ & $-0.947$ & $-0.961$ & $-0.966$ & $-0.773$ & $0.000$ \\
+        Griewank & $19.590$ & $1.569$ & $2.193$ & $2.056$ & $1.577$ & $\cellcolor{cell-gray} \mathbf{1.524}$ & $0.000$ \\
+        Levy & $92.244$ & $5.470$ & $\cellcolor{cell-gray} \mathbf{1.504}$ & $1.988$ & $4.391$ & $1.615$ & $0.000$ \\
+        Rastrigin & $250.503$ & $110.911$ & $\cellcolor{cell-gray} \mathbf{44.964}$ & $101.456$ & $114.315$ & $94.597$ & $0.000$ \\
+        Schwefel & $\cellcolor{cell-gray} \mathbf{5103.473}$ & $5398.977$ & $5521.920$ & $5492.361$ & $5488.274$ & $5482.487$ & $0.006$ \\
+        Styblinski-Tang & $-20.000$ & $-25.532$ & $-26.394$ & $-25.065$ & $-24.985$ & $\cellcolor{cell-gray} \mathbf{-27.050}$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.57$ & $3.86$ & $3.00$ & $3.29$ & $3.71$ & $\mathbf{2.57}$  \\
+        Comp. Ratio & $\mathbf{12.0810}$ & $15.7644$ & $15.2264$ & $15.4525$ & $15.6800$ & $15.3263$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $31480148110.119$ & $176260275.818$ & $\cellcolor{cell-gray} \mathbf{158009475.654}$ & $167689342.376$ & $160849783.424$ & $171649756.232$ & $0.000$ \\
+        Dixon-Price & $475443.072$ & $882.964$ & $\cellcolor{cell-gray} \mathbf{31.829}$ & $84.680$ & $809.946$ & $139.743$ & $0.000$ \\
+        Rosenbrock & $497252.828$ & $12298.840$ & $2307.550$ & $2438.855$ & $11884.779$ & $\cellcolor{cell-gray} \mathbf{1510.731}$ & $0.000$ \\
+        Zakharov & $496.721$ & $116006.960$ & $140.065$ & $107.811$ & $118.685$ & $\cellcolor{cell-gray} \mathbf{67.067}$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $5.75$ & $5.25$ & $\mathbf{2.00}$ & $2.50$ & $3.25$ & $2.25$  \\
+        Comp. Ratio & $76.8516$ & $34.2494$ & $\mathbf{1.4040}$ & $1.7359$ & $9.0253$ & $1.8692$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{CBO} & \textbf{SMD-CBO} & \textbf{SMD-CBO (2)} & \textbf{SMD-CBO (3)} & \textbf{SMD-CBO (4)} & \textbf{GCN-CBO} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $783.242$ & $99.495$ & $\cellcolor{cell-gray} \mathbf{4.921}$ & $10.817$ & $98.270$ & $32.818$ & $0.000$ \\
+        Square & $335.125$ & $13.144$ & $\cellcolor{cell-gray} \mathbf{1.133}$ & $2.252$ & $12.396$ & $4.696$ & $0.000$ \\
+        Sumpow & $16.431$ & $41.355$ & $7.648$ & $\cellcolor{cell-gray} \mathbf{2.811}$ & $30.695$ & $7.445$ & $0.000$ \\
+        Trid & $-0.004$ & $6e^{-4}$ & $\cellcolor{cell-gray} \mathbf{-0.006}$ & $-0.006$ & $-6e^{-4}$ & $-0.006$ & $0.001$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $5.00$ & $5.50$ & $\mathbf{1.50}$ & $2.00$ & $4.50$ & $2.50$  \\
+        Comp. Ratio & $51.7151$ & $11.8921$ & $\mathbf{1.4303}$ & $1.5466$ & $10.7148$ & $3.6154$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{Langevin family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Ackley & $20.826$ & $20.839$ & $\cellcolor{cell-gray} \mathbf{20.010}$ & $20.016$ & $20.825$ & $20.794$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $2.557$ & $3.508$ & $\cellcolor{cell-gray} \mathbf{0.432}$ & $0.479$ & $3.266$ & $2.573$ & $0.000$ \\
+        Levy & $103.223$ & $100.053$ & $99.424$ & $\mathbf{92.194}$ & $98.380$ & $96.143$ & $0.072$ \\
+        Rastrigin & $233.447$ & $235.114$ & $\mathbf{228.984}$ & $230.468$ & $236.576$ & $233.896$ & $0.409$ \\
+        Schwefel & $2473.384$ & $\cellcolor{cell-gray} \mathbf{2281.283}$ & $2408.113$ & $2399.126$ & $2496.207$ & $2417.199$ & $0.044$ \\
+        Styblinski-Tang & $-28.276$ & $-28.345$ & $-36.796$ & $\cellcolor{cell-gray} \mathbf{-37.542}$ & $-28.165$ & $-28.414$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $4.00$ & $4.00$ & $1.86$ & $\mathbf{1.57}$ & $4.43$ & $3.00$  \\
+        Comp. Ratio & $2.5558$ & $2.8483$ & $1.0848$ & $\mathbf{1.0239}$ & $2.7955$ & $2.5344$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $5.518$ & $5.769$ & $\cellcolor{cell-gray} \mathbf{0.015}$ & $1.628$ & $7.857$ & $6.083$ & $0.000$ \\
+        Dixon-Price & $1.796$ & $2.216$ & $\cellcolor{cell-gray} \mathbf{0.674}$ & $0.793$ & $1.224$ & $1.889$ & $0.000$ \\
+        Rosenbrock & $13.930$ & $\mathbf{13.626}$ & $15.630$ & $16.050$ & $17.518$ & $14.373$ & $0.735$ \\
+        Zakharov & $\mathbf{0.053}$ & $0.139$ & $0.104$ & $0.099$ & $0.129$ & $0.075$ & $1.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.50}$ & $4.25$ & $\mathbf{2.50}$ & $3.00$ & $5.00$ & $3.75$  \\
+        Comp. Ratio & $26.1719$ & $26.7259$ & $\mathbf{1.2724}$ & $26.0542$ & $26.3792$ & $26.3140$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{Langevin} & \textbf{SMD-Langevin} & \textbf{SMD-Langevin (2)} & \textbf{SMD-Langevin (3)} & \textbf{SMD-Langevin (4)} & \textbf{GCN-Langevin} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $8.126$ & $9.870$ & $\cellcolor{cell-gray} \mathbf{0.174}$ & $0.443$ & $11.524$ & $8.418$ & $0.000$ \\
+        Square & $7.333$ & $8.776$ & $\cellcolor{cell-gray} \mathbf{0.018}$ & $0.110$ & $9.047$ & $7.411$ & $0.000$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $-0.006$ & $0.003$ & $\cellcolor{cell-gray} \mathbf{-0.014}$ & $-0.014$ & $-0.014$ & $-0.005$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $2.75$ & $4.25$ & $\mathbf{1.00}$ & $1.75$ & $4.00$ & $3.50$  \\
+        Comp. Ratio & $37.2041$ & $39.7270$ & $\mathbf{1.0000}$ & $2.6554$ & $42.0791$ & $37.6246$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{MSGD family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{MSGD} & \textbf{SMD-MSGD} & \textbf{SMD-MSGD (2)} & \textbf{SMD-MSGD (3)} & \textbf{SMD-MSGD (4)} & \textbf{GCN-MSGD} & \textbf{p-value} \\
+        \hline
+        Ackley & $\cellcolor{cell-gray} \mathbf{19.993}$ & $20.825$ & $20.009$ & $20.012$ & $20.854$ & $20.857$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $\cellcolor{cell-gray} \mathbf{0.325}$ & $3.530$ & $0.430$ & $0.457$ & $3.396$ & $2.571$ & $0.000$ \\
+        Levy & $\mathbf{89.072}$ & $91.339$ & $96.299$ & $99.691$ & $99.576$ & $99.335$ & $0.543$ \\
+        Rastrigin & $\mathbf{228.701}$ & $231.833$ & $229.736$ & $230.407$ & $238.236$ & $233.306$ & $1.000$ \\
+        Schwefel & $\mathbf{2300.712}$ & $2405.940$ & $2413.950$ & $2400.262$ & $2355.468$ & $2390.528$ & $0.625$ \\
+        Styblinski-Tang & $\cellcolor{cell-gray} \mathbf{-37.894}$ & $-28.216$ & $-36.785$ & $-37.265$ & $-27.932$ & $-28.191$ & $0.002$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.00}$ & $3.71$ & $2.71$ & $3.14$ & $4.29$ & $4.00$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $3.5152$ & $1.1902$ & $1.1534$ & $3.5021$ & $3.1090$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{MSGD} & \textbf{SMD-MSGD} & \textbf{SMD-MSGD (2)} & \textbf{SMD-MSGD (3)} & \textbf{SMD-MSGD (4)} & \textbf{GCN-MSGD} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $\cellcolor{cell-gray} \mathbf{2e^{-4}}$ & $6.377$ & $0.019$ & $1.622$ & $7.693$ & $5.709$ & $0.000$ \\
+        Dixon-Price & $\cellcolor{cell-gray} \mathbf{0.669}$ & $2.157$ & $0.671$ & $0.831$ & $1.234$ & $1.917$ & $0.041$ \\
+        Rosenbrock & $\cellcolor{cell-gray} \mathbf{6.773}$ & $14.527$ & $15.815$ & $16.080$ & $17.655$ & $13.511$ & $0.000$ \\
+        Zakharov & $\mathbf{0.034}$ & $0.088$ & $0.151$ & $0.264$ & $0.150$ & $0.097$ & $0.457$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.00}$ & $4.00$ & $3.25$ & $4.25$ & $5.00$ & $3.50$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $26.9937$ & $23.5472$ & $27.8540$ & $27.2201$ & $26.9347$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{MSGD} & \textbf{SMD-MSGD} & \textbf{SMD-MSGD (2)} & \textbf{SMD-MSGD (3)} & \textbf{SMD-MSGD (4)} & \textbf{GCN-MSGD} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $\cellcolor{cell-gray} \mathbf{4e^{-11}}$ & $9.959$ & $0.197$ & $0.414$ & $11.887$ & $8.736$ & $0.000$ \\
+        Square & $\cellcolor{cell-gray} \mathbf{9e^{-12}}$ & $8.368$ & $0.023$ & $0.102$ & $8.527$ & $7.314$ & $0.000$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $\cellcolor{cell-gray} \mathbf{-0.014}$ & $0.003$ & $-0.014$ & $-0.014$ & $-0.014$ & $-0.006$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.00}$ & $4.25$ & $2.00$ & $2.25$ & $4.25$ & $3.50$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $50.5279$ & $50.5000$ & $50.5000$ & $50.5001$ & $50.5120$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\subsection{SBS family}
+
+\begin{minipage}{\linewidth}
+  \centering
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{SBS} & \textbf{SMD-SBS} & \textbf{SMD-SBS (2)} & \textbf{SMD-SBS (3)} & \textbf{SMD-SBS (4)} & \textbf{GCN-SBS} & \textbf{p-value} \\
+        \hline
+        Ackley & $19.993$ & $21.110$ & $\cellcolor{cell-gray} \mathbf{2.277}$ & $3.408$ & $21.068$ & $21.087$ & $0.000$ \\
+        Deb N.1 & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $\cellcolor{cell-gray} \mathbf{-1.000}$ & $0.000$ \\
+        Griewank & $\cellcolor{cell-gray} \mathbf{0.344}$ & $20.460$ & $0.913$ & $0.937$ & $20.400$ & $19.338$ & $0.000$ \\
+        Levy & $97.031$ & $99.168$ & $98.778$ & $96.786$ & $\mathbf{94.736}$ & $95.921$ & $0.561$ \\
+        Rastrigin & $231.231$ & $\mathbf{228.259}$ & $235.919$ & $233.291$ & $233.349$ & $230.456$ & $0.425$ \\
+        Schwefel & $2430.060$ & $2990.191$ & $\mathbf{2421.817}$ & $2431.326$ & $3067.707$ & $3015.863$ & $0.989$ \\
+        Styblinski-Tang & $\cellcolor{cell-gray} \mathbf{-37.859}$ & $-19.235$ & $-26.568$ & $-26.566$ & $-20.031$ & $-21.020$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{2.14}$ & $4.29$ & $2.57$ & $2.71$ & $3.86$ & $3.29$  \\
+        Comp. Ratio & $\mathbf{2.1171}$ & $12.6201$ & $2.4814$ & $2.5585$ & $12.5068$ & $11.9550$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+  \hspace{0.01em}
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \begin{adjustbox}{width=\columnwidth}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{SBS} & \textbf{SMD-SBS} & \textbf{SMD-SBS (2)} & \textbf{SMD-SBS (3)} & \textbf{SMD-SBS (4)} & \textbf{GCN-SBS} & \textbf{p-value} \\
+        \hline
+        Bent cigar & $\cellcolor{cell-gray} \mathbf{2e^{-4}}$ & $795.556$ & $0.027$ & $15.432$ & $695.774$ & $768.148$ & $0.000$ \\
+        Dixon-Price & $\cellcolor{cell-gray} \mathbf{0.669}$ & $56.821$ & $1.013$ & $1.654$ & $9.886$ & $42.032$ & $0.000$ \\
+        Rosenbrock & $\cellcolor{cell-gray} \mathbf{5.756}$ & $187.705$ & $17.586$ & $18.994$ & $81.772$ & $158.887$ & $0.000$ \\
+        Zakharov & $0.118$ & $0.134$ & $\mathbf{0.082}$ & $0.113$ & $0.095$ & $0.148$ & $0.473$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.75}$ & $5.75$ & $\mathbf{1.75}$ & $3.00$ & $3.50$ & $5.25$  \\
+        Comp. Ratio & $\mathbf{1.1094}$ & $54.7883$ & $26.3924$ & $26.7877$ & $32.5329$ & $48.0545$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+
+  \begin{minipage}[t]{0.45\linewidth}\vspace{0pt}
+      \vspace*{1em}
+      \begin{adjustbox}{width=\columnwidth,center}
+        \begin{tabular}{l|c|c|c|c|c|c|c}
+        \thickhline
+        \textbf{Benchmark} & \textbf{SBS} & \textbf{SMD-SBS} & \textbf{SMD-SBS (2)} & \textbf{SMD-SBS (3)} & \textbf{SMD-SBS (4)} & \textbf{GCN-SBS} & \textbf{p-value} \\
+        \hline
+        Hyper-Ellipsoid & $\cellcolor{cell-gray} \mathbf{4e^{-11}}$ & $590.983$ & $20.046$ & $27.794$ & $467.257$ & $366.600$ & $0.000$ \\
+        Square & $\cellcolor{cell-gray} \mathbf{9e^{-12}}$ & $320.833$ & $5.412$ & $6.275$ & $312.974$ & $241.579$ & $0.000$ \\
+        Sumpow & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $\cellcolor{cell-gray} \mathbf{0}$ & $0.000$ \\
+        Trid & $\cellcolor{cell-gray} \mathbf{-0.014}$ & $0.003$ & $-0.014$ & $-0.014$ & $-0.014$ & $-0.006$ & $0.000$ \\
+        \cdashline{1-8}[2pt/1pt]
+        Avg Rank & $\mathbf{1.00}$ & $4.75$ & $1.75$ & $2.50$ & $3.75$ & $3.50$  \\
+        Comp. Ratio & $\mathbf{1.0000}$ & $50.5277$ & $50.5000$ & $50.5002$ & $50.5002$ & $50.5129$ \\
+        \cline{1-7}
+        \end{tabular}
+      \end{adjustbox}
+  \end{minipage}
+\end{minipage}
+
+\end{document}

@@ -37,7 +37,7 @@ class SMD_MSGD(SMD_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=10,
+        dt=0.01,
         gamma=1,
         lambda_=0,
         delta=2.1,

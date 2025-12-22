@@ -5,7 +5,6 @@
 #pragma once
 
 #include "optimizers/particles/particles_optimizer.hh"
-#include "optimizers/particles/Adam.hh"
 
 class Langevin : public Particles_Optimizer
 {
@@ -16,7 +15,7 @@ public:
       int iter,
       double dt,
       double beta,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new Adam(dt), "Langevin")
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, 0.99), "Langevin")
   {
     this->beta = beta;
   }

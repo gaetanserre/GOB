@@ -41,7 +41,7 @@ class SMD_Langevin(SMD_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=10,
+        dt=0.01,
         beta=1,
         gamma=1,
         lambda_=0,
