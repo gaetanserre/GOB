@@ -72,7 +72,7 @@ def print_competitive_ratios(ratios):
     print(r"\cline{1-" + str(len(list(ratios)) + 1) + "}")
 
 
-dim = 20
+dim = 10
 
 noisy_functions = [
     gb.Ackley(),
