@@ -56,7 +56,7 @@ def print_avg_rank(res_dict):
 
 
 def print_competitive_ratios(ratios):
-    latex_str = "Comp. Ratio & "
+    latex_str = "ECR & "
     min_ration = min(list(ratios.values()))
     for i, ratio in enumerate(ratios.values()):
         if ratio == min_ration:
