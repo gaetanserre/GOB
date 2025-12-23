@@ -72,7 +72,7 @@ def print_competitive_ratios(ratios):
     print(r"\cline{1-" + str(len(list(ratios)) + 1) + "}")
 
 
-dim = 10
+dim = 20
 
 noisy_functions = [
     gb.Ackley(),
@@ -100,10 +100,14 @@ flat_functions_bounds = [
 ]
 
 smooth_functions = [
+    gb.Bentcigar(),
+    gb.Dixonprice(),
     gb.Hyperellipsoid(),
+    gb.Rosenbrock(),
     gb.Square(),
     gb.Sumpow(),
     gb.Trid(),
+    gb.Zakharov(),
 ]
 smooth_functions_bounds = [
     augment_dimensions(f.visual_bounds, dim) for f in smooth_functions
