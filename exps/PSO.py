@@ -82,7 +82,7 @@ if __name__ == "__main__":
     print_avg_rank(res_dict)
     print_competitive_ratios(ratios)
 
-    # flat
+    """ # flat
     gob = GOB(
         algorithms,
         flat_functions,
@@ -94,7 +94,7 @@ if __name__ == "__main__":
         n_runs=n_runs, verbose=1, latex_table=True, reference_optimizer="PSO"
     )
     print_avg_rank(res_dict)
-    print_competitive_ratios(ratios)
+    print_competitive_ratios(ratios) """
 
     # smooth
     gob = GOB(

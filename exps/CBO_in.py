@@ -77,7 +77,7 @@ if __name__ == "__main__":
         ),
     ]
 
-    """ # noisy
+    # noisy
     gob = GOB(
         algorithms,
         noisy_functions,
@@ -91,7 +91,7 @@ if __name__ == "__main__":
     print_avg_rank(res_dict)
     print_competitive_ratios(ratios)
 
-    # flat
+    """ # flat
     gob = GOB(
         algorithms,
         flat_functions,
