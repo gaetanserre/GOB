@@ -45,7 +45,7 @@ class SMD_PSO(SMD_Optimizer):
         beta=1e5,
         alpha=1,
         gamma=1,
-        lambda_=0,
+        lambda_=1e-10,
         delta=2.1,
         moment="M1",
         verbose=False,

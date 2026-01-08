@@ -42,7 +42,7 @@ class SMD_SBS(SMD_Optimizer):
         dt=0.1,
         sigma=0.1,
         gamma=1,
-        lambda_=0,
+        lambda_=1e-10,
         delta=2.1,
         moment="M1",
         verbose=False,

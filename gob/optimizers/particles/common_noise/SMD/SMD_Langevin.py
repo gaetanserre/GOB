@@ -44,7 +44,7 @@ class SMD_Langevin(SMD_Optimizer):
         dt=0.1,
         beta=1,
         gamma=1,
-        lambda_=0,
+        lambda_=1e-10,
         delta=2.1,
         moment="M1",
         independent_noise=True,
