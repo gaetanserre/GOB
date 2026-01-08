@@ -91,34 +91,26 @@ void SMD::update_particles(Eigen::MatrixXd *particles, function<double(dyn_vecto
     all_evals->push_back(evals[j]);
     samples->push_back((*particles).row(j));
 
-    if (true) // if (time_ <= this->base_opt->iter / 2)
+    common_dynamic common_dynamic;
+    if (this->noise_type == NoiseType::M1)
     {
-      common_dynamic common_dynamic;
-      if (this->noise_type == NoiseType::M1)
-      {
-        common_dynamic = this->m1_dynamic(*particles, j);
-      }
-      else if (this->noise_type == NoiseType::M2)
-      {
-        common_dynamic = this->m2_dynamic(*particles, j);
-      }
-      else if (this->noise_type == NoiseType::VAR)
-      {
-        common_dynamic = this->var_dynamic(*particles, j);
-      }
-      else if (this->noise_type == NoiseType::MVAR)
-      {
-        common_dynamic = this->mean_var_dynamic(*particles, j);
-      }
+      common_dynamic = this->m1_dynamic(*particles, j);
+    }
+    else if (this->noise_type == NoiseType::M2)
+    {
+      common_dynamic = this->m2_dynamic(*particles, j);
+    }
+    else if (this->noise_type == NoiseType::VAR)
+    {
+      common_dynamic = this->var_dynamic(*particles, j);
+    }
+    else if (this->noise_type == NoiseType::MVAR)
+    {
+      common_dynamic = this->mean_var_dynamic(*particles, j);
+    }
 
-      // Noise, common drift, and common noise update
-      particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * this->gamma * (common_dynamic.noise * common_noise).transpose();
-    }
-    else
-    {
-      // Noise update only
-      particles->row(j) += sqrt(dt) * dyn.noise.row(j);
-    }
+    // Noise, common drift, and common noise update
+    particles->row(j) += dt * this->gamma * common_dynamic.drift.transpose() + sqrt(dt) * this->gamma * (common_dynamic.noise * common_noise).transpose();
 
     particles->row(j) = clip_vector(particles->row(j), this->base_opt->bounds);
   }
