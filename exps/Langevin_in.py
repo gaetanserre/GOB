@@ -22,7 +22,7 @@ from gob import GOB
 
 n_particles = 150
 iter = 300
-n_runs = 20
+n_runs = 50
 
 independent_noise = True
 
