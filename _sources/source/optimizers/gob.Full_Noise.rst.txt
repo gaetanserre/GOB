@@ -1,0 +1,7 @@
+Full-Noise
+==========
+
+.. automodule:: gob.optimizers.particles.Full_Noise
+   :members:
+   :show-inheritance:
+   :undoc-members:

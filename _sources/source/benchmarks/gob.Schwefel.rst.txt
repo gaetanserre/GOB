@@ -1,0 +1,12 @@
+Schwefel
+========
+
+.. image:: graphs/Schwefel.png
+   :width: 550px
+   :height: 550px
+   :align: center
+
+.. automodule:: gob.benchmarks.schwefel
+   :members:
+   :show-inheritance:
+   :undoc-members:

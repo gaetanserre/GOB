@@ -1,0 +1,12 @@
+Griewank
+========
+
+.. image:: graphs/Griewank.png
+   :width: 550px
+   :height: 550px
+   :align: center
+
+.. automodule:: gob.benchmarks.griewank
+   :members:
+   :show-inheritance:
+   :undoc-members:

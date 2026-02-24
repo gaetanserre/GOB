@@ -1,0 +1,12 @@
+Langermann
+==========
+
+.. image:: graphs/Langermann.png
+   :width: 550px
+   :height: 550px
+   :align: center
+
+.. automodule:: gob.benchmarks.langermann
+   :members:
+   :show-inheritance:
+   :undoc-members:

@@ -1,0 +1,7 @@
+GCN-PSO
+=======
+
+.. automodule:: gob.optimizers.particles.common_noise.GCN.GCN_PSO
+   :members:
+   :show-inheritance:
+   :undoc-members:

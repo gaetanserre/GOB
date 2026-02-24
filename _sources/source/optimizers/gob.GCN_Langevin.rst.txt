@@ -1,0 +1,7 @@
+GCN-Langevin
+============
+
+.. automodule:: gob.optimizers.particles.common_noise.GCN.GCN_Langevin
+   :members:
+   :show-inheritance:
+   :undoc-members:

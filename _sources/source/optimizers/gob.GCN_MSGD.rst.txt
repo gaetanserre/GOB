@@ -1,0 +1,7 @@
+GCN-MSGD
+========
+
+.. automodule:: gob.optimizers.particles.common_noise.GCN.GCN_MSGD
+   :members:
+   :show-inheritance:
+   :undoc-members:

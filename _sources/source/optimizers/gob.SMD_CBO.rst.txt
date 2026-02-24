@@ -1,0 +1,7 @@
+SMD-CBO
+=======
+
+.. automodule:: gob.optimizers.particles.common_noise.SMD.SMD_CBO
+   :members:
+   :show-inheritance:
+   :undoc-members:

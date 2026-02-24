@@ -1,0 +1,7 @@
+GCN-SBS
+=======
+
+.. automodule:: gob.optimizers.particles.common_noise.GCN.GCN_SBS
+   :members:
+   :show-inheritance:
+   :undoc-members:

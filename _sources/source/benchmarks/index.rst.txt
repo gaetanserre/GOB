@@ -8,12 +8,15 @@ Benchmarks
    gob.Bentcigar
    gob.Deb
    gob.Dixonprice
+   gob.Griewank
    gob.Hyperellipsoid
+   gob.Langermann
    gob.Levy
    gob.Michalewicz
    gob.PyGKLS
    gob.Rastrigin
    gob.Rosenbrock
+   gob.Schwefel
    gob.Square
    gob.Styblinskitang
    gob.Sumpow

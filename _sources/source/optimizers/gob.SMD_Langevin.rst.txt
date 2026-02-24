@@ -1,0 +1,7 @@
+SMD-Langevin
+============
+
+.. automodule:: gob.optimizers.particles.common_noise.SMD.SMD_Langevin
+   :members:
+   :show-inheritance:
+   :undoc-members:

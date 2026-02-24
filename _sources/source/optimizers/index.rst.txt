@@ -12,9 +12,22 @@ Optimizers
    gob.CRS
    gob.Direct
    gob.ECP
+   gob.Full_Noise
+   gob.GCN_CBO
+   gob.GCN_Langevin
+   gob.GCN_MSGD
+   gob.GCN_PSO
+   gob.GCN_SBS
    gob.GD
    gob.Langevin
    gob.MLSL
+   gob.MSGD
    gob.PRS
    gob.PSO
    gob.SBS
+   gob.SMD_CBO
+   gob.SMD_Langevin
+   gob.SMD_MSGD
+   gob.SMD_PSO
+   gob.SMD_SBS
+   gob.WOA

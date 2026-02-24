@@ -1,0 +1,7 @@
+SMD-PSO
+=======
+
+.. automodule:: gob.optimizers.particles.common_noise.SMD.SMD_PSO
+   :members:
+   :show-inheritance:
+   :undoc-members:
