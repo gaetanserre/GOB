@@ -480,29 +480,6 @@ cdef class PSO:
 
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
-
-cdef class Langevin:
-  cdef CLangevin *thisptr
-  def __cinit__(
-    self,
-    bounds,
-    int n_particles,
-    int iter,
-    double dt,
-    beta,
-    double alpha,
-    int batch_size
-  ):
-    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
-  
-  def minimize(self, f):
-    py_init()
-    cdef PyObject* pyob_ptr = <PyObject*>f
-    res = self.thisptr.py_minimize(pyob_ptr)
-    return res
-
-  def set_stop_criterion(self, stop_criterion):
-    self.thisptr.set_stop_criterion(stop_criterion)
   
   def minimize(self, f):
     py_init()

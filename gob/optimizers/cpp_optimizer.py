@@ -2,12 +2,7 @@
 # Created in 2025 by Gaëtan Serré
 #
 
-<<<<<<<< HEAD:gob/optimizers/misc/PRS.py
-from ..optimizer import Optimizer
-from ..cpp_optimizers import PRS as C_PRS
-========
 from .optimizer import Optimizer
->>>>>>>> sde:gob/optimizers/cpp_optimizer.py
 
 
 class CPP_Optimizer(Optimizer):

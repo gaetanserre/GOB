@@ -2,14 +2,9 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-<<<<<<<< HEAD:gob/optimizers/particles/SBS.py
-from ..optimizer import Optimizer
-from ..cpp_optimizers import SBS as C_SBS
-========
 from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import Full_Noise as C_Full_Noise
 import numpy as np
->>>>>>>> sde:gob/optimizers/particles/Full_Noise.py
 
 
 class Full_Noise(CPP_Optimizer):
@@ -26,13 +21,6 @@ class Full_Noise(CPP_Optimizer):
         The number of iterations.
     dt : float
         The time step.
-<<<<<<<< HEAD:gob/optimizers/particles/SBS.py
-    k : float
-        The kappa exponent.
-    sigma : float
-        The kernel bandwidth.
-========
->>>>>>>> sde:gob/optimizers/particles/Full_Noise.py
     alpha : float
         The coefficient to decrease the step size.
     batch_size : int
@@ -47,13 +35,7 @@ class Full_Noise(CPP_Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-<<<<<<<< HEAD:gob/optimizers/particles/SBS.py
-        dt=10,
-        k=1,
-        sigma=0.1,
-========
         dt=0.1,
->>>>>>>> sde:gob/optimizers/particles/Full_Noise.py
         alpha=0.99,
         batch_size=0,
         verbose=False,

@@ -27,6 +27,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - [Consensus Based Optimization](https://arxiv.org/abs/1909.09249)
 - [Common noise variants of McKean-Vlasov dynamics](https://arxiv.org/abs/2601.22753)
 - Gradient Descent
+- Multi-start Gradient Descent
 - Pure Random Search
 
 ### Documentation
