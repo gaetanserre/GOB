@@ -11,13 +11,13 @@ double smooth_heaviside(double x)
   return 0.5 * erf(x) + 0.5;
 }
 
-dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+dynamic CBO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time)
 {
   dyn_vector vf = clip_vector(compute_consensus(particles, f, evals, this->beta), this->bounds);
   double f_vf = f(vf);
 
   Eigen::MatrixXd drift(particles.rows(), particles.cols());
-  Eigen::MatrixXd noise = normal_noise(particles.rows(), this->bounds.size(), this->re);
+  Eigen::MatrixXd noise = normal_noise(particles.rows(), particles.cols(), this->re);
   for (int i = 0; i < particles.rows(); i++)
   {
     dyn_vector diff = (particles.row(i) - vf.transpose());

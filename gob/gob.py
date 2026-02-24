@@ -220,7 +220,7 @@ class GOB:
         else:
             return name
 
-    def run(self, n_runs=1, verbose=0, latex_table=False):
+    def run(self, n_runs=1, verbose=0, latex_table=False, **table_kwargs):
         """
         Run the benchmark.
 
@@ -232,6 +232,13 @@ class GOB:
             The verbosity level.
         latex_table : bool
             Whether to print the results in LaTeX table format.
+        **table_kwargs : dict
+            Additional keyword arguments for the table printing functions.
+
+        Returns
+        -------
+        dict
+            The results dictionary.
         """
         res_dict = {}
         min_dict = {}
@@ -255,7 +262,11 @@ class GOB:
                     sols.append(sol)
                     if nr < n_runs - 1:
                         optimizer_ = self.parse_optimizer(optimizer, self.bounds[i])
-                opt_dict["Approx"] = {"mean": np.mean(sols), "std": np.std(sols)}
+                opt_dict["Approx"] = {
+                    "mean": np.mean(sols),
+                    "std": np.std(sols),
+                    "all": np.array(sols),
+                }
                 for metric in self.metrics:
                     metric = self.parse_metric(
                         metric, benchmark, self.bounds[i], self.options.get(metric, {})
@@ -267,10 +278,12 @@ class GOB:
                     print_dark_green(f"Done for {name_optimizer_} on {benchmark}.")
             res_dict[str(benchmark)] = bench_dict
             min_dict[str(benchmark)] = benchmark.min
+        comp_ratios = self.competitive_ratio(res_dict, min_dict)
         if verbose:
             if latex_table:
-                print_table_by_metric_latex(res_dict)
+                print_table_by_metric_latex(res_dict, **table_kwargs)
+                print_competitive_ratios(comp_ratios, latex=True)
             else:
-                print_table_by_metric(res_dict)
-            print_competitive_ratios(self.competitive_ratio(res_dict, min_dict))
-        return res_dict
+                print_table_by_metric(res_dict, **table_kwargs)
+                print_competitive_ratios(comp_ratios)
+        return res_dict, comp_ratios

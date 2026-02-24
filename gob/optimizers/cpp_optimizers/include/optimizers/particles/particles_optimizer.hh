@@ -2,10 +2,10 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/optimizer.hh"
 #include "optimizers/particles/schedulers.hh"
-
-#pragma once
 
 struct dynamic
 {
@@ -20,32 +20,28 @@ public:
       vec_bounds bounds,
       int n_particles,
       int iter,
-      double dt,
       int batch_size,
-      Scheduler *sched = new Scheduler(),
+      Scheduler *sched,
       std::string name = "Particles Optimizer") : Optimizer(bounds, name)
   {
     this->n_particles = n_particles;
     this->iter = iter;
-    this->dt = dt;
-    this->sched = sched;
     this->batch_size = batch_size;
+    this->sched = sched;
   }
 
   ~Particles_Optimizer()
   {
-    delete sched;
   }
 
   virtual result_eigen minimize(function<double(dyn_vector)> f);
 
-  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals) = 0;
+  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time) = 0;
   int n_particles;
   int iter;
-  double dt;
   int batch_size;
   Scheduler *sched;
 
 private:
-  void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples);
+  void update_particles(Eigen::MatrixXd *particles, function<double(dyn_vector x)> f, vector<double> *all_evals, vector<dyn_vector> *samples, int &t);
 };

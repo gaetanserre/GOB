@@ -1,27 +1,30 @@
 /*
- * Created in 2024 by Gaëtan Serré
+ * Created in 2025 by Gaëtan Serré
  */
 
 #include "optimizers/particles/Adam.hh"
 
-Eigen::MatrixXd Adam::step(Eigen::MatrixXd grads, Eigen::MatrixXd params)
+void Adam::step(Eigen::MatrixXd *param, Eigen::MatrixXd grad, const int &time)
 {
-  this->t++;
-  this->state_m = this->beta1 * this->state_m + (1 - this->beta1) * grads;
-  this->state_v = (this->beta2 * this->state_v).array() + (1 - this->beta2) * grads.array().pow(2);
-
-  Eigen::MatrixXd m_hat = this->state_m.array() / (1 - pow(this->beta1, this->t));
-  Eigen::MatrixXd v_hat = this->state_v.array() / (1 - pow(this->beta2, this->t));
-
-  if (this->amsgrad)
+  if (time == 0)
   {
-    this->state_v_max = this->state_v_max.cwiseMax(v_hat);
-    return params.array() - this->lr * m_hat.array() / (this->state_v_max.array().sqrt() + this->epsilon);
+    this->m = Eigen::MatrixXd::Zero(grad.rows(), grad.cols());
+    this->v = Eigen::MatrixXd::Zero(grad.rows(), grad.cols());
+    this->v_max = Eigen::MatrixXd::Zero(grad.rows(), grad.cols());
   }
-  Eigen::MatrixXd res = this->lr * m_hat.array() / (v_hat.array().sqrt() + this->epsilon);
-  for (int i = 0; i < params.rows(); i++)
-  {
-    printf("Norm %d: %f\n", i, res.row(i).norm());
-  }
-  return params - res;
+  this->m = this->beta1 * this->m + (1 - this->beta1) * grad;
+  this->v = (this->beta2 * this->v).array() + (1 - this->beta2) * grad.array().pow(2);
+
+  Eigen::MatrixXd m_hat = this->m / (1 - pow(this->beta1, time + 1));
+  this->v_max = this->v_max.cwiseMax(this->v);
+  Eigen::MatrixXd v_hat = this->v_max / (1 - pow(this->beta2, time + 1));
+
+  Eigen::MatrixXd approx_grad = m_hat.array() / (v_hat.array().sqrt() + this->epsilon);
+  (*param) = (*param) + this->dt * approx_grad;
+  this->approx_dt = this->dt * (approx_grad.norm() / grad.norm());
+}
+
+double Adam::get_dt()
+{
+  return this->approx_dt;
 }

@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import Langevin as C_Langevin
 
 
-class Langevin(Optimizer):
+class Langevin(CPP_Optimizer):
     """
     Interface for the Langevin optimizer.
 
@@ -22,8 +22,6 @@ class Langevin(Optimizer):
         The time step.
     beta : float
         The inverse temperature.
-    alpha : float
-        The coefficient to decrease the step size.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -38,21 +36,8 @@ class Langevin(Optimizer):
         iter=100,
         dt=0.1,
         beta=1,
-        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("Langevin", bounds)
-        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, alpha, batch_size)
-        self.verbose = verbose
-
-    def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt
+        super().__init__("Langevin", bounds, verbose)
+        self.c_opt = C_Langevin(bounds, n_particles, iter, dt, beta, batch_size)

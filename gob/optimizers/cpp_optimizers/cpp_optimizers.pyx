@@ -43,9 +43,7 @@ cdef extern from "include/optimizers/particles/SBS.hh":
       int n_particles,
       int iter,
       double dt,
-      int k,
       double sigma,
-      double alpha,
       int batch_size
     )
     pair[vector[double], double] py_minimize(PyObject* f)
@@ -104,8 +102,6 @@ cdef extern from "include/optimizers/particles/PSO.hh":
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
       int batch_size
@@ -121,8 +117,150 @@ cdef extern from "include/optimizers/particles/Langevin.hh":
       int iter,
       double dt,
       double beta,
+      int batch_size
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/SMD/SMD_Langevin.hh":
+  cdef cppclass CSMD_Langevin "SMD_Langevin":
+    CSMD_Langevin(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double beta,
+      double gamma,
+      double lambda_,
+      double delta,
+      int moment,
+      bool independent_noise
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/SMD/SMD_SBS.hh":
+  cdef cppclass CSMD_SBS "SMD_SBS":
+    CSMD_SBS(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double sigma,
+      double gamma,
+      double lambda_,
+      double delta,
+      int moment
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/SMD/SMD_CBO.hh":
+  cdef cppclass CSMD_CBO "SMD_CBO":
+    CSMD_CBO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double lambda_,
+      double epsilon,
+      double beta,
+      double sigma,
+      double alpha,
+      double gamma,
+      double lambda_cn,
+      double delta,
+      int moment,
+      bool independent_noise
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/SMD/SMD_PSO.hh":
+  cdef cppclass CSMD_PSO "SMD_PSO":
+    CSMD_PSO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double beta,
+      double alpha,
+      double gamma,
+      double lambda_cn,
+      double delta,
+      int moment
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/Full_Noise.hh":
+  cdef cppclass CFull_Noise "Full_Noise":
+    CFull_Noise(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
       double alpha,
       int batch_size
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/GCN/GCN_CBO.hh":
+  cdef cppclass CGCN_CBO "GCN_CBO":
+    CGCN_CBO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double lambda_,
+      double epsilon,
+      double beta,
+      double sigma,
+      double alpha,
+      double sigma_cn,
+      bool independent_noise
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/GCN/GCN_SBS.hh":
+  cdef cppclass CGCN_SBS "GCN_SBS":
+    CGCN_SBS(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double sigma,
+      double sigma_cn,
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/GCN/GCN_Langevin.hh":
+  cdef cppclass CGCN_Langevin "GCN_Langevin":
+    CGCN_Langevin(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double beta,
+      double sigma_cn,
+      bool independent_noise
+    )
+    pair[vector[double], double] py_minimize(PyObject* f)
+    void set_stop_criterion(double stop_criterion)
+
+cdef extern from "include/optimizers/particles/common-noise/GCN/GCN_PSO.hh":
+  cdef cppclass CGCN_PSO "GCN_PSO":
+    CGCN_PSO(
+      vector[vector[double]] bounds,
+      int n_particles,
+      int iter,
+      double dt,
+      double beta,
+      double alpha,
+      double sigma_cn
     )
     pair[vector[double], double] py_minimize(PyObject* f)
     void set_stop_criterion(double stop_criterion)
@@ -200,12 +338,10 @@ cdef class SBS:
     int n_particles,
     int iter,
     double dt,
-    int k,
     double sigma,
-    double alpha,
     int batch_size
   ):
-    self.thisptr = new CSBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
+    self.thisptr = new CSBS(bounds, n_particles, iter, dt, sigma, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -330,13 +466,11 @@ cdef class PSO:
     int n_particles,
     int iter,
     double dt,
-    double omega,
-    double c2,
     double beta,
     double alpha,
     int batch_size
   ):
-    self.thisptr = new CPSO(bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size)
+    self.thisptr = new CPSO(bounds, n_particles, iter, dt, beta, alpha, batch_size)
 
   def minimize(self, f):
     py_init()
@@ -370,5 +504,263 @@ cdef class Langevin:
   def set_stop_criterion(self, stop_criterion):
     self.thisptr.set_stop_criterion(stop_criterion)
   
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+  
   def __del__(self):
     del self.thisptr
+    
+cdef class Langevin:
+  cdef CLangevin *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    beta,
+    int batch_size
+  ):
+    self.thisptr = new CLangevin(bounds, n_particles, iter, dt, beta, batch_size)
+  
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+  
+  def __del__(self):
+    del self.thisptr
+
+cdef class SMD_Langevin:
+  cdef CSMD_Langevin *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double beta,
+    double gamma,
+    double lambda_,
+    double delta,
+    int moment,
+    bool independent_noise
+  ):
+    self.thisptr = new CSMD_Langevin(bounds, n_particles, iter, dt, beta, gamma, lambda_, delta, moment, independent_noise)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class SMD_SBS:
+  cdef CSMD_SBS *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double sigma,
+    double gamma,
+    double lambda_,
+    double delta,
+    int moment
+  ):
+    self.thisptr = new CSMD_SBS(bounds, n_particles, iter, dt, sigma, gamma, lambda_, delta, moment)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class SMD_CBO:
+  cdef CSMD_CBO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double lambda_,
+    double epsilon,
+    double beta,
+    double sigma,
+    double alpha,
+    double gamma,
+    double lambda_cn,
+    double delta,
+    int moment,
+    bool independent_noise
+  ):
+    self.thisptr = new CSMD_CBO(bounds, n_particles, iter, dt, lambda_, epsilon, beta, sigma, alpha, gamma, lambda_cn, delta, moment, independent_noise)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class SMD_PSO:
+  cdef CSMD_PSO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double beta,
+    double alpha,
+    double gamma,
+    double lambda_cn,
+    double delta,
+    int moment
+  ):
+    self.thisptr = new CSMD_PSO(bounds, n_particles, iter, dt, beta, alpha, gamma, lambda_cn, delta, moment)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class Full_Noise:
+  cdef CFull_Noise *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double alpha,
+    int batch_size
+  ):
+    self.thisptr = new CFull_Noise(bounds, n_particles, iter, dt, alpha, batch_size)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class GCN_CBO:
+  cdef CGCN_CBO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double lambda_,
+    double epsilon,
+    double beta,
+    double sigma,
+    double alpha,
+    double sigma_cn,
+    bool independent_noise
+  ):
+    self.thisptr = new CGCN_CBO(bounds, n_particles, iter, dt, lambda_, epsilon, beta, sigma, alpha, sigma_cn, independent_noise)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class GCN_SBS:
+  cdef CGCN_SBS *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double sigma,
+    double sigma_cn,
+  ):
+    self.thisptr = new CGCN_SBS(bounds, n_particles, iter, dt, sigma, sigma_cn)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+  
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class GCN_Langevin:
+  cdef CGCN_Langevin *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double beta,
+    double sigma_cn,
+    bool independent_noise
+  ):
+    self.thisptr = new CGCN_Langevin(bounds, n_particles, iter, dt, beta, sigma_cn, independent_noise)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)
+
+cdef class GCN_PSO:
+  cdef CGCN_PSO *thisptr
+  def __cinit__(
+    self,
+    bounds,
+    int n_particles,
+    int iter,
+    double dt,
+    double beta,
+    double alpha,
+    double sigma_cn
+  ):
+    self.thisptr = new CGCN_PSO(bounds, n_particles, iter, dt, beta, alpha, sigma_cn)
+
+  def minimize(self, f):
+    py_init()
+    cdef PyObject* pyob_ptr = <PyObject*>f
+    res = self.thisptr.py_minimize(pyob_ptr)
+    return res
+
+  def set_stop_criterion(self, stop_criterion):
+    self.thisptr.set_stop_criterion(stop_criterion)

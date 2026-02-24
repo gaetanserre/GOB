@@ -2,6 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/particles/particles_optimizer.hh"
 
 class CBO : public Particles_Optimizer
@@ -17,7 +19,7 @@ public:
       double beta,
       double sigma,
       double alpha,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha), "CBO")
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, alpha), "CBO")
   {
     this->lambda = lambda;
     this->epsilon = epsilon;
@@ -25,7 +27,7 @@ public:
     this->sigma = sigma;
   }
 
-  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
+  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time);
 
 private:
   double lambda;

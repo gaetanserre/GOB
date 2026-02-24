@@ -3,7 +3,10 @@
 #
 
 from prettytable.colortable import ColorTable, Themes
+from prettytable import VRuleStyle
 import numpy as np
+from statsmodels.stats.multitest import multipletests
+from scipy.stats import mannwhitneyu
 
 
 def print_purple(*text):
@@ -91,7 +94,45 @@ def print_table_by_benchmark(res_dict):
         print(tab)
 
 
-def print_table_by_metric_latex(res_dict):
+def _significancy_against_all(res_dict_benchmark, best_optim_name):
+    sols = res_dict_benchmark[best_optim_name]["Approx"]["all"]
+    p_values = []
+    for optim_name, optim_dict in res_dict_benchmark.items():
+        if optim_name != best_optim_name:
+            sols_other = optim_dict["Approx"]["all"]
+            _, p_value = mannwhitneyu(sols, sols_other, alternative="two-sided")
+            p_values.append(p_value)
+    pvals_corr = multipletests(p_values, method="holm")[1]
+    return (np.array(pvals_corr) < 0.05).all(), np.max(pvals_corr)
+
+
+def _significancy_against_reference(
+    res_dict_benchmark, best_optim_name, reference_optim_name
+):
+    sols = res_dict_benchmark[best_optim_name]["Approx"]["all"]
+    sols_other = res_dict_benchmark[reference_optim_name]["Approx"]["all"]
+    _, p_value = mannwhitneyu(sols, sols_other, alternative="two-sided")
+    return p_value < 0.05, p_value
+
+
+def format_latex_table(tab_string, n_cols):
+    lines = tab_string.splitlines()
+    # Remove first and last vlines
+    fst_line = list(lines[0])
+    fst_line[-2] = ""
+    # \begin{tabular}{| -> 16
+    fst_line[16] = ""
+    fst_line[17] = "l"
+    lines[0] = "".join(fst_line)
+
+    # Add thick hlines
+    lines[1] = r"\thickhline"
+    lines.insert(3, r"\hline")
+    lines[-2] = r"\cdashline{1-" + str(n_cols) + "}[2pt/1pt]"
+    return "\n".join(lines)
+
+
+def print_table_by_metric_latex(res_dict, reference_optimizer=None):
     """
     Print the results of the optimization for each metric in LaTeX format.
 
@@ -99,14 +140,17 @@ def print_table_by_metric_latex(res_dict):
     ----------
     res_dict : dict
         The results of the optimization of the form {"Benchmark name": {"Optimizer name": {"Metric name": ...}}}
+    reference_optimizer : str, optional
+        The name of the reference optimizer for significancy testing.
     """
     metric_names = list(list(list(res_dict.values())[0].values())[0].keys())
     print("")
     for metric_name in metric_names:
         print_purple(f"Results for {metric_name}:")
         tab = ColorTable(theme=Themes.LAVENDER)
-        tab.add_column("Benchmark", list(res_dict.keys()))
+        tab.add_column(r"\textbf{Benchmark}", list(res_dict.keys()))
         names_opt = list(list(res_dict.values())[0].keys())
+        p_values = {}
         for name_opt in names_opt:
             score = []
             for benchmark_name in res_dict:
@@ -119,21 +163,56 @@ def print_table_by_metric_latex(res_dict):
                     mean = transform_number(
                         res_dict[benchmark_name][name_opt][metric_name]["mean"]
                     )
-                    std = transform_number(
-                        res_dict[benchmark_name][name_opt][metric_name]["std"]
-                    )
                     if (
                         res_dict[benchmark_name][name_opt][metric_name]["mean"]
                         == best_mean
                     ):
                         mean = f"\\mathbf{{{mean}}}"
-                    score.append(f"${mean} \\pm {std}$")
+                        if benchmark_name in p_values:
+                            significancy = True
+                        else:
+                            count_best = sum(1 for m in means if m == best_mean)
+                            if count_best > 1:
+                                significancy = True
+                                p_values[benchmark_name] = str("$0.000$")
+                            elif (
+                                reference_optimizer is None
+                                or name_opt == reference_optimizer
+                            ):
+                                significancy, p_val = _significancy_against_all(
+                                    res_dict[benchmark_name], name_opt
+                                )
+                                p_values[benchmark_name] = f"${p_val:.3f}$"
+                            else:
+                                significancy, p_val = _significancy_against_reference(
+                                    res_dict[benchmark_name],
+                                    name_opt,
+                                    reference_optimizer,
+                                )
+                                p_values[benchmark_name] = f"${p_val:.3f}$"
+                        if significancy:
+                            color = r"\cellcolor{cell-gray}"
+                            mean = f"{color} {mean}"
+                    score.append(f"${mean}$")
                 else:
                     score.append(
                         f"{res_dict[benchmark_name][name_opt][metric_name]:.4f}"
                     )
-            tab.add_column(name_opt, score)
-        print(tab.get_formatted_string("latex"))
+            tab.add_column(r"\textbf{" + name_opt + "}", score)
+        if metric_name == "Approx":
+            print(p_values)
+            p_values = [p_values[bm] for bm in res_dict]
+            tab.add_column(r"\textbf{p-value}", p_values)
+
+        latex_table = tab.get_formatted_string(
+            "latex", vrules=VRuleStyle.ALL, border=True, format=True
+        )
+        print(
+            format_latex_table(
+                latex_table,
+                len(names_opt) + 2 if metric_name == "Approx" else len(names_opt) + 1,
+            )
+        )
 
 
 def print_table_by_metric(res_dict):
@@ -171,9 +250,15 @@ def print_table_by_metric(res_dict):
         print(tab)
 
 
-def print_competitive_ratios(ratios):
+def print_competitive_ratios(ratios, latex=False):
     print_purple("Competitive ratios:")
     tab = ColorTable(["Optimizer", "Competitive ratio"], theme=Themes.LAVENDER)
     for opt_name, ratio in ratios.items():
         tab.add_row([opt_name, f"{ratio:.4f}"])
-    print(tab)
+    if latex:
+        tab_string = tab.get_formatted_string(
+            "latex", vrules=VRuleStyle.ALL, border=True, format=True
+        )
+        print(tab_string)
+    else:
+        print(tab)

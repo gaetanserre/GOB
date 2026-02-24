@@ -2,11 +2,11 @@
 # Created in 2025 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import PSO as C_PSO
 
 
-class PSO(Optimizer):
+class PSO(CPP_Optimizer):
     """
     Interface for the *social only* PSO optimizer.
 
@@ -20,10 +20,6 @@ class PSO(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    omega : float
-        The inertia weight.
-    c2 : float
-        The cognitive coefficient.
     beta : float
         The inverse temperature for using a Gibbs measure to select the global best instead of the argmin. Default is 0 (no Gibbs measure).
     alpha : float
@@ -40,27 +36,11 @@ class PSO(Optimizer):
         bounds,
         n_particles=200,
         iter=1000,
-        dt=0.01,
-        omega=0.7,
-        c2=2,
+        dt=0.1,
         beta=1e5,
         alpha=1,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("PSO", bounds)
-        self.c_opt = C_PSO(
-            bounds, n_particles, iter, dt, omega, c2, beta, alpha, batch_size
-        )
-        self.verbose = verbose
-
-    def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt
+        super().__init__("PSO", bounds, verbose)
+        self.c_opt = C_PSO(bounds, n_particles, iter, dt, beta, alpha, batch_size)

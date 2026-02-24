@@ -2,6 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/particles/particles_optimizer.hh"
 
 class PSO : public Particles_Optimizer
@@ -12,23 +14,18 @@ public:
       int n_particles,
       int iter,
       double dt,
-      double omega,
-      double c2,
       double beta,
       double alpha,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha), "PSO")
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, alpha), "PSO")
   {
-    this->omega = omega;
-    this->c2 = c2;
     this->beta = beta;
     this->velocities = Eigen::MatrixXd::Zero(n_particles, bounds.size());
   }
 
-  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
+  virtual dynamic
+  compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time);
 
 private:
-  double omega;
-  double c2;
   double beta;
   Eigen::MatrixXd velocities;
 };

@@ -7,11 +7,14 @@ from .ackley import Ackley
 from .bentcigar import Bentcigar
 from .deb import Deb
 from .dixonprice import Dixonprice
+from .griewank import Griewank
 from .hyperellipsoid import Hyperellipsoid
+from .langermann import Langermann
 from .levy import Levy
 from .michalewicz import Michalewicz
 from .rastrigin import Rastrigin
 from .rosenbrock import Rosenbrock
+from .schwefel import Schwefel
 from .square import Square
 from .styblinskitang import Styblinskitang
 from .sumpow import Sumpow
@@ -27,12 +30,15 @@ __all__ = [
     "Bentcigar",
     "Deb",
     "Dixonprice",
+    "Griewank",
     "Hyperellipsoid",
+    "Langermann",
     "Levy",
     "Levy",
     "Michalewicz",
     "Rastrigin",
     "Rosenbrock",
+    "Schwefel",
     "Square",
     "Styblinskitang",
     "Sumpow",

@@ -15,6 +15,8 @@ dependencies = [
   "bayesian-optimization>=3.1.0",
   "packaging>=25",
   "gkls>=1.0.2",
+  "scipy>=1.16.3",
+  "statsmodels>=0.14.5",
 ]
 description = "A collection of global optimization algorithms implemented in C++ and linked with Python."
 readme = "README.md"

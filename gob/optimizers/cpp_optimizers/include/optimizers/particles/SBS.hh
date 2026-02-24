@@ -2,6 +2,8 @@
  * Created in 2025 by Gaëtan Serré
  */
 
+#pragma once
+
 #include "optimizers/particles/particles_optimizer.hh"
 
 class SBS : public Particles_Optimizer
@@ -12,19 +14,15 @@ public:
       int n_particles,
       int iter,
       double dt,
-      int k,
       double sigma,
-      double alpha,
-      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, dt, batch_size, new LinearScheduler(&this->dt, alpha), "SBS")
+      int batch_size) : Particles_Optimizer(bounds, n_particles, iter, batch_size, new LinearScheduler(dt, 1), "SBS")
   {
-    this->k = k;
     this->sigma = sigma;
   }
 
-  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals);
+  virtual dynamic compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time);
 
 private:
-  int k;
   double sigma;
   Eigen::MatrixXd rbf_grad(const Eigen::MatrixXd &particles, Eigen::MatrixXd *rbf);
 };

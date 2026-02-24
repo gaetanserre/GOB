@@ -21,9 +21,11 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - [DIRECT](http://dx.doi.org/10.1007/0-306-48332-7_93)
 - [Every Call is Precious](https://arxiv.org/abs/2502.04290?)
 - [Multi-Level Single-Linkage](https://ageconsearch.umn.edu/record/272327)
+- [*Social Only* Particle Swarm Optimization](https://ieeexplore.ieee.org/document/488968)
+- [Langevin dynamics](https://gallica.bnf.fr/ark:/12148/bpt6k3100j/f530)
 - [Stein Boltzmann Sampling](https://arxiv.org/abs/2402.04689)
 - [Consensus Based Optimization](https://arxiv.org/abs/1909.09249)
-- [*Social Only* Particle Swarm Optimization](https://ieeexplore.ieee.org/document/488968)
+- [Common noise variants of McKean-Vlasov dynamics](https://arxiv.org/abs/2601.22753)
 - Gradient Descent
 - Pure Random Search
 
@@ -79,4 +81,4 @@ Contributions are welcome! Please see the [CONTRIBUTING](CONTRIBUTING.md) file f
 - [nlopt-python](https://github.com/DanielBok/nlopt-python)
 
 ### License
-This project is licensed under the GNU Lesser General Public License v3.0 (LGPL-3.0). See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License (CC BY-NC-SA 4.0). See the [LICENSE](LICENSE) file for details.

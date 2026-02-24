@@ -6,6 +6,13 @@
 class Optimizer:
     """
     Interface for an optimizer.
+
+    Parameters
+    ----------
+    name : str
+        The name of the optimizer.
+    bounds : ndarray
+        The bounds of the search space.
     """
 
     def __init__(self, name, bounds):

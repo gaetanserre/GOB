@@ -6,7 +6,7 @@
 #include "optimizers/particles/noise.hh"
 #include "optimizers/particles/particles_utils.hh"
 
-dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals)
+dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<double(dyn_vector x)> &f, vector<double> *evals, const int &time)
 {
   dyn_vector vf;
   if (this->beta > 0)
@@ -30,11 +30,13 @@ dynamic PSO::compute_dynamics(const Eigen::MatrixXd &particles, const function<d
 
   int i = 0;
 
+  Eigen::MatrixXd drift = Eigen::MatrixXd::Zero(particles.rows(), particles.cols());
+
   for (int i = 0; i < particles.rows(); i++)
   {
-    this->velocities.row(i) = this->omega * this->velocities.row(i) + this->c2 * (vf.transpose() - particles.row(i));
+    drift.row(i) = vf.transpose() - particles.row(i);
   }
 
-  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), this->bounds.size());
-  return {this->velocities, noise};
+  Eigen::MatrixXd noise = Eigen::MatrixXd::Zero(particles.rows(), particles.cols());
+  return {drift, noise};
 }

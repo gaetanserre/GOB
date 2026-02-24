@@ -2,11 +2,11 @@
 # Created in 2024 by Gaëtan Serré
 #
 
-from ..optimizer import Optimizer
+from ..cpp_optimizer import CPP_Optimizer
 from ..cpp_optimizers import SBS as C_SBS
 
 
-class SBS(Optimizer):
+class SBS(CPP_Optimizer):
     """
     Interface for the SBS optimizer.
 
@@ -20,12 +20,8 @@ class SBS(Optimizer):
         The number of iterations.
     dt : float
         The time step.
-    k : float
-        The kappa exponent.
     sigma : float
         The kernel bandwidth.
-    alpha : float
-        The coefficient to decrease the step size.
     batch_size : int
         The batch size for the mini-batch optimization. If 0, no mini-batch
         optimization is used.
@@ -38,24 +34,10 @@ class SBS(Optimizer):
         bounds,
         n_particles=200,
         iter=100,
-        dt=10,
-        k=1,
+        dt=0.1,
         sigma=0.1,
-        alpha=0.99,
         batch_size=0,
         verbose=False,
     ):
-        super().__init__("SBS", bounds)
-        self.c_opt = C_SBS(bounds, n_particles, iter, dt, k, sigma, alpha, batch_size)
-        self.verbose = verbose
-
-    def minimize(self, f):
-        if self.verbose:
-            f = self.verbose_function(f)
-        return self.c_opt.minimize(f)
-
-    def set_stop_criterion(self, stop_criterion):
-        self.c_opt.set_stop_criterion(stop_criterion)
-
-    def __del__(self):
-        del self.c_opt
+        super().__init__("SBS", bounds, verbose)
+        self.c_opt = C_SBS(bounds, n_particles, iter, dt, sigma, batch_size)

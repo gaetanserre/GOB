@@ -10,7 +10,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib
 
-matplotlib.rcParams.update({"font.size": 9})
+
+matplotlib.rcParams.update({"font.size": 9, "text.usetex": True})
 
 
 def create_dir(path: Path):
@@ -45,13 +46,18 @@ if __name__ == "__main__":
     optimizers = inspect.getmembers(go, inspect.isclass)
     files = []
     for name, opt in optimizers:
-        dir_opt = Path(inspect.getsourcefile(opt)).parent.stem
+        path_opt = Path(inspect.getsourcefile(opt))
+
+        # Get subpackage names
+        parts = path_opt.parts
+        i = parts.index("optimizers")
+        subpackages = list(parts[i + 1 : -1])
         opt = opt([])
 
         file_content = (
             f"{opt}\n"
             f"{''.join(['='] * len(str(opt)))}\n\n"
-            f".. automodule:: gob.optimizers.{dir_opt}.{name}\n"
+            f".. automodule:: gob.optimizers.{".".join(subpackages)}.{name}\n"
             "   :members:\n"
             "   :show-inheritance:\n"
             "   :undoc-members:\n"
@@ -100,8 +106,8 @@ if __name__ == "__main__":
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
 
             ax.plot_surface(X, Y, Z, linewidth=0.2, edgecolors="white", cmap="coolwarm")
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
+            ax.set_xlabel("$x$")
+            ax.set_ylabel("$y$")
             ax.set_box_aspect(None, zoom=0.8)
             xticks = ax.xaxis.get_major_ticks()
             yticks = ax.yaxis.get_major_ticks()
@@ -147,8 +153,8 @@ if __name__ == "__main__":
             ).reshape(X.shape)
             fig, ax = plt.subplots(subplot_kw={"projection": "3d"})
             ax.plot_surface(X, Y, Z, linewidth=0.2, edgecolors="white", cmap="coolwarm")
-            ax.set_xlabel("x")
-            ax.set_ylabel("y")
+            ax.set_xlabel("$x$")
+            ax.set_ylabel("$y$")
             ax.set_box_aspect(None, zoom=0.8)
             xticks = ax.xaxis.get_major_ticks()
             yticks = ax.yaxis.get_major_ticks()
