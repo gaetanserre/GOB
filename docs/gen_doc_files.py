@@ -11,7 +11,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 
 
-matplotlib.rcParams.update({"font.size": 9, "text.usetex": True})
+matplotlib.rcParams.update({"font.size": 9})
 
 
 def create_dir(path: Path):

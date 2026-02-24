@@ -22,7 +22,7 @@ GOB is a collection of global optimization algorithms implemented in C++ and lin
 - [Every Call is Precious](https://arxiv.org/abs/2502.04290?)
 - [Multi-Level Single-Linkage](https://ageconsearch.umn.edu/record/272327)
 - [*Social Only* Particle Swarm Optimization](https://ieeexplore.ieee.org/document/488968)
-- [Langevin dynamics](https://gallica.bnf.fr/ark:/12148/bpt6k3100j/f530)
+- [Langevin dynamics](https://archive.org/details/rcin.org.pl.WA35_226705_8818_Art15_194893)
 - [Stein Boltzmann Sampling](https://arxiv.org/abs/2402.04689)
 - [Consensus Based Optimization](https://arxiv.org/abs/1909.09249)
 - [Common noise variants of McKean-Vlasov dynamics](https://arxiv.org/abs/2601.22753)
