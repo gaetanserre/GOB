@@ -54,10 +54,11 @@ if __name__ == "__main__":
         subpackages = list(parts[i + 1 : -1])
         opt = opt([])
 
+        module_path = ".".join(subpackages)
         file_content = (
             f"{opt}\n"
             f"{''.join(['='] * len(str(opt)))}\n\n"
-            f".. automodule:: gob.optimizers.{".".join(subpackages)}.{name}\n"
+            f".. automodule:: gob.optimizers.{module_path}.{name}\n"
             "   :members:\n"
             "   :show-inheritance:\n"
             "   :undoc-members:\n"
